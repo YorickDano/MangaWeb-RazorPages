@@ -1,0 +1,69 @@
+﻿@page
+@model MangaWeb.Pages.Manga_s_.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<link rel="stylesheet" href="~/css/site.css">
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form>
+    <p>
+        <select asp-for="MangaGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Manga[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manga[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manga[0].Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manga[0].Description)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Manga[0].Rating)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Manga) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+             @*<td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>*@
+            <td>
+                <a class="text-decoration-none" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a class="text-decoration-none" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
