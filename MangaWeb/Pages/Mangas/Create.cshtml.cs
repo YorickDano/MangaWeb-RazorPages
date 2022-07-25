@@ -30,8 +30,13 @@ namespace MangaWeb.Pages.Manga_s_
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid || _context.Manga == null || Manga == null)
+            if (!ModelState.IsValid || _context.Manga == null || Manga == null )
             {
+                return Page();
+            }
+            if(_context.Manga.Any(x => x.Title == Manga.Title))
+            {
+                TempData["AlertMessage"] = "There are already manga with such title";
                 return Page();
             }
             var genre = "";

@@ -47,7 +47,11 @@ namespace MangaWeb.Pages.Manga_s_
             {
                 return Page();
             }
-
+            if (_context.Manga.Any(x => x.Title == Manga.Title))
+            {
+                TempData["AlertMessage"] = "There are already manga with such title";
+                return Page();
+            }
             _context.Attach(Manga).State = EntityState.Modified;
 
             try
