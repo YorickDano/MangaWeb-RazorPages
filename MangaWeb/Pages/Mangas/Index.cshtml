@@ -18,10 +18,17 @@
         Title: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Filter" />
     </p>
+   
+</form>
+<form method = "post">
+     <input type="submit" asp-page-handler="GetMangaUrl"/>
 </form>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Manga[0].ImageUrl)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Manga[0].Title)
             </th>
@@ -34,15 +41,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Manga[0].Description)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Manga[0].Rating)
-            </th>*@
+            <th style="width:100px;">
+              @Html.DisplayNameFor(model => model.Manga[0].ReadSiteUrl)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Manga) {
         <tr>
+            <td>
+               <img src=@item.ImageUrl style="height:140px;width:95px;">
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -55,9 +65,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-             @*<td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>*@
+             <td>
+                  <a href="@Html.DisplayFor(modelItem => item.ReadSiteUrl)">Link for read</a>
+            </td>
             <td>
                 <a class="text-decoration-none" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id">Details</a> |

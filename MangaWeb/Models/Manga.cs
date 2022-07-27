@@ -17,5 +17,9 @@ namespace MangaWeb.Models
         public string? Genre { get; set; }
         [Required]
         public string? Description { get; set; }
+        [Display(Name = "Read")]
+        public string? ReadSiteUrl { get; set; }
+        [Display(Name ="Image")]
+        public string? ImageUrl { get; set; }
     }
 }

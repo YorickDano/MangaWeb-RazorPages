@@ -21,7 +21,7 @@ namespace MangaWeb.Pages.Manga_s_
         }
 
         [BindProperty]
-        public Manga Manga { get; set; } = default!;
+        public Manga Manga { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,6 +36,8 @@ namespace MangaWeb.Pages.Manga_s_
                 return NotFound();
             }
             Manga = manga;
+            TempData["PreviousTitle"] = manga.Title;
+            TempData["ImageURL"] = manga.ImageUrl;
             return Page();
         }
 
@@ -47,12 +49,13 @@ namespace MangaWeb.Pages.Manga_s_
             {
                 return Page();
             }
-            if (_context.Manga.Any(x => x.Title == Manga.Title))
+            if (_context.Manga.Any(x => x.Title == Manga.Title) && !string.Equals(TempData["PreviousTitle"], Manga.Title))
             {
                 TempData["AlertMessage"] = "There are already manga with such title";
                 return Page();
             }
             _context.Attach(Manga).State = EntityState.Modified;
+            Manga.ImageUrl = (string?)TempData["ImageURL"];
 
             try
             {

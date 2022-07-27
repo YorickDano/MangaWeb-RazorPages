@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MangaWeb.Data;
 using MangaWeb.Models;
+using MangaWeb.APIClient;
 
 namespace MangaWeb.Pages.Manga_s_
 {
@@ -59,12 +60,20 @@ namespace MangaWeb.Pages.Manga_s_
                 else
                     genre += "\t";
             }
-
+            ApiSetting();
             Manga.Genre = genre.TrimEnd();
             _context.Manga.Add(Manga);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public void ApiSetting()
+        {
+            RestClientApi restClientApi = new RestClientApi();
+
+            Manga.ImageUrl =  restClientApi.GetImageUrlByTitle(Manga.Title).Result;
+            Manga.ReadSiteUrl =  restClientApi.GetUrlOfMangaByTitle(Manga.Title).Result; 
         }
     }
 }

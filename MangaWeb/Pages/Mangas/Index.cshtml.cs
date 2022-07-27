@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MangaWeb.APIClient;
 
 namespace MangaWeb.Pages.Manga_s_
 {
@@ -44,6 +45,14 @@ namespace MangaWeb.Pages.Manga_s_
             Genres = new SelectList(allGenres.Split('\t').Distinct());
             Manga = await manga.ToListAsync();
 
+            return Page();
+        }
+        public async Task<IActionResult> OnPostGetMangaUrl()
+        {
+            RestClientApi restClient = new RestClientApi();
+
+            var url = restClient.GetImageUrlByTitle("человек-бензопила");
+            Manga = await _context.Manga.ToListAsync();
             return Page();
         }
     }
