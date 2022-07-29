@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MangaWeb.Managers;
+using System.Text.Encodings.Web;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -44,36 +46,53 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string EmailConfirmationUrl { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+        public bool IsMailValidationWait = false;
+        [BindProperty]
+        public string CodeForActivation { get; set; }
+        public async Task MailValidation(string email, string code)
         {
-            if (email == null)
-            {
-                return RedirectToPage("/Index");
-            }
-            returnUrl = returnUrl ?? Url.Content("~/");
+            new MailManager().SendMailOnRegestration(email, code);
+            IsMailValidationWait = true;
+        }
 
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if(int.Parse(TempData["CodeForActivation"].ToString()) == int.Parse(CodeForActivation))
             {
-                return NotFound($"Unable to load user with email '{email}'.");
-            }
-
-            Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
-            if (DisplayConfirmAccountLink)
-            {
+                var user = await _userManager.FindByEmailAsync(TempData["UserMail"].ToString());
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { area = "Identity", userId = userId, code = code, returnUrl = TempData["ReturnUrl"].ToString() },
                     protocol: Request.Scheme);
+                return Redirect(EmailConfirmationUrl);
             }
 
+            return Page();          
+        }
+        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+        {
+            if (email == null)
+            {
+                return RedirectToPage("/Index");
+            }
+            Email = email;
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            TempData["UserMail"] = email;
+            TempData["ReturnUrl"] = returnUrl;
+            var code = new Random().Next(10000, 100000);
+            TempData["CodeForActivation"] = code;
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with email '{email}'.");
+            }
+           
+            await MailValidation(email, code.ToString());
             return Page();
         }
     }

@@ -46,10 +46,8 @@ namespace MangaWeb.APIClient
 
         private async Task<string> GetHtmlOf(string url)
         {
-            using (var client = new WebClient())
-            {
-                return client.DownloadString(url);
-            }
+            using var client = new WebClient();
+            return client.DownloadString(url);
         }
 
         private async Task<string> SearchFor(string title)
