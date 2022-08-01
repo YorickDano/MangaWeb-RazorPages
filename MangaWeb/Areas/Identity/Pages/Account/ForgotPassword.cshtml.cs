@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MangaWeb.Managers;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -21,7 +22,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly IEmailSender _emailSender;
-
+        private readonly MailManager _mailManager;
+ 
         public ForgotPasswordModel(UserManager<MangaWebUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -71,7 +73,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                await _mailManager.SendEmailAsync(
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

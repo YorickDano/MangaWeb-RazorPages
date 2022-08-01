@@ -20,9 +20,7 @@
     </p>
    
 </form>
-<form method = "post">
-     <input type="submit" asp-page-handler="GetMangaUrl"/>
-</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -44,17 +42,17 @@
             <th style="width:100px;">
               @Html.DisplayNameFor(model => model.Manga[0].ReadSiteUrl)
             </th>
-            <th></th>
+            <th></th>   
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Manga) {
         <tr>
             <td>
-               <img src=@item.ImageUrl style="height:140px;width:95px;">
+                <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id"><img src=@item.ImageUrl style="height:140px;width:95px;"></a> 
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+               <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)

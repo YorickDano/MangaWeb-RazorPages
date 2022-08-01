@@ -1,32 +1,41 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Net;
 using System.Net.Mail;
 
 namespace MangaWeb.Managers
 {
-    class MailManager
+    class MailManager : IEmailSender
     {
-        private readonly string BaseEmail = "MangaWebZXC@yandex.ru";
-        private readonly string BasePassword = "ZXCGhoul123";
+        private readonly string BaseEmail = "mangawebzxc@mail.ru";
+        private readonly string BasePassword = "tGdkm2pyUDMinhBvtNYs";
 
         private SmtpClient SmtpClient;
 
         public MailManager()
         {
-            SmtpClient = new SmtpClient("smtp.yandex.com.tr", 587);
-            SmtpClient.UseDefaultCredentials = false;
-            SmtpClient.Credentials = new NetworkCredential(BaseEmail,BasePassword);
-            SmtpClient.EnableSsl = true;
+            SmtpClient = new SmtpClient("smtp.mail.ru", 587)
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(BaseEmail, BasePassword),
+                EnableSsl = true
+            };
         }
 
-        public void SendMailOnRegestration(string toMail,string code)
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            MailMessage mailMessage = new MailMessage();
+            var mailMessage = new MailMessage()
+            {
+                From = new MailAddress(BaseEmail),
+                Body = htmlMessage,
+                Subject = subject,
+                IsBodyHtml = true
+                
+            };
 
-            mailMessage.From = new MailAddress(BaseEmail);
-            mailMessage.To.Add(toMail);
-            mailMessage.Body = "Hello Idiot, you trying to regestre on my site, I allow you to do this, here is your code:\n"+code;
-            mailMessage.Subject = "Regestration";
+            mailMessage.To.Add(email);
             SmtpClient.Send(mailMessage);
+
+            return Task.CompletedTask;
         }
     }
 }

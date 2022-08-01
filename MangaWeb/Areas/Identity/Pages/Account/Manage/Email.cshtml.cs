@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly MailManager _mailManager;
 
         public EmailModel(
             UserManager<MangaWebUser> userManager,
@@ -30,6 +32,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _mailManager = new MailManager();
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
+                await _mailManager.SendEmailAsync(
                     Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -160,7 +163,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
+            await _mailManager.SendEmailAsync(
                 email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

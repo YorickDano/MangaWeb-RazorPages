@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MangaWeb.Models
 {
     public class Manga
-    {
-      
+    {     
         public int Id { get; set; }
         [Required]
         public string? Title { get; set; }

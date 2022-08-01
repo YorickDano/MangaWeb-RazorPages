@@ -31,6 +31,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<MangaWebUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly MailManager _mailManager;
 
         public RegisterModel(
             UserManager<MangaWebUser> userManager,
@@ -45,6 +46,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _mailManager = new MailManager();
         }
 
         /// <summary>
@@ -137,7 +139,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
                 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _mailManager.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

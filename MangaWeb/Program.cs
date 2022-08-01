@@ -46,6 +46,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -57,5 +59,12 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 
-
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Response.Redirect("/ThereAreNoSuchPage");
+    }
+});
 app.Run();

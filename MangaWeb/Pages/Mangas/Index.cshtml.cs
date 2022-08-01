@@ -42,7 +42,11 @@ namespace MangaWeb.Pages.Manga_s_
                 manga = manga.Where(x => x.Genre.Contains(MangaGenre));
             }
 
-            Genres = new SelectList(allGenres.Split('\t').Distinct());
+            if(Genres == null) 
+            {
+                Genres = new SelectList(allGenres.Split('\t').Distinct());
+            }
+            
             Manga = await manga.ToListAsync();
 
             return Page();
