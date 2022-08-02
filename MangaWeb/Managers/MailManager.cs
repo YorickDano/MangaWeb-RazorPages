@@ -6,8 +6,8 @@ namespace MangaWeb.Managers
 {
     class MailManager : IEmailSender
     {
-        private readonly string BaseEmail = "mangawebzxc@mail.ru";
-        private readonly string BasePassword = "tGdkm2pyUDMinhBvtNYs";
+        private readonly string BaseEmail = "WhatDoYouWant?";
+        private readonly string BasePassword = "WhatDoYouWant?";
 
         private SmtpClient SmtpClient;
 
