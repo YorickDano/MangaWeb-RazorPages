@@ -11,10 +11,10 @@
     <h4>Manga</h4>
     <hr />
     <dl class="row">
-        <dt>
+        <dt class="col-sm-2">
              @Html.DisplayNameFor(model => model.Manga.ImageUrl)
         </dt>
-        <dd>
+        <dd class="col-sm-10">
              <img src=@Html.DisplayFor(model => model.Manga.ImageUrl) style="height:140px;width:95px;">
         </dd>
         <dt class="col-sm-2">
@@ -40,6 +40,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.Description)
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.ReadSiteUrl)
+        </dt>
+        <dd class="col-sm-10">
+            Click <a href="@Model.Manga.ReadSiteUrl">here</a> to redirect to reading site.
         </dd>
     </dl>
 </div>

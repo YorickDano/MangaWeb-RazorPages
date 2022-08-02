@@ -20,3 +20,12 @@ body {
 .text-decoration-none {
     text-decoration:none;
 }
+
+.profileImage{
+    height:150px;
+    width: 150px;
+}
+.headerImage{
+    height:50px;
+    width:50px;
+}
