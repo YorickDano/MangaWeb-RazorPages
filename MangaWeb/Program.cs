@@ -34,8 +34,13 @@ builder.Services.AddAuthentication()
 builder.Services.AddDbContext<MangaWebContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MangaWebContext") ?? throw new InvalidOperationException("Connection string 'MangaWebContext' not found.")));
 
-builder.Services.AddDefaultIdentity<MangaWebUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<MangaWebContext>();
+builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+}
+    ).AddEntityFrameworkStores<MangaWebContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,7 +58,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapRazorPages();

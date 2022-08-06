@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using MangaWeb.APIClient;
 using MangaWeb.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public string Username { get; set; }
         public byte[] Image { get; set; }
-       
+        public MangaWebUser MangaWebUser { get; set; } 
         public IFormFile FormFile { get; set; }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             Image = _userManager.Users.FirstOrDefault(x => x.Id == user.Id).ProfileImage;
-
+            MangaWebUser = user;
             Username = userName;
 
             Input = new InputModel
@@ -85,7 +86,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            
             await LoadAsync(user);
             return Page();
         }
@@ -137,6 +138,29 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostSetRandomHentaiProfileImageAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray(AnimeType.Hentai);
+
+            await _userManager.UpdateAsync(user);
+            await LoadAsync(user);
+
+            return Page();
+        }
+        public async Task<IActionResult> OnPostSetRandomAnimeProfileImageAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray();
+
+            await _userManager.UpdateAsync(user);
+            await LoadAsync(user);
+
             return Page();
         }
     }

@@ -45,9 +45,17 @@
             @Html.DisplayNameFor(model => model.Manga.ReadSiteUrl)
         </dt>
         <dd class="col-sm-10">
-            Click <a href="@Model.Manga.ReadSiteUrl">here</a> to redirect to reading site.
+            Click <a href="@Html.DisplayFor(modelItem => modelItem.Manga.ReadSiteUrl)">here</a> to redirect to reading site.
         </dd>
     </dl>
+    @if (Model.MangaWebUser != null && Model.MangaWebUser.Role != Areas.Identity.Data.Role.User)
+    {
+        @foreach(var url in Model.ImagesUrls)
+    {
+        <img src="@url" />
+    }
+    }
+
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Manga?.Id">Edit</a> |

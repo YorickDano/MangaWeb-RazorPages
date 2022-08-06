@@ -41,8 +41,7 @@
             </th>
             <th style="width:100px;">
               @Html.DisplayNameFor(model => model.Manga[0].ReadSiteUrl)
-            </th>
-            <th></th>   
+            </th>               
         </tr>
     </thead>
     <tbody>
@@ -65,7 +64,7 @@
             </td>
              <td>
                   <a href="@Html.DisplayFor(modelItem => item.ReadSiteUrl)">Link for read</a>
-            </td>
+            </td> 
             <td>
                 <a class="text-decoration-none" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id">Details</a> |

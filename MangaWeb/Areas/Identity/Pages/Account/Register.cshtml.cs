@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MangaWeb.Managers;
+using MangaWeb.APIClient;
+using System.Net;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -32,7 +34,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
-
+        
         public RegisterModel(
             UserManager<MangaWebUser> userManager,
             IUserStore<MangaWebUser> userStore,
@@ -122,6 +124,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray();
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

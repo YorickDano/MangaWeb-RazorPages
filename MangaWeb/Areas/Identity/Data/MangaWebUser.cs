@@ -11,5 +11,14 @@ namespace MangaWeb.Areas.Identity.Data;
 public class MangaWebUser : IdentityUser
 {
     public byte[]? ProfileImage { get; set; }
+    public Role Role { get; set; } = Role.User;
+
 }
+public enum Role
+{
+    User,
+    Admin,
+    Advanced
+}
+
 

@@ -38,6 +38,19 @@
       
             <input id="update-profile-image-button" asp-page-handler="AddImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Add Image">
         </form>
+        <br />
+        <form asp-action="SetRandomAnimeProfileImage" method="post" enctype="multipart/form-data">
+            <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random anime profile image">
+            </form>
+        @if (Model.MangaWebUser.Role != Role.User)
+        {
+            <br/>
+            <form asp-action="SetRandomHentaiProfileImage" method="post" enctype="multipart/form-data">
+            <input id="update-profile-image-button" asp-page-handler="SetRandomHentaiProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random hentai profile image">
+            </form>
+        }
+       
+        
     </div>
 </div>
 

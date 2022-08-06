@@ -72,7 +72,7 @@ namespace MangaWeb.Pages.Manga_s_
         {
             RestClientApi restClientApi = new RestClientApi();
 
-            Manga.ImageUrl =  restClientApi.GetImageUrlByTitle(Manga.Title).Result;
+            Manga.ImageUrl =  restClientApi.GetImageUrlByTitle(Manga.Title, Enums.SearchType.MangaImage).Result;
             Manga.ReadSiteUrl =  restClientApi.GetUrlOfMangaByTitle(Manga.Title).Result; 
         }
     }

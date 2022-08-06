@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClient.Services;
+using MangaWeb.Enums;
 using RestSharp;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -10,18 +11,22 @@ namespace MangaWeb.APIClient
     {
         private RestClient RestClient;
         private readonly Uri Url =  new Uri("https://www.google.by/");
-        RequestBuilder requestBuilder = new RequestBuilder();
+        private RequestBuilder requestBuilder = new RequestBuilder();
+
+        protected WebClient WebClient;
+
 
         public RestClientApi()
         {
-            RestClient = new RestClient(Url);    
+            RestClient = new RestClient(Url);
+            WebClient = new WebClient();
         }
 
         public async Task<string> GetUrlOfMangaByTitle(string title)
         {
-            var respounce = await SearchFor(title + " манга");
+            var response = await SearchFor(title + " манга");
             var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(respounce);
+            htmlDocument.LoadHtml(response);
             var f = htmlDocument.DocumentNode.SelectNodes("//a[contains(@href,'https://mangalib.me/')]");
             var linkTag = f.FirstOrDefault();
             var link = linkTag.GetAttributeValue("href", "https://mangalib.me/");
@@ -30,34 +35,42 @@ namespace MangaWeb.APIClient
             return link;
         }
 
-        public async Task<string> GetImageUrlByTitle(string title)
+        public async Task<string> GetImageUrlByTitle(string title, SearchType searchType = SearchType.DefaultImage)
         {
-            requestBuilder.CreateRequest()
-                .SetRequestResource("search")
-                .AddRequestParameter("q", title + " манга")
-                .AddRequestParameter("tbm", "isch");
-            var respounce = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
+            var responseContent = await GetImageSearchRespounseContent(title, searchType);
             var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(respounce.Content);
+            htmlDocument.LoadHtml(responseContent);
             var linkTag = htmlDocument.DocumentNode.SelectNodes("//img[contains(@src,'https://encrypted')]").FirstOrDefault();
 
             return linkTag.GetAttributeValue("src", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb1kKGBpZv8tOMiEi2yTJzr9sPAlRbnQe2gY_F_C7qfn0jInMVbFFjuNesYkk&amp;s");
         }
 
-        private async Task<string> GetHtmlOf(string url)
+        protected async Task<string> GetImageSearchRespounseContent(string title, SearchType searchType = SearchType.DefaultImage)
+        {
+            var searchString = searchType == SearchType.MangaImage ? title + " манга" : title;
+            requestBuilder.CreateRequest()
+                .SetRequestResource("search")
+                .AddRequestParameter("q", searchString)
+                .AddRequestParameter("tbm", "isch");
+            var response = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
+            return response.Content;
+        }
+
+        protected async Task<string> GetHtmlOf(string url)
         {
             using var client = new WebClient();
             return client.DownloadString(url);
         }
 
-        private async Task<string> SearchFor(string title)
+        protected async Task<string> SearchFor(string title)
         {
             requestBuilder.CreateRequest()
                .SetRequestResource("search")
                .AddRequestParameter("q", title);
-            var respounce = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
+            var response = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
 
-            return respounce.Content;
+            return response.Content;
         } 
+
     }
 }

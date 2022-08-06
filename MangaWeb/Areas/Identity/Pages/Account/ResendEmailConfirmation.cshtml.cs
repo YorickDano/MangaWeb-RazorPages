@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using MangaWeb.Managers;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -22,11 +23,13 @@ namespace MangaWeb.Areas.Identity.Pages.Account
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly MailManager _mailManager;
 
         public ResendEmailConfirmationModel(UserManager<MangaWebUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _mailManager = new MailManager();
         }
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
+            await _mailManager.SendEmailAsync(
                 Input.Email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
