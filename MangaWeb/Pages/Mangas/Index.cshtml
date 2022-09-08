@@ -63,10 +63,17 @@
         var manga = document.getElementById(itemId);
         var mangaInfoStyle = document.getElementById("mangaInfo").style;
         mangaInfoStyle.display = "block";
-      
-        console.log("left: " + manga.offsetLeft + "\ntop: " + manga.offsetTop);
-        mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
-        mangaInfoStyle.top = (manga.offsetTop)+"px";
+        var x = manga.offsetLeft;
+        var y = manga.offsetTop;
+
+        if(x < 1100){
+            mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
+        }
+       else{
+            mangaInfoStyle.left = (manga.offsetLeft - 430) + "px";
+       }
+
+        mangaInfoStyle.top = (manga.offsetTop + 20)+"px";
     }
 
     function onMangaOut() 

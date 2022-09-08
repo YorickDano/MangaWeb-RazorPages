@@ -1,6 +1,8 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClient.Services;
 using MangaWeb.Models;
+using System.Globalization;
+
 namespace MangaWeb.APIClient
 {
     public class ReseachClient : RestClientApi
@@ -70,7 +72,8 @@ namespace MangaWeb.APIClient
             fullMangaInfo.Autors = new List<string>( documentNode.SelectNodes("//span[contains(text(),'Authors')]/../a").Select(x=>x.GetDirectInnerText().Replace(",",String.Empty)));
             fullMangaInfo.Popularity = int.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Popularity')]/..").GetDirectInnerText().Trim().TrimStart('#'));
             fullMangaInfo.Ranked = int.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Ranked')]/..").GetDirectInnerText().Trim().TrimStart('#'));
-            fullMangaInfo.Score = double.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Score')]/../span/span").GetDirectInnerText().Replace('.',','));
+            fullMangaInfo.Score = double.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Score')]/../span/span").GetDirectInnerText(), new NumberFormatInfo { NumberDecimalSeparator = "." });
+
             return fullMangaInfo;
         }
 
