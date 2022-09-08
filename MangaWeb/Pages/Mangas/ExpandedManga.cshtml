@@ -1,0 +1,128 @@
+﻿@page
+@model MangaWeb.Pages.ExpandedManga.ExpandedMangaModel
+@{
+    var volumes = Model.FullManga.CountOfVolume == -1 ? "unknow" : Model.FullManga.CountOfVolume.ToString();
+    var chapters = Model.FullManga.CountOfChapters == -1 ? "unknow" : Model.FullManga.CountOfChapters.ToString();
+}
+
+<div>
+    <h4>Manga</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.OriginTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.OriginTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.MangaImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.FullManga.MangaImageUrl" style="height:320px;width:225px;">
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Score)
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Score)
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Popularity)
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Popularity)
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Ranked)
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Ranked )
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.CountOfVolume)
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => volumes)
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.CountOfChapters  )
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => chapters)
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Published )
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Published )
+            
+        </dd>
+         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Status)
+          
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Status)
+            
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullManga.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Geners)
+        </dt>
+        <dd class="col-sm-10">
+            @{var genersCount = Model.FullManga.Geners.Count;}
+            @foreach (var gener in Model.FullManga.Geners)
+            {
+                var addStr = genersCount > 1 && Model.FullManga.Geners.IndexOf(gener) < genersCount - 1? ", " : "";
+                @string.Concat(gener,addStr);
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Characters)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var character in Model.FullManga.Characters)
+            {
+                 var role = character.IsMain == true ? "Main" : "Supporting";
+                <div class="item">
+            <img class="characterImage" src="@character.ImageUrl" />
+            <span class="caption">@string.Concat($"{character.Name}", $" ({role})")</span>
+             </div>
+
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullManga.Autors)
+        </dt>
+        <dd class="col-sm-10">
+              @{var autorCount = Model.FullManga.Autors.Count;}
+            @foreach (var autor in Model.FullManga.Autors)
+            { var addStr = autorCount > 1 && Model.FullManga.Autors.IndexOf(autor) < autorCount - 1? ", " : "";
+                @string.Concat(autor,addStr);
+            }
+        </dd>
+    </dl>
+    <hr />
+
+
+</div>
+
+
+

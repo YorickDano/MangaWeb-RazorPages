@@ -21,7 +21,7 @@ namespace MangaWeb.Managers
             };
         }
 
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var mailMessage = new MailMessage()
             {
@@ -33,9 +33,7 @@ namespace MangaWeb.Managers
             };
 
             mailMessage.To.Add(email);
-            SmtpClient.Send(mailMessage);
-
-            return Task.CompletedTask;
+            await SmtpClient.SendMailAsync(mailMessage);           
         }
     }
 }

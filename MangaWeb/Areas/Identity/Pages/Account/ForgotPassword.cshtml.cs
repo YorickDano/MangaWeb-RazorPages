@@ -28,6 +28,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _mailManager = new MailManager();
         }
 
         /// <summary>

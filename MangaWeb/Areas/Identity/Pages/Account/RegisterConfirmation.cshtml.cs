@@ -51,21 +51,6 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         [BindProperty]
         public string CodeForActivation { get; set; }
       
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var user = await _userManager.FindByEmailAsync(Email);
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            EmailConfirmationUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code, returnUrl = TempData["ReturnUrl"].ToString() },
-                protocol: Request.Scheme);
-            return Redirect(EmailConfirmationUrl);
-
-        }
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
             if (email == null)
@@ -73,15 +58,12 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
             Email = email;
-            returnUrl = returnUrl ?? Url.Content("~/");
 
-            TempData["ReturnUrl"] = returnUrl;
             var user = await _userManager.FindByEmailAsync(Email);
             if (user == null)
             {
                 return NotFound($"Unable to load user with email '{email}'.");
             }
-
 
             return Page();
         }

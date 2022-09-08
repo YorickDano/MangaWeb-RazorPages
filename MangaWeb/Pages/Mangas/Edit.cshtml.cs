@@ -37,7 +37,7 @@ namespace MangaWeb.Pages.Manga_s_
             }
             Manga = manga;
             TempData["PreviousTitle"] = manga.Title;
-            TempData["ImageURL"] = manga.ImageUrl;
+            TempData["ImageURL"] = manga.MainImageUrl;
             return Page();
         }
 
@@ -55,7 +55,7 @@ namespace MangaWeb.Pages.Manga_s_
                 return Page();
             }
             _context.Attach(Manga).State = EntityState.Modified;
-            Manga.ImageUrl = (string?)TempData["ImageURL"];
+            Manga.MainImageUrl = (string?)TempData["ImageURL"];
 
             try
             {

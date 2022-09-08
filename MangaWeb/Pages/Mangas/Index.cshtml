@@ -5,8 +5,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-<link rel="stylesheet" href="~/css/site.css">
+<h1>@ViewData["Title"]</h1>
+
+
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -18,59 +19,59 @@
         Title: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Filter" />
     </p>
-   
+
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Manga[0].ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manga[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manga[0].CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manga[0].Genre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manga[0].Description)
-            </th>
-            <th style="width:100px;">
-              @Html.DisplayNameFor(model => model.Manga[0].ReadSiteUrl)
-            </th>               
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Manga) {
-        <tr>
-            <td>
-                <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id"><img src=@item.ImageUrl style="height:140px;width:95px;"></a> 
-            </td>
-            <td>
-               <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-             <td>
-                  <a href="@Html.DisplayFor(modelItem => item.ReadSiteUrl)">Link for read</a>
-            </td> 
-            <td>
-                <a class="text-decoration-none" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a class="text-decoration-none" asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a class="text-decoration-none" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<div class="mangas">
+@foreach (var item in Model.Manga)
+{
+
+    <div class="manga-card">
+        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
+    </div>
+
 }
-    </tbody>
-</table>
+</div>
+<h2 class="text-black">Expanded Manga</h2>
+<h6>
+    <form>
+        Sort by:
+        <select asp-for="SortByOption">
+            <option>Title</option>
+            <option>Score</option>
+        </select>
+        <input asp-page-handler="SortBy" class="w-100 btn btn-lg btn-primary" type="submit" value="Sort" />
+    </form>
+</h6>
+<div class="mangas">
+@foreach (var item in Model.FullManga)
+{
+
+        <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut()" class="manga-card">
+        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MangaImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div></a>
+    </div>
+
+}
+</div>
+<div id="mangaInfo" class="mangaInforOnHover">
+    Info
+</div>
+<script>
+    function onMangaHover(itemId)
+    {
+        var manga = document.getElementById(itemId);
+        var mangaInfoStyle = document.getElementById("mangaInfo").style;
+        mangaInfoStyle.display = "block";
+      
+        console.log("left: " + manga.offsetLeft + "\ntop: " + manga.offsetTop);
+        mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
+        mangaInfoStyle.top = (manga.offsetTop)+"px";
+    }
+
+    function onMangaOut() 
+    {
+        document.getElementById("mangaInfo").style.display = "none";
+
+    }
+</script>

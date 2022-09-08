@@ -18,6 +18,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
+        private readonly AnimeAndHentaiClient _animeAndHentaiClient;
 
         public IndexModel(
             UserManager<MangaWebUser> userManager,
@@ -25,6 +26,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _animeAndHentaiClient = new AnimeAndHentaiClient();
         }
 
         /// <summary>
@@ -33,7 +35,10 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public string Username { get; set; }
         public byte[] Image { get; set; }
-        public MangaWebUser MangaWebUser { get; set; } 
+        public MangaWebUser MangaWebUser { get; set; }
+
+        [Required]
+        [BindProperty]
         public IFormFile FormFile { get; set; }
 
         /// <summary>
@@ -145,7 +150,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-            user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray(AnimeType.Hentai);
+            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray(AnimeType.Hentai);
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);
@@ -156,7 +161,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-            user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray();
+            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray();
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);

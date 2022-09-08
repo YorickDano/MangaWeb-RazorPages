@@ -1,5 +1,6 @@
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -9,12 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages(options =>
 {
-   // options.Conventions.AuthorizePage("/Areas/Identity/Pages/Account/Login");
+    // options.Conventions.AuthorizePage("/Areas/Identity/Pages/Account/Login");
     options.Conventions.AuthorizeFolder("/");
-   // options.Conventions.AuthorizeAreaPage("Account", "/Login");
-  // options.Conventions.AllowAnonymousToAreaPage("Account", "/Login");
+    // options.Conventions.AuthorizeAreaPage("Account", "/Login");
+    // options.Conventions.AllowAnonymousToAreaPage("Account", "/Login");
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(option =>
+{
+    option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
@@ -43,13 +48,11 @@ builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
     ).AddEntityFrameworkStores<MangaWebContext>();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+
+app.UseExceptionHandler("/Error");
+app.UseStatusCodePagesWithReExecute("/Error");
+// app.UseHsts();
+
 
 
 
@@ -63,12 +66,5 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 
-app.Use(async (context, next) =>
-{
-    await next.Invoke();
-    if (context.Response.StatusCode == 404)
-    {
-        context.Response.Redirect("/ThereAreNoSuchPage");
-    }
-});
+
 app.Run();
