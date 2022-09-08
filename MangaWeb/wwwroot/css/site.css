@@ -76,7 +76,6 @@ img {
 
 .manga-card-text 
 {
-    
     position: absolute;
     bottom: 0;
     left: 0;
@@ -92,7 +91,14 @@ img {
     white-space: nowrap;
     font-size:22px;
 }
-
+.mangaInfoDesc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 .mangas {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
