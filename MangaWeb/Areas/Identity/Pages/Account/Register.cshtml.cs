@@ -34,7 +34,9 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
-        
+        private readonly AnimeAndHentaiClient _animeAndHentaiClient;
+
+
         public RegisterModel(
             UserManager<MangaWebUser> userManager,
             IUserStore<MangaWebUser> userStore,
@@ -49,6 +51,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _mailManager = new MailManager();
+            _animeAndHentaiClient = new AnimeAndHentaiClient();
         }
 
         /// <summary>
@@ -123,8 +126,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
-                user.ProfileImage = await new AnimeAndHentaiClient().GetRandomImageAsByteArray();
+                
+                user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray();
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -164,7 +167,6 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
 
         private MangaWebUser CreateUser()
         {

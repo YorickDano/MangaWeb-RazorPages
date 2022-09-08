@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MangaWeb.Models
 {
@@ -19,6 +20,8 @@ namespace MangaWeb.Models
         [Display(Name = "Read")]
         public string? ReadSiteUrl { get; set; }
         [Display(Name ="Image")]
-        public string? ImageUrl { get; set; }
+        public string? MainImageUrl { get; set; }
+        public string[]? AnimeImagesUrls { get; set; }
+        public string[]? HentaiImagesUrls { get; set; }
     }
 }

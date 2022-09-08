@@ -9,9 +9,9 @@ namespace MangaWeb.APIClient
 {
     public class RestClientApi
     {
-        private RestClient RestClient;
+        protected RestClient RestClient;
         private readonly Uri Url =  new Uri("https://www.google.by/");
-        private RequestBuilder requestBuilder = new RequestBuilder();
+        protected RequestBuilder requestBuilder = new RequestBuilder();
 
         protected WebClient WebClient;
 
@@ -24,7 +24,7 @@ namespace MangaWeb.APIClient
 
         public async Task<string> GetUrlOfMangaByTitle(string title)
         {
-            var response = await SearchFor(title + " манга");
+            var response = await SearchFor(title + " mangalib");
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(response);
             var f = htmlDocument.DocumentNode.SelectNodes("//a[contains(@href,'https://mangalib.me/')]");
@@ -35,9 +35,9 @@ namespace MangaWeb.APIClient
             return link;
         }
 
-        public async Task<string> GetImageUrlByTitle(string title, SearchType searchType = SearchType.DefaultImage)
+        public async Task<string> GetMangaProfieImageUrlByTitle(string title, SearchType searchType = SearchType.DefaultImage)
         {
-            var responseContent = await GetImageSearchRespounseContent(title, searchType);
+            var responseContent = await GetImageSearchRespounseContent(title + " mangalib", searchType);
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(responseContent);
             var linkTag = htmlDocument.DocumentNode.SelectNodes("//img[contains(@src,'https://encrypted')]").FirstOrDefault();
@@ -47,7 +47,7 @@ namespace MangaWeb.APIClient
 
         protected async Task<string> GetImageSearchRespounseContent(string title, SearchType searchType = SearchType.DefaultImage)
         {
-            var searchString = searchType == SearchType.MangaImage ? title + " манга" : title;
+            var searchString = searchType == SearchType.MangaImage ? title + " manga" : title;
             requestBuilder.CreateRequest()
                 .SetRequestResource("search")
                 .AddRequestParameter("q", searchString)
