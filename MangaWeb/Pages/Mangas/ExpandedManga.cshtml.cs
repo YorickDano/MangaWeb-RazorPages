@@ -1,4 +1,3 @@
-using MangaWeb.APIClient;
 using MangaWeb.Data;
 using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +19,14 @@ namespace MangaWeb.Pages.ExpandedManga
 
         public async Task<IActionResult> OnGet(int? id)
         {
-            if(id is null)
+            if (id is null)
             {
                 return NotFound();
             }
 
-            FullManga = await _context.FullMangas.Include(x=>x.Characters).FirstOrDefaultAsync(y=>y.Id == id);
+            FullManga = await _context.FullMangas.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-            if(FullManga is null)
+            if (FullManga is null)
             {
                 return NotFound();
             }

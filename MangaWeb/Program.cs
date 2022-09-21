@@ -1,6 +1,5 @@
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;

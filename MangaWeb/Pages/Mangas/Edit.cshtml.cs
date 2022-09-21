@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MangaWeb.Data;
+using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MangaWeb.Data;
-using MangaWeb.Models;
 
 namespace MangaWeb.Pages.Manga_s_
 {
@@ -21,7 +16,7 @@ namespace MangaWeb.Pages.Manga_s_
         }
 
         [BindProperty]
-        public Manga Manga { get; set; } = default!; 
+        public Manga Manga { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,7 +25,7 @@ namespace MangaWeb.Pages.Manga_s_
                 return NotFound();
             }
 
-            var manga =  await _context.Manga.FirstOrDefaultAsync(m => m.Id == id);
+            var manga = await _context.Manga.FirstOrDefaultAsync(m => m.Id == id);
             if (manga == null)
             {
                 return NotFound();
@@ -55,7 +50,7 @@ namespace MangaWeb.Pages.Manga_s_
                 return Page();
             }
             _context.Attach(Manga).State = EntityState.Modified;
-            Manga.MainImageUrl = (string?)TempData["ImageURL"];
+            Manga.MainImageUrl = TempData["ImageURL"] as string ?? "";
 
             try
             {
@@ -78,7 +73,7 @@ namespace MangaWeb.Pages.Manga_s_
 
         private bool MangaExists(int id)
         {
-          return (_context.Manga?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Manga?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

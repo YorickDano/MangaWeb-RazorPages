@@ -29,7 +29,7 @@ namespace MangaWeb.Pages.ExpandedManga
             var Manga = await reseachClient.GetFullManga(MangaTitleInput);
             await _context.FullMangas.AddAsync(Manga);
             await _context.SaveChangesAsync();
-            return RedirectToPage($"/Mangas/ExpandedManga", new {id = Manga.Id});
-        } 
+            return RedirectToPage($"/Mangas/ExpandedManga", new { id = Manga.Id });
+        }
     }
 }

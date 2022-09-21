@@ -1,8 +1,8 @@
 ﻿using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 namespace MangaWeb.Data;
 
 public class MangaWebContext : IdentityDbContext<MangaWebUser>
@@ -12,10 +12,10 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     {
     }
     public DbSet<Manga> Manga { get; set; } = default!;
-    public DbSet<FullManga> FullMangas { get; set; } = default!;    
+    public DbSet<FullManga> FullMangas { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
-    {    
+    {
         base.OnModelCreating(builder);
         builder.Entity<Manga>()
             .Property(e => e.AnimeImagesUrls)
@@ -41,6 +41,7 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
             .HasMany(x => x.Characters)
             .WithOne(i => i.FullManga)
             .OnDelete(DeleteBehavior.Cascade);
+
 
 
     }

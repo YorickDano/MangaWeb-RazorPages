@@ -679,7 +679,7 @@ progress {
 
 @media (min-width: 1400px) {
     .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-        max-width: 1320px;
+        max-width: 1400px;
     }
 }
 
@@ -11893,6 +11893,7 @@ dt {
     margin:5px;
     display: block;
     font-size: 18px;
+    line-height:27px;
 }
 
 

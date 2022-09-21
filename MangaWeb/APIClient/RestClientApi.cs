@@ -3,14 +3,13 @@ using MangaWeb.APIClient.Services;
 using MangaWeb.Enums;
 using RestSharp;
 using System.Net;
-using System.Text.RegularExpressions;
 
 namespace MangaWeb.APIClient
 {
     public class RestClientApi
     {
         protected RestClient RestClient;
-        private readonly Uri Url =  new Uri("https://www.google.by/");
+        private readonly Uri Url = new Uri("https://www.google.by/");
         protected RequestBuilder requestBuilder = new RequestBuilder();
 
         protected WebClient WebClient;
@@ -70,7 +69,7 @@ namespace MangaWeb.APIClient
             var response = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
 
             return response.Content;
-        } 
+        }
 
     }
 }

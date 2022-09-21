@@ -4,6 +4,7 @@ using MangaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    partial class MangaWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220917192034_yearOfManga")]
+    partial class yearOfManga
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +150,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FullMangas", (string)null);
+                    b.ToTable("FullMangas");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
@@ -188,7 +190,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manga", (string)null);
+                    b.ToTable("Manga");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaCharacter", b =>
@@ -217,7 +219,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("FullMangaId");
 
-                    b.ToTable("MangaCharacter", (string)null);
+                    b.ToTable("MangaCharacter");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

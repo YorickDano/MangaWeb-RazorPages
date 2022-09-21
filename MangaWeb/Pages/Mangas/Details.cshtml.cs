@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Data;
+using MangaWeb.DataBaseHandler;
+using MangaWeb.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MangaWeb.Data;
-using MangaWeb.Models;
-using MangaWeb.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
-using MangaWeb.APIClient;
-using MangaWeb.DataBaseHandler;
 
 namespace MangaWeb.Pages.Manga_s_
 {
@@ -20,15 +15,14 @@ namespace MangaWeb.Pages.Manga_s_
         private readonly UserManager<MangaWebUser> _userManager;
         public List<string> AnimeImagesUrls { get; set; }
         public List<string> HentaiImagesUrls { get; set; }
-        public MangaWebUser? MangaWebUser { get; set; } = default!;
+        public MangaWebUser MangaWebUser { get; set; } = default!;
+        public Manga Manga { get; set; } = default!;
 
         public DetailsModel(MangaWebContext context, UserManager<MangaWebUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
-
-        public Manga? Manga { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

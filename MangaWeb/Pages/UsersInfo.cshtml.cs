@@ -1,6 +1,5 @@
 using MangaWeb.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MangaWeb.Pages.Shared
