@@ -1,7 +1,9 @@
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.NetworkInformation;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,8 +37,25 @@ builder.Services.AddAuthentication()
         };
     });
 
-builder.Services.AddDbContext<MangaWebContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MangaWebContext") ?? throw new InvalidOperationException("Connection string 'MangaWebContext' not found.")));
+
+
+var internetTestHost = builder.Configuration["InternetTest:Host"];
+var internetTestTimeout = int.Parse(builder.Configuration["InternetTest:Timeout"]);
+var connectionString = "";
+    var ping = new Ping();
+try
+{
+    PingReply reply = ping.Send(internetTestHost, internetTestTimeout);
+   
+    if(reply.Status == IPStatus.Success)
+    {
+        connectionString = "MangaWebContext";
+    } 
+}
+catch { connectionString = "MangaWebContextLocal"; }
+
+    builder.Services.AddDbContext<MangaWebContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString) ?? throw new InvalidOperationException("Connection string 'MangaWebContext' not found.")));
 
 builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
 {
@@ -67,3 +86,5 @@ app.MapControllers();
 
 
 app.Run();
+
+
