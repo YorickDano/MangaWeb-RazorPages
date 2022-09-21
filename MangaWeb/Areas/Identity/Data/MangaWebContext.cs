@@ -41,8 +41,5 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
             .HasMany(x => x.Characters)
             .WithOne(i => i.FullManga)
             .OnDelete(DeleteBehavior.Cascade);
-
-
-
     }
 }
