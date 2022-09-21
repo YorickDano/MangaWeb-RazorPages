@@ -2,7 +2,11 @@
 @model MangaWeb.Pages.Manga_s_.IndexModel
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Index";
+    var statusFinished = "";
+    var volumesUnknown = "";
+    var chaptersUnknown = "";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -24,14 +28,14 @@
 
 
 <div class="mangas">
-@foreach (var item in Model.Manga)
-{
+    @foreach (var item in Model.Manga)
+    {
 
-    <div class="manga-card">
-        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
-    </div>
+        <div class="manga-card">
+            <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
+        </div>
 
-}
+    }
 </div>
 <h2 class="text-black">Expanded Manga</h2>
 <h6>
@@ -45,40 +49,75 @@
     </form>
 </h6>
 <div class="mangas">
-@foreach (var item in Model.FullManga)
-{
-
-        <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut()" class="manga-card">
-        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MangaImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div></a>
-    </div>
-
-}
-</div>
-<div id="mangaInfo" class="mangaInforOnHover">
-    Info
-</div>
-<script>
-    function onMangaHover(itemId)
+    @foreach (var item in Model.FullManga)
     {
+
+        <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut(@item.Id)" class="manga-card">
+            <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MangaImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div></a>
+        </div>
+        <div id="@item.Id-mangaInfo" class="mangaInforOnHover">
+            <h3>@item.OriginTitle</h3>
+            <p>
+               <img class="mangaInfoImg" src="@item.MangaImageUrl" >
+
+                <div class="mangaInfoCenter">
+                    <div class="mangaInfoDesc">Description: @item.Description</div>
+                    Geners: @string.Join(" ",item.Geners)
+                </div>
+                <div class="mangaInfoRight">
+                    Score: @item.Score<br>
+                    Popularity: @item.Popularity
+                    Ranked: @item.Ranked<br>
+                    @if (item.CountOfVolume == -1)
+                    {
+                        volumesUnknown = "Volumes: Unknown";
+                        chaptersUnknown = "Chapters: Unknown";
+                    }
+                    else{
+                        volumesUnknown = $"Volumes: {@item.CountOfVolume}";
+                        chaptersUnknown = $"Chapters: {@item.CountOfChapters}";
+                    }
+                    @volumesUnknown
+                    @chaptersUnknown
+                    <br>
+                    
+                    @if (item.Status == Models.MangaStatus.Finished)
+                    {
+                        statusFinished = $"Published: {item.Published}";
+                    }
+                    else
+                    {
+                        statusFinished = $"Status: {item.Status}";
+                    }
+                    @statusFinished
+                   
+                </div>
+
+            </p>
+        </div>
+    }
+</div>
+
+<script>
+    function onMangaHover(itemId) {
         var manga = document.getElementById(itemId);
-        var mangaInfoStyle = document.getElementById("mangaInfo").style;
+        var mangaInfoStyle = document.getElementById(itemId+"-mangaInfo").style;
         mangaInfoStyle.display = "block";
         var x = manga.offsetLeft;
         var y = manga.offsetTop;
 
-        if(x < 1100){
+        if (x < 1100) {
             mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
         }
-       else{
+        else {
             mangaInfoStyle.left = (manga.offsetLeft - 430) + "px";
-       }
+        }
 
-        mangaInfoStyle.top = (manga.offsetTop + 20)+"px";
+        mangaInfoStyle.top = (manga.offsetTop + 20) + "px";
     }
 
-    function onMangaOut() 
-    {
-        document.getElementById("mangaInfo").style.display = "none";
+    function onMangaOut(itemId) {
+        document.getElementById(itemId+"-mangaInfo").style.display = "none";
 
     }
 </script>

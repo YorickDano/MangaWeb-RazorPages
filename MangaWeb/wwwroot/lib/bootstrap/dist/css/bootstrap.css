@@ -11865,14 +11865,34 @@ dt {
     width: 20%;
 }
 
-.mangaInforOnHover
-{
-    position:absolute;
-    height:300px;
-    width:400px;
-    display:none;
-    background-color:rgb(20,20,20);
-    left:0;
-    top:1400px;
-    z-index:100;
+.mangaInforOnHover {
+    padding: 7px;
+    position: absolute;
+    height: auto;
+    width: 455px;
+    display: none;
+    background-color: rgb(20,20,20);
+    left: 0;
+    top: 1400px;
+    z-index: 100;
+            
 }
+.mangaInfoImg {
+    height: 150px;
+    width: 110px;
+    float: left;
+    margin:7px;
+}
+.mangaInfoCenter {
+    display: table-cell;
+    font-size: 18px;
+    float: left;
+    margin: 5px;
+}
+.mangaInfoRight {
+    margin:5px;
+    display: block;
+    font-size: 18px;
+}
+
+

@@ -31,8 +31,6 @@ namespace MangaWeb.Pages.Manga_s_
         public SelectList? Genres { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? MangaGenre { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string? SortByOption { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -81,7 +79,6 @@ namespace MangaWeb.Pages.Manga_s_
                     }
                 default:
                     {
-                        FullManga = await _context.FullMangas.Select(x => x).OrderBy(x => x.OriginTitle).ToListAsync();
                         break;
                     }      
             }
