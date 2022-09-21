@@ -1,5 +1,4 @@
 ﻿using MangaWeb.APIClient;
-using MangaWeb.Data;
 using MangaWeb.Models;
 
 namespace MangaWeb.DataBaseHandler

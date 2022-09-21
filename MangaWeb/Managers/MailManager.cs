@@ -29,11 +29,11 @@ namespace MangaWeb.Managers
                 Body = htmlMessage,
                 Subject = subject,
                 IsBodyHtml = true
-                
+
             };
 
             mailMessage.To.Add(email);
-            await SmtpClient.SendMailAsync(mailMessage);           
+            await SmtpClient.SendMailAsync(mailMessage);
         }
     }
 }

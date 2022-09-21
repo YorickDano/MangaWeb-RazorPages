@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model MangaWeb.Pages.Manga_s_.IndexModel
 
 @{
@@ -17,7 +17,7 @@
 </p>
 <form>
     <p>
-        <select asp-for="MangaGenre" asp-items="Model.Genres">
+        <select asp-for="MangaGenre" asp-items="Model.GenersSelectedList">
             <option value="">All</option>
         </select>
         Title: <input type="text" asp-for="SearchString" />
@@ -25,88 +25,116 @@
     </p>
 
 </form>
+<div class="background">
+    <aside class="rightOptions">
+
+        <form class="whiteText20" method="get">
+            Order by:
+            <select name="Option" asp-items="Model.OrderOptions">
+                <option>No option</option>
+            </select>
+            <br />
+            <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">Geners<i id="arrow" class="arrow down"></i></div>
+
+            <div id="genersSelector" style="display: none;" class="genersSelector">
+                @for(var i =0; i< Model.Genres.Count;++i)
+                {
+                    <div class="generToSelect">
+                        <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" />
+                        <label for="@Model.Genres[i]">@Model.Genres[i]</label>
+                    </div>
+                }
+            </div>
+            <div id="scoresSelector" class="scoresSelector">
+                Score<br />
+                <input  type="text" name="ScoreFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="ScoreTo" placeholder="To" class="orderInput" />
+            </div>
+            <div id="genersSelector" class="yearsSelector">
+               Year<br />
+                <input type="text" name="YearFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="YearTo" placeholder="To" class="orderInput" />
+            </div>
+            <input asp-page-handler="Order" class="width100 btn btn-lg btn-primary" type="submit" value="Submit" />
+        </form>
+    </aside>
+    <div class="mangas">
+        @foreach (var item in Model.Manga)
+        {
+
+            <div class="manga-card">
+                <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
+            </div>
+
+        }
+
+        <h2 class="text-black">Expanded Manga</h2>
 
 
-<div class="mangas">
-    @foreach (var item in Model.Manga)
-    {
+        @foreach (var item in Model.FullManga)
+        {
 
-        <div class="manga-card">
-            <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
-        </div>
+            <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut(@item.Id)" class="manga-card">
+                <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MangaImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div></a>
+            </div>
+            <div id="@item.Id-mangaInfo" class="mangaInforOnHover">
+                <h3>@item.OriginTitle</h3>
+                <p>
+                    <img class="mangaInfoImg" src="@item.MangaImageUrl">
 
-    }
+                    <div class="mangaInfoCenter">
+                        <div class="mangaInfoDesc">
+                            <b><big>Description:</big></b> @item.Description
+                        </div>
+                        <b><big>Geners:</big></b> @string.Join(" ",item.Geners)
+                    </div>
+                    <div class="mangaInfoRight">
+                        <b><big>Score:</big></b> @item.Score<br>
+                        <b><big>Popularity:</big></b> @item.Popularity
+                        <b><big>Ranked:</big></b> @item.Ranked<br>
+                        @if (item.CountOfVolume == -1)
+                        {
+                            volumesUnknown = "<b><big>Volumes:</big></b> Unknown";
+                            chaptersUnknown = "<b><big>Chapters:</big></b> Unknown";
+                        }
+                        else
+                        {
+                            volumesUnknown = $"<b><big>Volumes:</big></b> {@item.CountOfVolume}";
+                            chaptersUnknown = $"<b><big>Chapters:</big></b> {@item.CountOfChapters}";
+                        }
+                        @Html.Raw(volumesUnknown)
+                        @Html.Raw(chaptersUnknown)
+                        <br>
+
+                        @if (item.Status == Models.MangaStatus.Finished)
+                        {
+                            statusFinished = $"<b><big>Published:</big></b> {item.Published}";
+                        }
+                        else
+                        {
+                            statusFinished = $"<b><big>Status:</big></b> {item.Status}";
+                        }
+                        @Html.Raw(statusFinished)
+
+                    </div>
+
+                </p>
+            </div>
+        }
+    </div>
+
 </div>
-<h2 class="text-black">Expanded Manga</h2>
-<h6>
-    <form>
-        Sort by:
-        <select asp-for="SortByOption">
-            <option>Title</option>
-            <option>Score</option>
-        </select>
-        <input asp-page-handler="SortBy" class="w-100 btn btn-lg btn-primary" type="submit" value="Sort" />
-    </form>
-</h6>
-<div class="mangas">
-    @foreach (var item in Model.FullManga)
-    {
-
-        <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut(@item.Id)" class="manga-card">
-            <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MangaImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div></a>
-        </div>
-        <div id="@item.Id-mangaInfo" class="mangaInforOnHover">
-            <h3>@item.OriginTitle</h3>
-            <p>
-               <img class="mangaInfoImg" src="@item.MangaImageUrl" >
-
-                <div class="mangaInfoCenter">
-                    <div class="mangaInfoDesc">Description: @item.Description</div>
-                    Geners: @string.Join(" ",item.Geners)
-                </div>
-                <div class="mangaInfoRight">
-                    Score: @item.Score<br>
-                    Popularity: @item.Popularity
-                    Ranked: @item.Ranked<br>
-                    @if (item.CountOfVolume == -1)
-                    {
-                        volumesUnknown = "Volumes: Unknown";
-                        chaptersUnknown = "Chapters: Unknown";
-                    }
-                    else{
-                        volumesUnknown = $"Volumes: {@item.CountOfVolume}";
-                        chaptersUnknown = $"Chapters: {@item.CountOfChapters}";
-                    }
-                    @volumesUnknown
-                    @chaptersUnknown
-                    <br>
-                    
-                    @if (item.Status == Models.MangaStatus.Finished)
-                    {
-                        statusFinished = $"Published: {item.Published}";
-                    }
-                    else
-                    {
-                        statusFinished = $"Status: {item.Status}";
-                    }
-                    @statusFinished
-                   
-                </div>
-
-            </p>
-        </div>
-    }
-</div>
-
 <script>
     function onMangaHover(itemId) {
         var manga = document.getElementById(itemId);
-        var mangaInfoStyle = document.getElementById(itemId+"-mangaInfo").style;
+        var mangaInfoStyle = document.getElementById(itemId + "-mangaInfo").style;
         mangaInfoStyle.display = "block";
         var x = manga.offsetLeft;
         var y = manga.offsetTop;
 
-        if (x < 1100) {
+        if (x < 1300) {
             mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
         }
         else {
@@ -117,7 +145,18 @@
     }
 
     function onMangaOut(itemId) {
-        document.getElementById(itemId+"-mangaInfo").style.display = "none";
+        document.getElementById(itemId + "-mangaInfo").style.display = "none";
 
     }
-</script>
+    function genersLinkClick() {
+        var selector = document.getElementById("genersSelector");
+        selector.style.display = selector.style.display == "none" ? "block" : "none";
+        var arrow = document.getElementById("arrow");
+        if (arrow.classList.contains("up")) {
+            arrow.classList.replace("up", "down");
+        }
+        else {
+            arrow.classList.replace("down", "up");
+        }
+    }
+</script>   

@@ -1,7 +1,7 @@
 ﻿namespace MangaWeb.Enums
 {
-    public enum SearchType 
-    { 
+    public enum SearchType
+    {
         MangaImage,
         DefaultImage
     }
