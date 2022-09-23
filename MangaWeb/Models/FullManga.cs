@@ -23,6 +23,24 @@ namespace MangaWeb.Models
         public List<string> Autors { get; set; }
         public List<MangaCharacter> Characters { get; set; } = new List<MangaCharacter>();
         public int YearOfIssue { get; set; }
+
+        public static FullManga Empty = new FullManga
+        {
+            Id = 0,
+            OriginTitle = string.Empty,
+            MangaImageUrl = string.Empty,
+            Description = string.Empty,
+            Published = string.Empty,
+            CountOfVolume = 0,
+            Score = 0,
+            Ranked = 0,
+            Popularity = 0,
+            Geners = new List<string>(),
+            Status = 0,
+            Autors = new List<string>(),
+            Characters = new List<MangaCharacter>(),
+            YearOfIssue = 0
+        };
     }
     public enum MangaStatus
     {

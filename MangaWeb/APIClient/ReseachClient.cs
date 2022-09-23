@@ -7,7 +7,7 @@ namespace MangaWeb.APIClient
 {
     public class ReseachClient : RestClientApi
     {
-        private FullManga FullManga { get; set; }
+        private FullManga FullManga { get; set; } = FullManga.Empty; 
 
         public async Task<FullManga> GetFullManga(string title)
         {
@@ -23,24 +23,23 @@ namespace MangaWeb.APIClient
             var mangaSiteResponse = await RestClient.ExecuteAsync(
               requestBuilder.CreateRequest().GetRequest());
             htmlDocument.LoadHtml(mangaSiteResponse.Content);
-            FullManga = new FullManga();
-            FullManga = await SetTitles(htmlDocument, FullManga);
-            FullManga = await SetMangaImage(htmlDocument, FullManga);
-            FullManga = await SetDescription(htmlDocument, FullManga);
-            FullManga = await SetMangaInfo(htmlDocument, FullManga);
-            FullManga = await SetMangaCharacters(htmlDocument, FullManga);
+            FullManga = SetTitles(htmlDocument, FullManga);
+            FullManga = SetMangaImage(htmlDocument, FullManga);
+            FullManga = SetDescription(htmlDocument, FullManga);
+            FullManga = SetMangaInfo(htmlDocument, FullManga);
+            FullManga = SetMangaCharacters(htmlDocument, FullManga);
 
             return FullManga;
         }
 
-        private async Task<FullManga> SetTitles(HtmlDocument htmlDocument, FullManga fullMangaInfo)
+        private FullManga SetTitles(HtmlDocument htmlDocument, FullManga fullMangaInfo)
         {
             var titlesElement = htmlDocument.DocumentNode.SelectSingleNode("//h1//span[@itemprop='name']");
             fullMangaInfo.OriginTitle = titlesElement.GetDirectInnerText();
             return fullMangaInfo;
         }
 
-        private async Task<FullManga> SetMangaImage(HtmlDocument htmlDocument, FullManga fullMangaInfo)
+        private FullManga SetMangaImage(HtmlDocument htmlDocument, FullManga fullMangaInfo)
         {
             fullMangaInfo.MangaImageUrl = htmlDocument.DocumentNode
                 .SelectSingleNode("//img[@itemprop='image']")
@@ -49,14 +48,14 @@ namespace MangaWeb.APIClient
             return fullMangaInfo;
         }
 
-        private async Task<FullManga> SetDescription(HtmlDocument htmlDocument, FullManga fullMangaInfo)
+        private FullManga SetDescription(HtmlDocument htmlDocument, FullManga fullMangaInfo)
         {
             var fullDescription = htmlDocument.DocumentNode
                 .SelectSingleNode("//span[@itemprop='description']").GetDirectInnerText().Replace("&#039;s", "");
             fullMangaInfo.Description = fullDescription.Remove(fullDescription.LastIndexOf('.') + 1);
             return fullMangaInfo;
         }
-        private async Task<FullManga> SetMangaInfo(HtmlDocument htmlDocument, FullManga fullMangaInfo)
+        private FullManga SetMangaInfo(HtmlDocument htmlDocument, FullManga fullMangaInfo)
         {
             var documentNode = htmlDocument.DocumentNode;
             fullMangaInfo.CountOfVolume = int.TryParse
@@ -82,7 +81,7 @@ namespace MangaWeb.APIClient
         private readonly string DefaultUrl = "https://i.redd.it/0074y2gbvyj71.png";
         private int DefaultNumber = -1;
 
-        private async Task<FullManga> SetMangaCharacters(HtmlDocument htmlDocument, FullManga fullMangaInfo)
+        private FullManga SetMangaCharacters(HtmlDocument htmlDocument, FullManga fullMangaInfo)
         {
             fullMangaInfo.Characters = new List<MangaCharacter>();
 
@@ -96,7 +95,7 @@ namespace MangaWeb.APIClient
                 for (int i = 0; i < charactersNames.Count(); ++i)
                 {
                     fullMangaInfo.Characters.Add(
-                        new MangaCharacter(charactersNames[i], charactersImageUlrs[i], charactersMain[i].Equals("Main")));
+                        new MangaCharacter(charactersNames[i], charactersImageUlrs[i], charactersMain[i].Equals("Main",StringComparison.OrdinalIgnoreCase)));
                 }
             }
             return fullMangaInfo;

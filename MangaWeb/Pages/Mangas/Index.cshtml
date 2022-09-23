@@ -45,6 +45,12 @@
                     </div>
                 }
             </div>
+             <div id="scoresSelector" class="scoresSelector">
+                Chapters<br />
+                <input  type="text" name="CountOfChaptersFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="CountOfChaptersTo" placeholder="To" class="orderInput" />
+            </div>
             <div id="scoresSelector" class="scoresSelector">
                 Score<br />
                 <input  type="text" name="ScoreFrom" placeholder="From" class="orderInput" />
@@ -126,37 +132,3 @@
     </div>
 
 </div>
-<script>
-    function onMangaHover(itemId) {
-        var manga = document.getElementById(itemId);
-        var mangaInfoStyle = document.getElementById(itemId + "-mangaInfo").style;
-        mangaInfoStyle.display = "block";
-        var x = manga.offsetLeft;
-        var y = manga.offsetTop;
-
-        if (x < 1300) {
-            mangaInfoStyle.left = (manga.offsetLeft + 275) + "px";
-        }
-        else {
-            mangaInfoStyle.left = (manga.offsetLeft - 430) + "px";
-        }
-
-        mangaInfoStyle.top = (manga.offsetTop + 20) + "px";
-    }
-
-    function onMangaOut(itemId) {
-        document.getElementById(itemId + "-mangaInfo").style.display = "none";
-
-    }
-    function genersLinkClick() {
-        var selector = document.getElementById("genersSelector");
-        selector.style.display = selector.style.display == "none" ? "block" : "none";
-        var arrow = document.getElementById("arrow");
-        if (arrow.classList.contains("up")) {
-            arrow.classList.replace("up", "down");
-        }
-        else {
-            arrow.classList.replace("down", "up");
-        }
-    }
-</script>   

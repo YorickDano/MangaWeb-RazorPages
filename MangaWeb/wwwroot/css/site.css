@@ -159,7 +159,7 @@ img {
             height: 1em;
             flex-shrink: 0;
             flex-grow: 0;
-            border: 1px solid rgb(30, 30, 30);
+            border: 1px solid rgb(55, 55, 55);
             border-radius: 0.25em;
             margin-right: 0.5em;
             background-repeat: no-repeat;
@@ -183,7 +183,7 @@ img {
     }
 
     .generCheckBox:focus:not(:checked) + label::before {
-        border-color: #80bdff;
+        border-color: rgb(0, 220, 95);
     }
 
     .generCheckBox:checked + label::before {

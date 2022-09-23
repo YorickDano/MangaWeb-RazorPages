@@ -96,6 +96,7 @@ namespace MangaWeb.Pages.Manga_s_
              OrderByGenrse(input.Geners);
              OrderByYear(input.YearFrom, input.YearTo);
              OrderByScore(input.ScoreFrom, input.ScoreTo);
+            OrderByCountOfChapters(input.CountOfChaptersFrom, input.CountOfChaptersTo);
             Manga = await _context.Manga.Select(x => x).ToListAsync();
             var allGenres = string.Join(",", _context.FullMangas.Select(x => string.Join(",", x.Geners))).Split(',').Distinct();
             Genres = new List<string>(allGenres);
@@ -170,7 +171,26 @@ namespace MangaWeb.Pages.Manga_s_
             }
             if (scoreTo.HasValue)
             {
-                FullManga = FullManga.Where(x => x.Score <= scoreFrom).ToList();
+                FullManga = FullManga.Where(x => x.Score <= scoreTo).ToList();
+            }
+        }
+
+        private void OrderByCountOfChapters(double? countOfChaptersFrom, double? countOfChaptersTo)
+        {
+
+            if (countOfChaptersFrom.HasValue)
+            {
+                if (countOfChaptersTo.HasValue)
+                {
+                    FullManga = FullManga.Where(x => x.CountOfChapters >= countOfChaptersFrom && x.CountOfChapters <= countOfChaptersTo).ToList();
+                    return;
+                }
+                FullManga = FullManga.Where(x => x.CountOfChapters >= countOfChaptersFrom).ToList();
+                return;
+            }
+            if (countOfChaptersTo.HasValue)
+            {
+                FullManga = FullManga.Where(x => x.CountOfChapters <= countOfChaptersTo).ToList();
             }
         }
 
@@ -178,6 +198,8 @@ namespace MangaWeb.Pages.Manga_s_
         {
             public string? Option { get; set; }
             public string[]? Geners { get; set; }
+            public int? CountOfChaptersFrom { get; set; }
+            public int? CountOfChaptersTo { get; set; }
             public int? YearFrom { get; set; }
             public int? YearTo { get; set; }
             public double? ScoreFrom { get; set; }
