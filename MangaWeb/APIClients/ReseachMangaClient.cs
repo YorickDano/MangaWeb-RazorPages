@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace MangaWeb.APIClient
 {
-    public class ReseachClient : RestClientApi
+    public class ReseachMangaClient : RestClientApi
     {
         private FullManga FullManga { get; set; } = FullManga.Empty; 
 
@@ -14,14 +14,14 @@ namespace MangaWeb.APIClient
             RestClient.ChangeBaseUrlOn($"https://myanimelist.net/manga.php?q={title}&cat=manga");
             var htmlDocument = new HtmlDocument();
             var mangaSearchSiteResponse = await RestClient.ExecuteAsync(
-              requestBuilder.CreateRequest().GetRequest());
+              RequestBuilder.CreateRequest().GetRequest());
             htmlDocument.LoadHtml(mangaSearchSiteResponse.Content);
             var mangaLink = htmlDocument.DocumentNode
                 .SelectNodes("//a[contains(@href,'https://myanimelist.net/manga/')and@class='hoverinfo_trigger']")
                 .FirstOrDefault().GetAttributeValue("href", "https://myanimelist.net/manga/80119/Kobayashi-san_Chi_no_Maid_Dragon?q=kobay&cat=manga");
             RestClient.ChangeBaseUrlOn(mangaLink);
             var mangaSiteResponse = await RestClient.ExecuteAsync(
-              requestBuilder.CreateRequest().GetRequest());
+              RequestBuilder.CreateRequest().GetRequest());
             htmlDocument.LoadHtml(mangaSiteResponse.Content);
             FullManga = SetTitles(htmlDocument, FullManga);
             FullManga = SetMangaImage(htmlDocument, FullManga);

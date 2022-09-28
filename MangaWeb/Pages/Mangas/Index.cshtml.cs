@@ -53,7 +53,7 @@ namespace MangaWeb.Pages.Manga_s_
         {
 
             var manga = _context.Manga.Select(x => x);
-            FullManga = await _context.FullMangas.Select(x => x).ToListAsync();
+            FullManga = await _context.FullManga.Select(x => x).ToListAsync();
             if (!string.IsNullOrEmpty(SearchString))
             {
                 manga = manga.Where(s => s.Title.Contains(SearchString));
@@ -66,7 +66,7 @@ namespace MangaWeb.Pages.Manga_s_
 
             if (Genres == null)
             {
-                var allGenres = string.Join(",", _context.FullMangas.Select(x => string.Join(",", x.Geners))).Split(',').Distinct();
+                var allGenres = string.Join(",", _context.FullManga.Select(x => string.Join(",", x.Geners))).Split(',').Distinct();
                 Genres = new List<string>(allGenres);
                 GenersSelectedList = new SelectList(allGenres);
             }
@@ -78,11 +78,11 @@ namespace MangaWeb.Pages.Manga_s_
 
         public async Task<IActionResult> OnPostDeleteFullManga(int id)
         {
-            var manga = await _context.FullMangas.FirstOrDefaultAsync(x => x.Id == id);
+            var manga = await _context.FullManga.FirstOrDefaultAsync(x => x.Id == id);
 
-            _context.FullMangas.Remove(manga);
+            _context.FullManga.Remove(manga);
             await _context.SaveChangesAsync();
-            FullManga = await _context.FullMangas.Select(x => x).ToListAsync();
+            FullManga = await _context.FullManga.Select(x => x).ToListAsync();
             Manga = await _context.Manga.Select(x => x).ToListAsync();
             return Page();
         }
@@ -91,14 +91,14 @@ namespace MangaWeb.Pages.Manga_s_
 
         public async Task<IActionResult> OnGetOrderAsync(OrderInputModel input)
         {
-            FullManga = await _context.FullMangas.Select(x => x).ToListAsync();
+            FullManga = await _context.FullManga.Select(x => x).ToListAsync();
             await OrderByOption(input.Option);
              OrderByGenrse(input.Geners);
              OrderByYear(input.YearFrom, input.YearTo);
              OrderByScore(input.ScoreFrom, input.ScoreTo);
             OrderByCountOfChapters(input.CountOfChaptersFrom, input.CountOfChaptersTo);
             Manga = await _context.Manga.Select(x => x).ToListAsync();
-            var allGenres = string.Join(",", _context.FullMangas.Select(x => string.Join(",", x.Geners))).Split(',').Distinct();
+            var allGenres = string.Join(",", _context.FullManga.Select(x => string.Join(",", x.Geners))).Split(',').Distinct();
             Genres = new List<string>(allGenres);
             GenersSelectedList = new SelectList(allGenres);
             return Page();
@@ -110,12 +110,12 @@ namespace MangaWeb.Pages.Manga_s_
             {
                 case "Title":
                     {
-                        FullManga = await _context.FullMangas.Select(x => x).OrderBy(x => x.OriginTitle).ToListAsync();
+                        FullManga = await _context.FullManga.Select(x => x).OrderBy(x => x.OriginTitle).ToListAsync();
                         break;
                     }
                 case "Score":
                     {
-                        FullManga = await _context.FullMangas.Select(x => x).OrderBy(x => x.Score).Reverse().ToListAsync();
+                        FullManga = await _context.FullManga.Select(x => x).OrderBy(x => x.Score).Reverse().ToListAsync();
                         break;
                     }
                 default:

@@ -26,7 +26,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
-        private readonly AnimeAndHentaiClient _animeAndHentaiClient;
+        private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
 
 
         public RegisterModel(
@@ -43,7 +43,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _mailManager = new MailManager();
-            _animeAndHentaiClient = new AnimeAndHentaiClient();
+            _animeAndHentaiClient = new AnimeAndHentaiImageClient();
         }
 
         /// <summary>

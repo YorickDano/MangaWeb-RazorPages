@@ -15,7 +15,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
-        private readonly AnimeAndHentaiClient _animeAndHentaiClient;
+        private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
 
         public IndexModel(
             UserManager<MangaWebUser> userManager,
@@ -23,7 +23,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _animeAndHentaiClient = new AnimeAndHentaiClient();
+            _animeAndHentaiClient = new AnimeAndHentaiImageClient();
         }
 
         /// <summary>

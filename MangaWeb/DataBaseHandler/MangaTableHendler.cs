@@ -8,7 +8,7 @@ namespace MangaWeb.DataBaseHandler
 
         public static async Task<Manga> UpdateMangaImagesUrls(this Manga manga)
         {
-            var animeAndHentaiClient = new AnimeAndHentaiClient();
+            var animeAndHentaiClient = new AnimeAndHentaiImageClient();
             var animeImagesUrls = await animeAndHentaiClient.GetImagesUrlsByTitle(manga.Title);
             var hentaiImagesUrls = await animeAndHentaiClient.GetImagesUrlsByTitle(manga.Title, AnimeType.Hentai);
             manga.HentaiImagesUrls = new string[hentaiImagesUrls.Count];

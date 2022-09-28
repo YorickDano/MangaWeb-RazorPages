@@ -24,7 +24,7 @@ namespace MangaWeb.Pages.ExpandedManga
                 return NotFound();
             }
 
-            FullManga = await _context.FullMangas.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
+            FullManga = await _context.FullManga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
             if (FullManga is null)
             {

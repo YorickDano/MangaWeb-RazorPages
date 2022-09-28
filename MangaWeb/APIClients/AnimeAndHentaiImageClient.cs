@@ -3,7 +3,7 @@ using System.Net;
 
 namespace MangaWeb.APIClient
 {
-    public class AnimeAndHentaiClient : RestClientApi
+    public class AnimeAndHentaiImageClient : RestClientApi
     {
 
         private readonly string[] RandomHentaiTopicsForProfileImage = { "Hentai Trap", "Hentai Futanari",

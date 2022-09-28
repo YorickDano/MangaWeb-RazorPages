@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -6,4 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Здарова Фрики</h1>
+    <form method="get">
+        <input type="submit" asp-page-handler="Test" class="btn"/>
+    </form>
 </div>

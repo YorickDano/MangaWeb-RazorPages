@@ -25,9 +25,9 @@ namespace MangaWeb.Pages.ExpandedManga
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            ReseachClient reseachClient = new();
+            ReseachMangaClient reseachClient = new();
             var Manga = await reseachClient.GetFullManga(MangaTitleInput);
-            await _context.FullMangas.AddAsync(Manga);
+            await _context.FullManga.AddAsync(Manga);
             await _context.SaveChangesAsync();
             return RedirectToPage($"/Mangas/ExpandedManga", new { id = Manga.Id });
         }

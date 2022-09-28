@@ -4,6 +4,7 @@ using MangaWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    partial class MangaWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220924162046_MangaRead")]
+    partial class MangaRead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,7 +150,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FullManga");
+                    b.ToTable("FullMangas");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
@@ -222,54 +224,6 @@ namespace MangaWeb.Migrations
                     b.HasIndex("FullMangaId");
 
                     b.ToTable("MangaCharacter");
-                });
-
-            modelBuilder.Entity("MangaWeb.Models.MangaRead", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ChapterNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VolumeNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MangaRead");
-                });
-
-            modelBuilder.Entity("MangaWeb.Models.MangaReadPage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MangaReadId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PageNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MangaReadId");
-
-                    b.ToTable("MangaReadPage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -420,17 +374,6 @@ namespace MangaWeb.Migrations
                     b.Navigation("FullManga");
                 });
 
-            modelBuilder.Entity("MangaWeb.Models.MangaReadPage", b =>
-                {
-                    b.HasOne("MangaWeb.Models.MangaRead", "MangaRead")
-                        .WithMany("Pages")
-                        .HasForeignKey("MangaReadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MangaRead");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -485,11 +428,6 @@ namespace MangaWeb.Migrations
             modelBuilder.Entity("MangaWeb.Models.FullManga", b =>
                 {
                     b.Navigation("Characters");
-                });
-
-            modelBuilder.Entity("MangaWeb.Models.MangaRead", b =>
-                {
-                    b.Navigation("Pages");
                 });
 #pragma warning restore 612, 618
         }

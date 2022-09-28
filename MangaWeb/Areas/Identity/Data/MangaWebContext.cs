@@ -12,7 +12,8 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     {
     }
     public DbSet<Manga> Manga { get; set; } = default!;
-    public DbSet<FullManga> FullMangas { get; set; } = default!;
+    public DbSet<FullManga> FullManga { get; set; } = default!;
+    public DbSet<MangaRead> MangaRead { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -40,6 +41,10 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
         builder.Entity<FullManga>()
             .HasMany(x => x.Characters)
             .WithOne(i => i.FullManga)
+            .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<MangaRead>()
+            .HasMany(x => x.Pages)
+            .WithOne(i => i.MangaRead)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -10,7 +10,7 @@ namespace MangaWeb.APIClient
     {
         protected RestClient RestClient;
         private readonly Uri Url = new Uri("https://www.google.by/");
-        protected RequestBuilder requestBuilder = new RequestBuilder();
+        protected RequestBuilder RequestBuilder = new RequestBuilder();
 
         protected WebClient WebClient;
 
@@ -31,6 +31,7 @@ namespace MangaWeb.APIClient
             var link = linkTag.GetAttributeValue("href", "https://mangalib.me/");
             link = link.Remove(0, 7);
             link = link.Remove(link.IndexOf("&amp"));
+            link = link.Remove(link.IndexOf("%"));
             return link;
         }
 
@@ -47,11 +48,11 @@ namespace MangaWeb.APIClient
         protected async Task<string> GetImageSearchRespounseContent(string title, SearchType searchType = SearchType.DefaultImage)
         {
             var searchString = searchType == SearchType.MangaImage ? title + " manga" : title;
-            requestBuilder.CreateRequest()
+            RequestBuilder.CreateRequest()
                 .SetRequestResource("search")
                 .AddRequestParameter("q", searchString)
                 .AddRequestParameter("tbm", "isch");
-            var response = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
+            var response = await RestClient.ExecuteAsync(RequestBuilder.GetRequest());
             return response.Content;
         }
 
@@ -63,10 +64,10 @@ namespace MangaWeb.APIClient
 
         protected async Task<string> SearchFor(string title)
         {
-            requestBuilder.CreateRequest()
+            RequestBuilder.CreateRequest()
                .SetRequestResource("search")
                .AddRequestParameter("q", title);
-            var response = await RestClient.ExecuteAsync(requestBuilder.GetRequest());
+            var response = await RestClient.ExecuteAsync(RequestBuilder.GetRequest());
 
             return response.Content;
         }
