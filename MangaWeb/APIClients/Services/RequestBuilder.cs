@@ -5,7 +5,7 @@ namespace MangaWeb.APIClient.Services
     public class RequestBuilder
     {
         private RestRequest? Request;
-
+        public static RestRequest Get = new RestRequest();
         public RequestBuilder CreateRequest()
         {
             if (Request == null)

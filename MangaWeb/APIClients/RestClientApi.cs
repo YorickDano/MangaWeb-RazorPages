@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClient.Services;
 using MangaWeb.Enums;
+using MangaWeb.Managers;
 using RestSharp;
 using System.Net;
 
@@ -12,6 +13,7 @@ namespace MangaWeb.APIClient
         private readonly Uri Url = new Uri("https://www.google.by/");
         protected RequestBuilder RequestBuilder = new RequestBuilder();
 
+      
         protected WebClient WebClient;
 
 
@@ -42,7 +44,7 @@ namespace MangaWeb.APIClient
             htmlDocument.LoadHtml(responseContent);
             var linkTag = htmlDocument.DocumentNode.SelectNodes("//img[contains(@src,'https://encrypted')]").FirstOrDefault();
 
-            return linkTag.GetAttributeValue("src", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb1kKGBpZv8tOMiEi2yTJzr9sPAlRbnQe2gY_F_C7qfn0jInMVbFFjuNesYkk&amp;s");
+            return linkTag.GetAttributeValue("src", DefaultValuesManager.DefaultProfileImageUlr);
         }
 
         protected async Task<string> GetImageSearchRespounseContent(string title, SearchType searchType = SearchType.DefaultImage)

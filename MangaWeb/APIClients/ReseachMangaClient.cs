@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClient.Services;
+using MangaWeb.Managers;
 using MangaWeb.Models;
 using System.Globalization;
 
@@ -7,18 +8,18 @@ namespace MangaWeb.APIClient
 {
     public class ReseachMangaClient : RestClientApi
     {
+        private const string BaseUrl = "https://myanimelist.net/manga.php";
+      
         private FullManga FullManga { get; set; } = FullManga.Empty; 
 
+     
         public async Task<FullManga> GetFullManga(string title)
         {
-            RestClient.ChangeBaseUrlOn($"https://myanimelist.net/manga.php?q={title}&cat=manga");
-            var htmlDocument = new HtmlDocument();
-            var mangaSearchSiteResponse = await RestClient.ExecuteAsync(
-              RequestBuilder.CreateRequest().GetRequest());
-            htmlDocument.LoadHtml(mangaSearchSiteResponse.Content);
+            RestClient.ChangeBaseUrlOn(BaseUrl);
+            var htmlDocument = await GetHtmlOfMangaAsync(title);
             var mangaLink = htmlDocument.DocumentNode
                 .SelectNodes("//a[contains(@href,'https://myanimelist.net/manga/')and@class='hoverinfo_trigger']")
-                .FirstOrDefault().GetAttributeValue("href", "https://myanimelist.net/manga/80119/Kobayashi-san_Chi_no_Maid_Dragon?q=kobay&cat=manga");
+                .FirstOrDefault().GetAttributeValue("href", DefaultValuesManager.DefaultMangaLink);
             RestClient.ChangeBaseUrlOn(mangaLink);
             var mangaSiteResponse = await RestClient.ExecuteAsync(
               RequestBuilder.CreateRequest().GetRequest());
@@ -30,6 +31,18 @@ namespace MangaWeb.APIClient
             FullManga = SetMangaCharacters(htmlDocument, FullManga);
 
             return FullManga;
+        }
+
+        protected async Task<HtmlDocument> GetHtmlOfMangaAsync(string title)
+        {
+            var htmlDocument = new HtmlDocument();
+            var request = RequestBuilder.CreateRequest()
+              .AddRequestParameter("q", title)
+              .AddRequestParameter("cat", "manga")
+              .GetRequest();
+            var mangaSearchSiteResponse = await RestClient.ExecuteAsync(request);
+            htmlDocument.LoadHtml(mangaSearchSiteResponse.Content);
+            return htmlDocument;
         }
 
         private FullManga SetTitles(HtmlDocument htmlDocument, FullManga fullMangaInfo)
