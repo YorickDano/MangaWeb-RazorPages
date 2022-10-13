@@ -6,6 +6,8 @@
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public bool IsMain { get; set; }
+        public string Description { get; set; }
+        public List<string> ImagesUrls { get; set; }
         public FullManga FullManga { get; set; }
 
         public MangaCharacter(string name, string imageUrl, bool isMain)

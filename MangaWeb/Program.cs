@@ -1,3 +1,4 @@
+using MangaWeb.APIClient;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
 using MangaWeb.Managers;
@@ -22,7 +23,7 @@ builder.Services.AddControllers()
 {
     option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
 });
-
+builder.Services.AddSingleton<AnimeAndHentaiImageClient>();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
@@ -38,7 +39,7 @@ builder.Services.AddAuthentication()
         };
     });
 
-var connectionString = TestConnectionManager.GetDataBaseConnectionString();
+var connectionString = TestConnectionManager.GetLocalDataBaseConnectionString();
     builder.Services.AddDbContext<MangaWebContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString) ?? throw new InvalidOperationException("Connection string 'MangaWebContext' not found.")));
 

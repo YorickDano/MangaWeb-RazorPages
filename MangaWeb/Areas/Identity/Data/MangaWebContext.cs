@@ -46,5 +46,10 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
             .HasMany(x => x.Pages)
             .WithOne(i => i.MangaRead)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<MangaCharacter>()
+         .Property(e => e.ImagesUrls)
+         .HasConversion(
+             v => string.Join(',', v),
+             v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
     }
 }
