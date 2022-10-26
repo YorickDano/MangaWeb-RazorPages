@@ -51,7 +51,6 @@ namespace MangaWeb.Pages.Manga_s_
 
         public async Task<IActionResult> OnGetAsync()
         {
-
             var manga = _context.Manga.Select(x => x);
             FullManga = await _context.FullManga.Select(x => x).ToListAsync();
             if (!string.IsNullOrEmpty(SearchString))

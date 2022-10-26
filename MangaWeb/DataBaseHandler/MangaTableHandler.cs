@@ -3,7 +3,7 @@ using MangaWeb.Models;
 
 namespace MangaWeb.DataBaseHandler
 {
-    public static class MangaTableHendler
+    public static class MangaTableHandler
     {
 
         public static async Task<Manga> UpdateMangaImagesUrls(this Manga manga)

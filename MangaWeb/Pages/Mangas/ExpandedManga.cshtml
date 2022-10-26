@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model MangaWeb.Pages.ExpandedManga.ExpandedMangaModel
 @{
     var volumes = Model.FullManga.CountOfVolume == -1 ? "unknow" : Model.FullManga.CountOfVolume.ToString();
@@ -102,7 +102,9 @@
             {
                  var role = character.IsMain == true ? "Main" : "Supporting";
                 <div class="item">
+                    <a asp-page="./Character" asp-route-id="@character.Id">
             <img class="characterImage" src="@character.ImageUrl" />
+                    </a>
             <span class="caption">@string.Concat($"{character.Name}", $" ({role})")</span>
              </div>
 
@@ -120,7 +122,10 @@
         </dd>
     </dl>
     <hr />
-
+    <form method="get">
+        <input type="hidden" name="id" value="@Model.FullManga.Id"/>
+        <input asp-page-handler="MangaDeletion" type="submit" class="w-100 btn btn-lg btn-primary" value="Delete" />
+    </form>
 
 </div>
 

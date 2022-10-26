@@ -14,6 +14,7 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     public DbSet<Manga> Manga { get; set; } = default!;
     public DbSet<FullManga> FullManga { get; set; } = default!;
     public DbSet<MangaRead> MangaRead { get; set; } = default!;
+    public DbSet<MangaCharacter> MangaCharacter { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

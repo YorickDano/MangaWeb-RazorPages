@@ -34,7 +34,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             IUserStore<MangaWebUser> userStore,
             SignInManager<MangaWebUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -42,7 +43,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _mailManager = new MailManager();
+            _mailManager = new MailManager(configuration);
             _animeAndHentaiClient = new AnimeAndHentaiImageClient();
         }
 

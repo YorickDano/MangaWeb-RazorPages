@@ -1,4 +1,6 @@
 ﻿using MangaWeb.APIClient;
+using MangaWeb.APIClients;
+using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,8 +17,8 @@ namespace MangaWeb.Pages
 
         public async Task<IActionResult> OnGetTest()
         {
-            var client = new MangaReadClient();
-            var a = await client.GetPageByTitleVolumeChapter("Kaguya-sama wa Kokurasetai - Tensai-tachi no Renai Zunousen");
+            var client = new MangaCharacterClient();
+           await client.GetAllCharacters("Kaguya-sama wa Kokurasetai - Tensai-tachi no Renai Zunousen", FullManga.Empty);
             return Page();
         }
 

@@ -148,7 +148,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FullManga");
+                    b.ToTable("FullManga", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
@@ -192,7 +192,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manga");
+                    b.ToTable("Manga", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaCharacter", b =>
@@ -229,7 +229,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("FullMangaId");
 
-                    b.ToTable("MangaCharacter");
+                    b.ToTable("MangaCharacter", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaRead", b =>
@@ -252,7 +252,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MangaRead");
+                    b.ToTable("MangaRead", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaReadPage", b =>
@@ -277,7 +277,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("MangaReadId");
 
-                    b.ToTable("MangaReadPage");
+                    b.ToTable("MangaReadPage", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

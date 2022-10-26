@@ -9,22 +9,23 @@ namespace MangaWeb.APIClient
 {
     public class RestClientApi
     {
+        private protected readonly Uri MyAnimeListUrl = new Uri("https://myanimelist.net");
+        private protected readonly Uri BaseUrl = new Uri("https://www.google.com/");
+        private readonly object _locker = new();
         protected RestClient RestClient;
-        private readonly Uri Url = new Uri("https://www.google.by/");
         protected RequestBuilder RequestBuilder = new RequestBuilder();
-
-      
         protected WebClient WebClient;
 
 
         public RestClientApi()
         {
-            RestClient = new RestClient(Url);
+            RestClient = new RestClient(BaseUrl);
             WebClient = new WebClient();
         }
 
         public async Task<string> GetUrlOfMangaByTitle(string title)
         {
+            RestClient = new RestClient(BaseUrl);
             var response = await SearchFor(title + " mangalib");
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(response);
@@ -39,6 +40,7 @@ namespace MangaWeb.APIClient
 
         public async Task<string> GetMangaProfieImageUrlByTitle(string title, SearchType searchType = SearchType.DefaultImage)
         {
+            RestClient = new RestClient(BaseUrl);
             var responseContent = await GetImageSearchRespounseContent(title + " mangalib", searchType);
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(responseContent);
@@ -49,6 +51,7 @@ namespace MangaWeb.APIClient
 
         protected async Task<string> GetImageSearchRespounseContent(string title, SearchType searchType = SearchType.DefaultImage)
         {
+            RestClient = new RestClient(BaseUrl);
             var searchString = searchType == SearchType.MangaImage ? title + " manga" : title;
             RequestBuilder.CreateRequest()
                 .SetRequestResource("search")
@@ -66,6 +69,7 @@ namespace MangaWeb.APIClient
 
         protected async Task<string> SearchFor(string title)
         {
+            RestClient = new RestClient(BaseUrl);
             RequestBuilder.CreateRequest()
                .SetRequestResource("search")
                .AddRequestParameter("q", title);

@@ -14,7 +14,17 @@
         {
             Name = name;
             ImageUrl = imageUrl;
-            IsMain = isMain;
+            IsMain = isMain;    
+        }
+
+        public MangaCharacter(string name, string imageUrl, bool isMain, string description) : this(name, imageUrl,isMain)
+        {
+            Description = description; 
+        }
+
+        public MangaCharacter(string name, string imageUrl, bool isMain, string description, List<string> imagesUrls) : this(name,imageUrl,isMain,description)
+        {        
+            ImagesUrls = imagesUrls;
         }
     }
 }

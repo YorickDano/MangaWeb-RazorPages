@@ -2223,7 +2223,7 @@ progress {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
+    color: #dc3545;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
@@ -2709,6 +2709,7 @@ textarea.form-control-lg {
 
 .form-floating {
     position: relative;
+    color: #dc3545;
 }
 
     .form-floating > .form-control,

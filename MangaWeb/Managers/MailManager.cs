@@ -6,13 +6,16 @@ namespace MangaWeb.Managers
 {
     class MailManager : IEmailSender
     {
-        private readonly string BaseEmail = "mangawebzxc@mail.ru";
-        private readonly string BasePassword = "VwDsCtdNr62Zw1NqpBeK";
+        private readonly string BaseEmail;
+        private readonly string BasePassword;
 
         private SmtpClient SmtpClient;
 
-        public MailManager()
+        public MailManager(IConfiguration configuration)
         {
+            BaseEmail = configuration.GetSection("MailSenderSettings")["BaseEmail"];
+            BasePassword = configuration.GetSection("MailSenderSettings")["BasePassword"];
+
             SmtpClient = new SmtpClient("smtp.mail.ru", 587)
             {
                 UseDefaultCredentials = false,

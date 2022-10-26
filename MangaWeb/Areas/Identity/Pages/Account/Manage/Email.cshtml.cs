@@ -25,12 +25,13 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         public EmailModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
-            _mailManager = new MailManager();
+            _mailManager = new MailManager(configuration);
         }
 
         /// <summary>

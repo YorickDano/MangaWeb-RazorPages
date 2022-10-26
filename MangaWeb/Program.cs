@@ -3,20 +3,14 @@ using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
 using MangaWeb.Managers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System.Net.NetworkInformation;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages(options =>
 {
-    // options.Conventions.AuthorizePage("/Areas/Identity/Pages/Account/Login");
     options.Conventions.AuthorizeFolder("/");
-    // options.Conventions.AuthorizeAreaPage("Account", "/Login");
-    // options.Conventions.AllowAnonymousToAreaPage("Account", "/Login");
 });
 builder.Services.AddControllers()
     .AddNewtonsoftJson(option =>
@@ -55,10 +49,6 @@ var app = builder.Build();
 
 app.UseExceptionHandler("/Error");
 app.UseStatusCodePagesWithReExecute("/Error");
-// app.UseHsts();
-
-
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -70,6 +60,8 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 
+
+app.UseDeveloperExceptionPage();
 
 app.Run();
 

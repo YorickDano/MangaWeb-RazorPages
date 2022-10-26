@@ -33,5 +33,20 @@ namespace MangaWeb.Pages.ExpandedManga
 
             return Page();
         }
+
+        public async Task<IActionResult> OnGetMangaDeletionAsync(int? id)
+        {
+            FullManga = await _context.FullManga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
+            var charactersOfMaga = _context.MangaCharacter.Where(x => x.FullManga.Id == id);
+
+            foreach (var character in charactersOfMaga)
+            {
+                _context.MangaCharacter.Remove(character);
+            }
+            _context.FullManga.Remove(FullManga);
+            await _context.SaveChangesAsync();
+
+            return Redirect("../Index");
+        }
     }
 }

@@ -45,15 +45,16 @@ div.item {
     width: 130px;
     width: 130px;
     margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 5px;
+    margin-left: 17px;
+    margin-top: 7px;
     margin-bottom: 5px;
 }
 
 .characterImage {
-    height: 200px;
-    width: 129px;
+    height: 225px;
+    width: 145px;
     background-color: grey;
+   
 }
 
 .caption {
@@ -263,4 +264,11 @@ img {
     background-color: rgb(50,50,50);
     border: 0;
     margin: 4px;
+}
+
+imageCharacterPage {
+    height: 275px;
+    width: 193px;
+    margin-left:4px;
+    margin-top:7px;
 }

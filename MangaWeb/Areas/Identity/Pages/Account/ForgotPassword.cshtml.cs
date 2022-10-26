@@ -21,11 +21,11 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
 
-        public ForgotPasswordModel(UserManager<MangaWebUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<MangaWebUser> userManager, IEmailSender emailSender,IConfiguration configuration)
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            _mailManager = new MailManager();
+            _mailManager = new MailManager(configuration);
         }
 
         /// <summary>
