@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using MangaWeb.OptionModels;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 
@@ -11,10 +13,11 @@ namespace MangaWeb.Managers
 
         private SmtpClient SmtpClient;
 
-        public MailManager(IConfiguration configuration)
+        public MailManager(IOptionsSnapshot<MailSenderOptions> options)
         {
-            BaseEmail = configuration.GetSection("MailSenderSettings")["BaseEmail"];
-            BasePassword = configuration.GetSection("MailSenderSettings")["BasePassword"];
+            var mailSenderOptions = options.Value;
+            BaseEmail = mailSenderOptions.BaseEmail;
+            BasePassword = mailSenderOptions.BasePassword;
 
             SmtpClient = new SmtpClient("smtp.mail.ru", 587)
             {

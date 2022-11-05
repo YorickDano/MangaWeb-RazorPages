@@ -2,6 +2,7 @@ using MangaWeb.APIClient;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Data;
 using MangaWeb.Managers;
+using MangaWeb.OptionModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -44,6 +45,7 @@ builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
     options.Password.RequireUppercase = false;
 }
     ).AddEntityFrameworkStores<MangaWebContext>();
+builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(nameof(MailSenderOptions)));
 var app = builder.Build();
 
 

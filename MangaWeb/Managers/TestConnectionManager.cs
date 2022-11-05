@@ -4,7 +4,6 @@ namespace MangaWeb.Managers
 {
     public static class TestConnectionManager
     {
-
         private const string Host = "google.com";
         private const int Timeout = 3000;
 

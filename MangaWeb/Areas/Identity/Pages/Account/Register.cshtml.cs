@@ -5,12 +5,14 @@
 using MangaWeb.APIClient;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
+using MangaWeb.OptionModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -35,7 +37,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             SignInManager<MangaWebUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IConfiguration configuration)
+            IOptionsSnapshot<MailSenderOptions> configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
