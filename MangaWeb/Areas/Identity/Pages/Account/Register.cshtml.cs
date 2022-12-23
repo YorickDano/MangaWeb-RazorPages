@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using MangaWeb.APIClient;
+using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
-using MangaWeb.OptionModels;
+using MangaWeb.Models.OptionModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -27,6 +27,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<MangaWebUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IOptionsSnapshot<MailSenderOptions> configuration;
         private readonly MailManager _mailManager;
         private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
 
@@ -45,6 +46,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.configuration = configuration;
             _mailManager = new MailManager(configuration);
             _animeAndHentaiClient = new AnimeAndHentaiImageClient();
         }
@@ -122,7 +124,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray();
+                user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsString();
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

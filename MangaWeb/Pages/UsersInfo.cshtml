@@ -1,16 +1,15 @@
 ﻿@page
-@model MangaWeb.Pages.Shared.UsersInfoModel
+@model UsersInfoModel
 
 
 
 @{
 foreach (var user in Model.Users)
 {
-
-       var base64 = Convert.ToBase64String(user.ProfileImage);
-    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+        <a asp-page="./User" asp-route-id="@user.Id">
     <h2>@user.UserName</h2>
-    <img class="usersInfoImage" src="@imgSrc" />
+    <img class="usersInfoImage" src="@user.ProfileImage" />
+        </a>
     <br />
 }
 }

@@ -25,6 +25,6 @@ namespace MangaWeb.Managers
         }
 
         public static string GetLocalDataBaseConnectionString() =>
-            "MangaWebContextLocal";
+            "DefaultConnection";
     }
 }

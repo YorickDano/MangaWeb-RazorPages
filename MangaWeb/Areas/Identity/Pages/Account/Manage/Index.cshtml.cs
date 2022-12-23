@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using MangaWeb.APIClient;
+using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public MangaWebUser MangaWebUser { get; set; }
 
         [Required]
@@ -136,7 +136,9 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             using (var ms = new MemoryStream())
             {
                 FormFile.CopyTo(ms);
-                user.ProfileImage = ms.ToArray();
+                var base64 = Convert.ToBase64String(ms.ToArray());
+                var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                user.ProfileImage = imgSrc;
             }
 
             await _userManager.UpdateAsync(user);
@@ -148,7 +150,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray(AnimeType.Hentai);
+         //   user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray(AnimeType.Hentai);
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);
@@ -159,7 +161,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray();
+            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsString();
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);

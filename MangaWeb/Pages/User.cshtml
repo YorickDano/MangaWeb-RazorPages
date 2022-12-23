@@ -1,0 +1,26 @@
+﻿@page "{id}"
+@model MangaWeb.Pages.UserModel
+@{
+
+}
+<h2>@Model.User.UserName</h2>
+<img style="height:320px;width:225px;" src="@Model.User.ProfileImage" />
+
+<h4>User's favorite manga</h4>
+<br />
+@if (Model.FavoriteManga != null)
+{
+    @foreach (var manga in Model.FavoriteManga)
+    {
+        <div class="item" style="display:inline-block">
+            <a asp-page="./MangaPages/Manga" asp-route-id="@manga.Id">
+                <img class="characterImage" src="@manga.MangaImageUrl" />
+            </a>
+            <span class="caption">@string.Concat($"{manga.OriginTitle}")</span>
+        </div>
+    }
+}
+else
+{
+    <h6>This user have not favorite manga yet</h6>
+}

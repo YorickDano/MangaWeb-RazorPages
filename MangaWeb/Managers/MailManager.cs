@@ -1,4 +1,4 @@
-﻿using MangaWeb.OptionModels;
+﻿using MangaWeb.Models.OptionModels;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using System.Net;

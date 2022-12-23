@@ -1,0 +1,71 @@
+﻿
+@using MangaWeb.Models;
+
+
+@for (var i = 0; i < Characters.Count; ++i)
+{
+    var character = Characters[i];
+    var role = character.IsMain == true ? "Main" : "Supporting";
+
+    <div class="item" style="display:inline-block">
+        <a href="MangaPages/Character/@character.Id">
+            <img class="characterImage" src="@character.ImageUrl" />
+        </a>
+        <span class="caption">@string.Concat($"{character.Name}", $" ({role})")</span>
+    </div>
+}
+
+
+<br />
+    <button @onclick="ShowHideAllCharacters" class="w-25 btn btn-lg btn-primary">@ButtonValue</button>
+    <button @onclick="Change" class="w-25 btn btn-lg btn-primary">@ZXC</button>
+  
+
+@code
+{
+    int[] a = new int[] { 1, 2, 3, 4, 5, 6 };
+    [Parameter]
+    public List<MangaCharacter> FullCharacters { get; set; }
+
+    public List<MangaCharacter> Characters { get; set; }
+
+    public List<MangaCharacter> FirstCharacters { get; set; }
+
+    public string ButtonValue { get; set; }
+
+    public string ZXC { get; set; } = "ZXC";
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        var characters = new List<MangaCharacter>();
+        parameters.TryGetValue("FullCharacters", out characters);
+
+        FirstCharacters = characters.Where((element, index) => index < 14).ToList();
+        FullCharacters = characters.Select(x => x).ToList();
+
+        Characters = FirstCharacters.Select(x => x).ToList();
+        ButtonValue = "See all";
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    void ShowHideAllCharacters()
+    {
+        if (Characters.Count >= 14)
+        {
+            Characters = FirstCharacters;
+            ButtonValue = "See all";
+        }
+        else
+        {
+            Characters = FullCharacters;
+            ButtonValue = "Hide";
+        }
+    }
+    void Change()
+    {
+       a = new int[] { 1, 2, 3, 4, 5, 6,8,9,10 };
+    }
+}
+
+

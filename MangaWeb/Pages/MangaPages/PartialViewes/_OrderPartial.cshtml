@@ -1,0 +1,43 @@
+﻿
+
+<aside class="rightOptions">
+
+        <form class="whiteText20" method="get">
+            Order by:
+            <select name="Option" asp-items="Model.OrderOptions">
+                <option>No option</option>
+            </select>
+            <br />
+            <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">Geners<i id="arrow" class="arrow down"></i></div>
+
+            <div id="genersSelector" style="display: none;" class="genersSelector">
+            @for (var i = 0; i < Model.Genres.Count; ++i)
+            {
+                        <div class="generToSelect">
+                            <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" />
+                            <label for="@Model.Genres[i]">@Model.Genres[i]</label>
+                        </div>
+            }
+            </div>
+            <div id="scoresSelector" class="scoresSelector">
+                Chapters<br />
+                <input type="text" name="CountOfChaptersFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="CountOfChaptersTo" placeholder="To" class="orderInput" />
+            </div>
+            <div id="scoresSelector" class="scoresSelector">
+                Score<br />
+                <input type="text" name="ScoreFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="ScoreTo" placeholder="To" class="orderInput" />
+            </div>
+            <div id="genersSelector" class="yearsSelector">
+                Year<br />
+                <input type="text" name="YearFrom" placeholder="From" class="orderInput" />
+                <span>—</span>
+                <input type="text" name="YearTo" placeholder="To" class="orderInput" />
+            </div>
+            <input asp-page-handler="Order" class="width100 btn btn-lg btn-primary" type="submit" value="Submit" />
+        </form>
+
+    </aside>

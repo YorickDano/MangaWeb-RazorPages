@@ -11,5 +11,6 @@ namespace MangaWeb.Managers
         public static readonly string DefaultMangaCharacterIsMain = "Main";
         public static readonly string DefaultMangaCharacterImageUrl = "https://cdn.myanimelist.net/images/characters/16/317872.jpg";
         public static readonly string DefaultMangaImageUrl = "https://i.redd.it/0074y2gbvyj71.png";
+        public static readonly string DefaultNoImageImageUrl = "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png";
     }
 }

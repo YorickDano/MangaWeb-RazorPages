@@ -33,6 +33,9 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        [TempData]
+        public string AccessDeniedMessage { get; set; } 
+
         public class InputModel
         {
             [Required]
@@ -47,8 +50,11 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null, string accessDeniedMessage = null)
         {
+
+            AccessDeniedMessage ??= accessDeniedMessage;
+
             if (User.Identity.IsAuthenticated)
             {
                 return LocalRedirect("/");

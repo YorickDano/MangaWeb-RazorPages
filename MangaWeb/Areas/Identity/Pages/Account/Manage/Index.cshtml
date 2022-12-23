@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
-    var base64 = Convert.ToBase64String(Model.Image);
-    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -15,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if(Model.Image != null){
                  <div class="form-floating">
-                     <img class="profileImage" src="@imgSrc"/>
+                     <img class="profileImage" src="@Model.Image"/>
                 </div>
             }
            <br />

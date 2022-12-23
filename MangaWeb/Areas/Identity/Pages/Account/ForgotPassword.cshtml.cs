@@ -4,7 +4,7 @@
 
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
-using MangaWeb.OptionModels;
+using MangaWeb.Models.OptionModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

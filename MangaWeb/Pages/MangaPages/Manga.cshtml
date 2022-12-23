@@ -1,0 +1,180 @@
+﻿@page "{handler?}"
+@model MangaWeb.Pages.MangaPages.MangaModel
+@{
+
+    var volumes = Model.Manga.CountOfVolume == -1 ? "unknow" : Model.Manga.CountOfVolume.ToString();
+    var chapters = Model.Manga.CountOfChapters == -1 ? "unknow" : Model.Manga.CountOfChapters.ToString();
+    var ranked = Model.Manga.Ranked == -1 ? "unknow" : Model.Manga.Ranked.ToString();
+
+
+}
+
+<div>
+    <h4>Manga</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.OriginTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.OriginTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.MangaImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Manga.MangaImageUrl" style="height:320px;width:225px;">
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Score)
+
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.Score)
+
+        </dd>
+        @if (Model.Manga.Language == Models.Language.en)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Manga.Popularity)
+
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Manga.Popularity)
+
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Manga.Ranked)
+
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => ranked)
+
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.CountOfVolume)
+
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => volumes)
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.CountOfChapters  )
+
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => chapters)
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Published )
+
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.Published )
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Status)
+
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.Status)
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Genres)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var genersCount = Model.Manga.Genres.Count();
+            }
+            @for (var i = 0; i < genersCount; ++i)
+            {
+                if (genersCount > 1 && i < genersCount - 1)
+                { 
+                    @string.Concat(Model.Manga.Genres.ElementAt(i),",");  
+                }
+
+                else
+                {
+                    @string.Concat(Model.Manga.Genres.ElementAt(i));
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Characters)
+        </dt>
+
+        <dd class="col-sm-10">
+
+            @*<component>@(await Html.RenderComponentAsync<MangaPages.PartialViewes.CharactersPatial>(RenderMode.ServerPrerendered, new { FullCharacters = Model.FullManga.Characters }))</component>*@
+            @*<component type="typeof(MangaWeb.Pages.MangaPages.PartialViewes.CharactersPatial)" param-FullCharacters="Model.FullManga.Characters" render-mode="ServerPrerendered" />
+            *@
+            <partial name="PartialViewes/_CharactersPartial" />
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Manga.Autors)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var autorCount = Model.Manga.Autors.Count();
+            } 
+            @for (var i = 0; i < autorCount; ++i)
+            {
+                if (autorCount > 1 && i < autorCount - 1)
+                {
+                    @string.Concat(Model.Manga.Autors.ElementAt(i),",")
+                    ;
+                }
+
+                else
+                {
+                    @string.Concat(Model.Manga.Autors.ElementAt(i))
+                    ;
+                }
+            }
+        </dd>
+    </dl>
+    <hr />
+
+    <form method="get">
+        <input type="hidden" name="id" value="@Model.Manga.Id" />
+
+
+        <div class="alignInLineBlock whiteText20">
+            Add to favorite
+
+            <button class="favButton" asp-page-handler="AddToFavorite">
+                <div class="@(Model.CurrentUserFavoritesManga.Contains(Model.Manga.Id) ? "iconFilled" : "icon")">
+                    <svg class="heart-main" viewBox="0 0 512 512" width="100" title="heart">
+                        <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                    </svg>
+                    <svg class="heart-background" viewBox="0 0 512 512" width="100" title="heart">
+                        <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                    </svg>
+                </div>
+            </button>
+            <input asp-page-handler="EditManga" type="submit" class="w-25 btn btn-lg btn-primary" value="Edit" />
+            <input asp-page-handler="MangaDeletion" type="submit" class="w-25 btn btn-lg btn-primary" value="Delete" />
+            <input asp-page-handler="DownloadData" type="submit" class="w-25 btn btn-lg btn-primary" value="Download" />
+            <input asp-page-handler="UpdateManga" type="submit" class="w-25 btn btn-lg btn-primary" value="Update info" />
+        </div>
+
+    </form>
+
+</div>
+
+
+
+
+

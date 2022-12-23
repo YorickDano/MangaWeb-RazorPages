@@ -1,0 +1,16 @@
+﻿@for (var i = 0; i < Model.Manga.Characters.Count; ++i)
+{
+    var character = Model.Manga.Characters[i];
+    var role = character.IsMain == true ? "Main" : "Supporting";
+
+    <div class="item" style="display:inline-block">
+        <a asp-page="./Character" asp-route-id="@character.Id">
+            <img class="characterImage" src="@character.ImageUrl" />
+        </a>
+        <span class="caption">@string.Concat($"{character.Name}", $" ({role})")</span>
+        <br>
+        <input name="Input.CharactersRemove"  type="checkbox" value="@Model.Manga.Characters[i].Id">
+        <label for="@Model.Manga.Characters[i].Id">Check this to remove character</label>
+    </div>
+}
+

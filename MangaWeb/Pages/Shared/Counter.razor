@@ -1,0 +1,35 @@
+﻿
+
+<h1>Counter - @Title</h1>
+
+<p>Current count: @currentCount</p>
+@{
+    
+}
+@for (var i = 0; i < a.Length; ++i)
+{
+        <div class="item" style="display:inline-block">
+            <a>
+               @a[i]
+            </a>
+        </div>
+}
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="Update">Click me</button>
+
+@code 
+{
+    int currentCount = 0;
+    int[] a = new int[] { 1, 2, 3, 4, 5, 6 };
+    [Parameter]
+    public string Title { get; set; }
+
+    void IncrementCount()
+    {
+        currentCount++;
+    }
+    void Update()
+    {
+        a = new int[] { 1, 2, 3, 4, 5, 6,7,8,9,10 };
+    }
+}

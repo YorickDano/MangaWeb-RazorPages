@@ -1,38 +1,31 @@
-using MangaWeb.APIClient;
+using Blazor.Polyfill.Server;
+using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
-using MangaWeb.Data;
+using MangaWeb.Authorization;
 using MangaWeb.Managers;
-using MangaWeb.OptionModels;
+using MangaWeb.Models.OptionModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizeFolder("/");
-});
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(option =>
 {
     option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
 });
 builder.Services.AddSingleton<AnimeAndHentaiImageClient>();
+builder.Services.AddScoped<IAuthorizationHandler, IsMangaOwnerHandler>();
+
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication()
-    .AddJwtBearer(options =>
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Solodki lox"));
-        options.SaveToken = true;
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters()
-        {
-            ValidateAudience = false,
-            ValidateIssuer = false,
-            IssuerSigningKey = key
-        };
-    });
+builder.Services.AddAuthentication();
+
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazorPolyfill();
 
 var connectionString = TestConnectionManager.GetLocalDataBaseConnectionString();
     builder.Services.AddDbContext<MangaWebContext>(options =>
@@ -46,24 +39,36 @@ builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
 }
     ).AddEntityFrameworkStores<MangaWebContext>();
 builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(nameof(MailSenderOptions)));
+builder.Services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanManageManga",
+                    policyBuilder => policyBuilder
+                        .AddRequirements(new IsMangaOwnerRequirement()));
+});
 var app = builder.Build();
 
-
-app.UseExceptionHandler("/Error");
-app.UseStatusCodePagesWithReExecute("/Error");
-
 app.UseHttpsRedirection();
+
+app.UseBlazorPolyfill();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapRazorPages();
-app.MapControllers();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
-
-app.UseDeveloperExceptionPage();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+  
+}
 
 app.Run();
 

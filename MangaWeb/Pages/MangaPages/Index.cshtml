@@ -1,0 +1,98 @@
+﻿@page "{handler?}"
+@model MangaWeb.Pages.MangaPages.IndexModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Index";
+    var statusFinished = "";
+    var volumesUnknown = "";
+    var chaptersUnknown = "";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form method="post">
+
+    <select asp-for="MangaGenre" asp-items="Model.GenersSelectedList">
+        <option value="">All</option>
+    </select>
+    Title: <input asp-for="SearchString" />
+    <input type="submit" value="Filter" />
+
+
+</form>
+<div class="background">
+    <partial name="PartialViewes/_OrderPartial" />
+    <div class="mangas">
+     @*   @foreach (var item in Model.Manga)
+        {
+
+            <div class="manga-card">
+                <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
+            </div>
+
+        }*@
+
+        <h2 class="text-black">Manga</h2>
+
+
+        @foreach (var item in Model.Manga)
+        {
+
+            <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut(@item.Id)" class="manga-card">
+                <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@item.Id">
+                    <img class="imgMangaCart" src="@item.MangaImageUrl">
+                    <div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div>
+                </a>
+            </div>
+            <div id="@item.Id-mangaInfo" class="mangaInforOnHover">
+                <h3>@item.OriginTitle</h3>
+                <p>
+                    <img class="mangaInfoImg" src="@item.MangaImageUrl">
+
+                    <div class="mangaInfoCenter">
+                        <div class="mangaInfoDesc">
+                            <b><big>Description:</big></b> @item.Description
+                        </div>
+                        <b><big>Geners:</big></b> @string.Join(" ",item.Genres)
+                    </div>
+                    <div class="mangaInfoRight">
+                        <b><big>Score:</big></b> @item.Score<br>
+                        <b><big>Popularity:</big></b> @item.Popularity
+                        <b><big>Ranked:</big></b> @item.Ranked<br>
+                        @if (item.CountOfVolume == -1)
+                        {
+                            volumesUnknown = "<b><big>Volumes:</big></b> Unknown";
+                            chaptersUnknown = "<b><big>Chapters:</big></b> Unknown";
+                        }
+                        else
+                        {
+                            volumesUnknown = $"<b><big>Volumes:</big></b> {@item.CountOfVolume}";
+                            chaptersUnknown = $"<b><big>Chapters:</big></b> {@item.CountOfChapters}";
+                        }
+                        @Html.Raw(volumesUnknown)
+                        @Html.Raw(chaptersUnknown)
+                        <br>
+
+                        @if (item.Status == Models.MangaStatus.Finished)
+                        {
+                            statusFinished = $"<b><big>Published:</big></b> {item.Published}";
+                        }
+                        else
+                        {
+                            statusFinished = $"<b><big>Status:</big></b> {item.Status}";
+                        }
+                        @Html.Raw(statusFinished)
+
+                    </div>
+
+                </p>
+            </div>
+        }
+    </div>
+
+</div>

@@ -5,31 +5,29 @@
 @inject UserManager<MangaWebUser> UserManager
 
 <ul class="navbar-nav" style="align-items: center;">
-@if (SignInManager.IsSignedIn(User))
-{
-    
-    var base64 = Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfileImage);
-    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
 
-    <li class="nav-item">
+        <li class="nav-item">
             <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                 <button id="logout" type="submit" class="text-light">Logout</button>
-        </form>
-    </li>
-     <li class="nav-item">
-       <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index"><img class="headerImage" src="@imgSrc"/></a>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
+            </form>
+        </li>
+        <li class="nav-item">
+            <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index"><img class="headerImage" src="@user.ProfileImage" /></a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+        </li>
+    }
 </ul>

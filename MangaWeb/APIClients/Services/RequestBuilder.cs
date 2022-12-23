@@ -1,6 +1,6 @@
 ﻿using RestSharp;
 
-namespace MangaWeb.APIClient.Services
+namespace MangaWeb.APIClients.Services
 {
     public class RequestBuilder
     {
@@ -16,10 +16,26 @@ namespace MangaWeb.APIClient.Services
             return this;
         }
 
+        public RequestBuilder AddHeadersForShikimori()
+        {
+            Request.AddHeader("Accept", "*/*")
+                .AddHeader("Accept-Encoding", "gzip, deflate, br")
+                .AddHeader("Cache-Control", "no-cache");
+
+            return this;
+        }
+
+        public RequestBuilder AddJsonBody(object obj)
+        {
+            Request.RequestFormat = DataFormat.Json;
+            Request.AddJsonBody(obj);
+            return this;
+        }
+
         public RequestBuilder SetRequest(string resource, Method method, string parameterName, string parameterValue)
         {
             SetRequestResource(resource);
-            SetRequestMethod(method);
+            AddRequestMethod(method);
             AddRequestParameter(parameterName, parameterValue);
             return this;
         }
@@ -27,7 +43,7 @@ namespace MangaWeb.APIClient.Services
         public RequestBuilder SetRequest(string resource, Method method, Parameter parameter)
         {
             SetRequestResource(resource);
-            SetRequestMethod(method);
+            AddRequestMethod(method);
             AddRequestParameter(parameter);
             return this;
         }
@@ -35,7 +51,7 @@ namespace MangaWeb.APIClient.Services
         public RequestBuilder SetRequest(string resource, Method method)
         {
             SetRequestResource(resource);
-            SetRequestMethod(method);
+            AddRequestMethod(method);
             return this;
         }
 
@@ -48,8 +64,18 @@ namespace MangaWeb.APIClient.Services
             Request.Resource = resource;
             return this;
         }
+        public RequestBuilder AddRequestHeader(string header, string value)
+        {
+            if (Request is null)
+            {
+                throw new ArgumentNullException(nameof(Request));
+            }
 
-        public RequestBuilder SetRequestMethod(Method method)
+            Request.AddHeader(header, value);
+            return this;
+        }
+
+        public RequestBuilder AddRequestMethod(Method method)
         {
             if (Request is null)
             {
@@ -66,6 +92,16 @@ namespace MangaWeb.APIClient.Services
                 throw new ArgumentNullException(nameof(Request));
             }
             Request.AddParameter(parameter);
+            return this;
+        }
+
+        public RequestBuilder AddRequestHeaderParameter(string name, string value)
+        {
+            if (Request is null)
+            {
+                throw new ArgumentNullException(nameof(Request));
+            }
+            Request.AddHeader(name, value);
             return this;
         }
 

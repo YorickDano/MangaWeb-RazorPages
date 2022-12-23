@@ -1,0 +1,213 @@
+﻿@page "{id?}"
+
+@model MangaWeb.Pages.MangaPages.EditModel
+@{
+}
+
+<style>
+    .status
+    {
+        font-size:24px;
+        font-weight:700;
+        display:inline-block;
+         color: rgb(50,50,50);
+        background-color: rgb(210,210,210);
+        border: 0;
+        margin: 2px;
+    }
+ .inputModel
+ {
+    width: auto;
+
+ }
+</style>
+
+<h1>Create</h1>
+
+<h4>Manga</h4>
+<hr />
+
+    @if(TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-danger" style="font-size: 20px;font-weight:600;">
+        <strong>Fail </strong>
+        @TempData["AlertMessage"] 
+        </div>
+    }
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="@Model.Manga.Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.OriginTitle" class="control-label"></label>
+                <input asp-for="Input.OriginTitle" id="OriginTitle" class="form-control" value="@Model.Manga.OriginTitle" />
+                <span asp-validation-for="Input.OriginTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.MangaImageUrl" class="control-label"></label>
+                Current Image
+                <img style="height:320px;width:225px;" src="@Model.Manga.MangaImageUrl" />
+                <input asp-for="Input.ImageFile" accept=".jpg, .jpeg, .png" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Genres" class="control-label"></label>
+                <div id="genres" style="display: inline-block;"> </div>
+                <input id="genreAsp" asp-for="Input.Genres" value="@string.Join(", ",Model.Manga.Genres)" readonly class="form-control" />
+                <input id="genreInput" class="form-control" />
+                <input onclick="AddToList()" type="button" value="Add"/>
+                <input onclick="RemoveLastFromList()" type="button" value="Remove last"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Description" class="control-label"></label>
+                <textarea name="Input.Description" id="Description" class="form-control" >
+                    @Model.Manga.Description
+                </textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Published" class="control-label"></label>
+                <input asp-for="Input.Published" value="@Model.Manga.Published" id="Published" class="form-control" />
+                <span asp-validation-for="Input.Published" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.CountOfVolume" class="control-label"></label>
+                <input asp-for="Input.CountOfVolume" value="@Model.Manga.CountOfVolume" id="CountOfVolume" class="form-control" />
+                <span asp-validation-for="Input.CountOfVolume" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.CountOfChapters" class="control-label"></label>
+                <input asp-for="Input.CountOfChapters" value="@Model.Manga.CountOfChapters" id="CountOfChapters" class="form-control" />
+                <span asp-validation-for="Input.CountOfChapters" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ScoreDec" class="control-label"></label>
+                <input asp-for="Input.Score" value="@Model.Manga.Score" id="Score" class="form-control" />
+                <span asp-validation-for="Input.ScoreDec" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Ranked" class="control-label"></label>
+                <input asp-for="Input.Ranked" value="@Model.Manga.Ranked" id="Ranked" class="form-control" />
+                <span asp-validation-for="Input.Ranked" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Popularity" class="control-label"></label>
+                <input asp-for="Input.Popularity" value="@Model.Manga.Popularity" id="Popularity" class="form-control" />
+                <span asp-validation-for="Input.Popularity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Status" class="control-label"></label>
+                <br />
+                <input id="Status" value="@Model.Manga.Status" asp-for="Input.Status" hidden />
+                <input style='@(Model.Manga.Status == Models.MangaStatus.Publishing
+                    ? "color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
+                       class="status" onclick="StatusChecked('Publishing')" id="pub" value="Publishing" readonly />
+                <input style='@(Model.Manga.Status == Models.MangaStatus.Finished
+                    ? "color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
+                       class="status" onclick="StatusChecked('Finished')" id="fin" value="Finished" readonly />
+                <br />
+                <input style='@(Model.Manga.Status == Models.MangaStatus.Announced
+                    ? "color: color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
+                       class="status" onclick="StatusChecked('Announced')" id="ann" value="Announced" readonly />
+                <input style='@(Model.Manga.Status == Models.MangaStatus.Frozen
+                    ? "color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
+                       class="status" onclick="StatusChecked('Frozen')" id="fro" value="Frozen" readonly />
+                <span asp-validation-for="Input.Status" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Input.Autors" class="control-label"></label>
+                <div id="autors" style="display: inline-block;"> </div>
+                <input id="autorAsp" asp-for="Input.Autors" value="@string.Join(", ",Model.Manga.Autors)" readonly class="form-control" />
+                <input id="autorInput" class="form-control" />
+                <input onclick="AddToListAut()" type="button" value="Add" />
+                <input onclick="RemoveLastFromListAut()" type="button" value="Remove last" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.YearOfIssue" class="control-label"></label>
+                <input asp-for="Input.YearOfIssue" value="@Model.Manga.YearOfIssue" id="YearOfIssue" class="form-control" />
+                <span asp-validation-for="Input.YearOfIssue" class="text-danger"></span>
+            </div>
+            <br />
+            <partial name="PartialViewes/_EditCharactersPartial" />
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+
+<script>
+    var autorsDef = document.getElementById("autorAsp").value.split(",");
+    var genresDef = document.getElementById("genreAsp").value.split(",");
+    var genres = genresDef.slice();
+    var autors = autorsDef.slice();
+    function AddToList()
+    {
+        var element = document.getElementById("genreInput");
+        genres.push(element.value);
+        element.value = "";
+        UpdateView();
+    }
+    function RemoveLastFromList()
+    {
+        genres.pop();
+        UpdateView();
+    }
+    function UpdateView()
+    { 
+        var res = document.getElementById("genreAsp");
+        res.ariaReadOnly = false;
+        res.value = "";
+        res.value += genres.join(",");
+        res.ariaReadOnly = true;
+  
+    }
+    function AddToListAut() {
+        var element = document.getElementById("autorInput");
+        autors.push(element.value);
+        element.value = "";
+        UpdateViewAut();
+    }
+    function RemoveLastFromListAut() {
+        autors.pop();
+        UpdateViewAut();
+    }
+ 
+    function UpdateViewAut() {
+        var res =  document.getElementById("autorAsp");
+        res.ariaReadOnly = false;
+        res.value = "";
+        res.value += autors.join(",");
+        res.ariaReadOnly = true;
+    }
+    
+    function StatusChecked(status)
+    {
+        var els = document.getElementsByClassName("status");
+
+        for(var i =0;i<els.length;++i)
+        {
+            if (els[i].value === status) {
+                els[i].style = "color:rgb(210,210,210);background-color:rgb(50, 50, 50)";
+                document.getElementById("Status").innerText = status.toString();
+                document.getElementById("Status").value = status.toString();
+            }
+            else 
+            {
+                els[i].style = "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);";
+            }
+        }
+       
+    }
+    
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

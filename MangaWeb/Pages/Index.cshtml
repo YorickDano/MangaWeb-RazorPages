@@ -1,12 +1,47 @@
 ﻿@page "{handler?}"
+@using MangaWeb.Areas.Identity.Data;
+@using MangaWeb.Models;
+@using MangaWeb.Pages.Shared
+@using Microsoft.EntityFrameworkCore;
 @model IndexModel
+@inject MangaWebContext context;
 @{
     ViewData["Title"] = "Home page";
 }
 
+
 <div class="text-center">
-    <h1 class="display-4">Здарова Фрики</h1>
-    <form method="get">
-        <input type="submit" asp-page-handler="Test" class="btn"/>
-    </form>
+    <h1 class="display-4">Hey everyone!!!</h1>
+    <h4>
+        My name is Nikita Levdanskii, I'm small software engineer on C# from Belarus :(<br />
+        This is my test ASP.Net Core Razor Page application, just for exploring and education. Now I'm free and look for any job offer.
+        Stack of my skills
+        <ul>
+            <li>C# - Self learning, College graduation, Internship in Epam for 6 month as Test Automation Engineer</li>
+            <li>C# Test Runners - Self learning, Internship in Epam</li>
+            <li>C# BDD Framework (Spec flow) - Internship in Epam</li>
+            <li>C# API Clients (HttpClient, RestClient) - Internship in Epam</li>
+            <li>Locators (Xpath) - Internship in Epam</li>
+            <li>HTTP Requests - Internship in Epam</li>
+            <li>CI/CD (Jenkins) - Internship in Epam</li>
+            <li>Selenium WebDriver - Internship in Epam</li>
+            <li>ASP.Net Core Razor Page - Self learning (book, video guides)</li>
+            <li>ASP.Net Core MVC - Self learning (book, video guides)</li>
+            <li>ASP.Net Core Web API - Self learning (book, video guides)</li>
+            <li>Blazor - Self learning (video guides)</li>
+            <li>Entity Framework  - Self learning (video guides)</li>
+            <li>Design Patterns  - Self learning, Internship in Epam</li>
+        </ul>
+        <br />
+        Feel free to write me about any errors on site, new features you want to see, any offers and so on.
+        <br />
+        My Contacts
+        <br />
+        Email: nikitalevdanskii@gmail.com
+        <br />
+        Telegram: <a href="https://t.me/lev_skii">here</a>
+    </h4>
 </div>
+@*<component type="typeof(Counter)" param-Title="zxc" render-mode="ServerPrerendered" />
+<component type="typeof(CharactersPatial)" param-FullCharacters="manga.Characters" render-mode="ServerPrerendered" />
+  *@

@@ -233,14 +233,14 @@ sup {
 }
 
 a {
-    color: white;
+    color: rgb(240,240,240);
     text-decoration: underline;
     font-size: 26px;
     font-weight: 500;
 }
 
     a:hover {
-        color: rgb(255,100,100);
+        color: rgb(200,200,200);
     }
 
     a:not([href]):not([class]), a:not([href]):not([class]):hover {
@@ -2223,8 +2223,8 @@ progress {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #dc3545;
-    background-color: #fff;
+    color: rgb(50,50,50);
+    background-color: rgb(240,240,240);
     background-clip: padding-box;
     border: 1px solid #ced4da;
     -webkit-appearance: none;
@@ -2251,9 +2251,9 @@ progress {
 .form-control:focus {
     color: #212529;
     background-color: #fff;
-    border-color: #86b7fe;
+    border-color: rgba(240, 240, 240, 0.25);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(240, 240, 240, 0.25);
 }
 
 .form-control::-webkit-date-and-time-value {
@@ -2271,7 +2271,7 @@ progress {
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: rgb(220,220,220);
     opacity: 1;
 }
 
@@ -2709,7 +2709,7 @@ textarea.form-control-lg {
 
 .form-floating {
     position: relative;
-    color: #dc3545;
+    color: rgb(50,50,50);
 }
 
     .form-floating > .form-control,
@@ -2822,10 +2822,10 @@ textarea.form-control-lg {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
+    color: rgb(50,50,50);
     text-align: center;
     white-space: nowrap;
-    background-color: #e9ecef;
+    background-color: rgb(220,220,220);
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
 }
@@ -3068,7 +3068,7 @@ textarea.form-control-lg {
     font-weight: 500;
     font-size:26px;
     line-height: 1.5;
-    color: white;
+    color: rgb(240,240,240);
     text-align: center;
     text-decoration: none;
     vertical-align: middle;
@@ -3095,8 +3095,8 @@ textarea.form-control-lg {
 
 .btn-check:focus + .btn, .btn:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(200, 50, 50, 0.25);
-    background-color: rgb(190,40,40);
+    box-shadow: 0 0 0 0.25rem rgba(170, 170, 170, 0.25);
+    background-color: rgb(190,190,190);
 }
 
 .btn:disabled, .btn.disabled, fieldset:disabled .btn {
@@ -3105,56 +3105,54 @@ textarea.form-control-lg {
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: rgb(255,100,100);
-   
+    color: rgb(240,240,240);
+    background-color: rgb(50,50,50);
 }
 
     .btn-primary:hover {
-        color: #fff;
-        background-color: rgb(225,70,70);
-        
+        color: rgb(220,220,220);
+        background-color: rgb(35,35,35);
     }
 
     .btn-check:focus + .btn-primary, .btn-primary:focus {
-        color: #fff;
-        background-color: rgb(200,50,50);
-        box-shadow: 0 0 0 0.25rem rgba(200,50,50, 0.5);
+        color: rgb(220,220,220);
+        background-color: rgb(25,25,25);
+        box-shadow: 0 0 0 0.25rem rgba(25,25,25, 0.5);
     }
 
     .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
-        color: #fff;
-        background-color: rgb(200,50,50);
+        color: rgb(220,220,220);
+        background-color: rgb(35,35,35);
     }
 
         .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
-            box-shadow: 0 0 0 0.25rem rgba(200,50,50, 0.5);
+            box-shadow: 0 0 0 0.25rem rgba(50,50,50, 0.5);
         }
 
     .btn-primary:disabled, .btn-primary.disabled {
-        color: #fff;
-        background-color: rgb(200,50,50);
+        color: rgb(220,220,220);
+        background-color: rgb(35,35,35);
     }
 
 .btn-secondary {
-    color: #fff;
-    background-color: rgb(180,30,30);
+    color: rgb(240,240,240);
+    background-color: rgb(50,50,50);
 }
 
     .btn-secondary:hover {
-        color: #fff;
-        background-color: rgb(180,30,30);
+        color: rgb(240,240,240);
+        background-color: rgb(30,30,30);
     }
 
     .btn-check:focus + .btn-secondary, .btn-secondary:focus {
-        color: #fff;
-        background-color: rgb(180,30,30);
+        color: rgb(220,220,220);
+        background-color: rgb(30,30,30);
         box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
     }
 
     .btn-check:checked + .btn-secondary, .btn-check:active + .btn-secondary, .btn-secondary:active, .btn-secondary.active, .show > .btn-secondary.dropdown-toggle {
-        color: #fff;
-        background-color: rgb(180,30,30);
+        color: rgb(220,220,220);
+        background-color: rgb(30,30,30);
     }
 
         .btn-check:checked + .btn-secondary:focus, .btn-check:active + .btn-secondary:focus, .btn-secondary:active:focus, .btn-secondary.active:focus, .show > .btn-secondary.dropdown-toggle:focus {
@@ -3163,7 +3161,7 @@ textarea.form-control-lg {
 
     .btn-secondary:disabled, .btn-secondary.disabled {
         color: #fff;
-        background-color: rgb(190,40,40);
+        background-color: rgb(40,40,40);
     }
 
 .btn-success {
@@ -4148,7 +4146,7 @@ textarea.form-control-lg {
 .nav-link {
     display: block;
     padding: 0.5rem 1rem;
-    color: white;
+    color: rgb(240,240,240);
     text-decoration: none;
     transition: color 0.2s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
     
@@ -4161,11 +4159,11 @@ textarea.form-control-lg {
 }
 
 .nav-link:hover, .nav-link:focus {
-    color: rgb(255,100,100);
+    color: rgb(200,200,200);
 }
 
 .nav-link.disabled {
-    color: rgb(255,100,100);
+    color: rgb(200,200,200);
     pointer-events: none;
     cursor: default;
 }
@@ -4188,15 +4186,15 @@ textarea.form-control-lg {
         }
 
         .nav-tabs .nav-link.disabled {
-            color: rgb(255,100,100);
+            color: rgb(200,200,200);
             background-color: transparent;
             border-color: transparent;
         }
 
         .nav-tabs .nav-link.active,
         .nav-tabs .nav-item.show .nav-link {
-            color: rgb(255,100,100);
-            background-color: rgb(20,20,20);
+            color: rgb(240,240,240);
+            background-color: rgb(50,50,50);
             border-color: #dee2e6 #dee2e6 #fff;
         }
 
@@ -4214,8 +4212,8 @@ textarea.form-control-lg {
 
     .nav-pills .nav-link.active,
     .nav-pills .show > .nav-link {
-        color: white;
-        background-color: rgb(255,100,100);
+        color: rgb(240,240,240);
+        background-color: rgb(50,50,50);
     }
 
 .nav-fill > .nav-link,
@@ -4275,7 +4273,7 @@ textarea.form-control-lg {
     font-size: 28px;
     text-decoration: none;
     white-space: nowrap;
-    color:white;
+    color:rgb(240,240,240);
 }
 
 .navbar-nav {
@@ -4770,7 +4768,7 @@ textarea.form-control-lg {
     .navbar-light .navbar-text a,
     .navbar-light .navbar-text a:hover,
     .navbar-light .navbar-text a:focus {
-        color: rgb(255, 100, 100);
+        color: rgb(225, 225, 225);
     }
 
 .navbar-dark {
@@ -4778,7 +4776,7 @@ textarea.form-control-lg {
 }
 
     .navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
-        color: rgb(255, 100, 100);
+        color: rgb(225, 225, 225);
     }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -4786,7 +4784,7 @@ textarea.form-control-lg {
 }
 
     .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-        color: rgb(255 105 105);
+        color: rgb(200 200 200);
     }
 
     .navbar-dark .navbar-nav .nav-link.disabled {
@@ -4800,7 +4798,7 @@ textarea.form-control-lg {
 
 .navbar-dark .navbar-toggler {
     color: rgb(20,20,20);
-    border-color: rgb(255 105 105);
+    border-color: rgb(200 200 200);
 }
 
 .navbar-dark .navbar-toggler-icon {
@@ -4814,7 +4812,7 @@ textarea.form-control-lg {
     .navbar-dark .navbar-text a,
     .navbar-dark .navbar-text a:hover,
     .navbar-dark .navbar-text a:focus {
-        color: rgb(255, 100, 100, 0,99);
+        color: rgb(200, 200, 200, 0,99);
     }
 
 .card {
@@ -8286,18 +8284,18 @@ textarea.form-control-lg {
 
 .text-light {
     --bs-text-opacity: 1;
-    color: white;
+    color: rgb(240,240,240);
     font-size: 26px;
     font-weight: 500;
     transition-duration: 0.2s;
     background-color: rgba(20,20,20,0);
-    border:0;
+    border: 0;
 }
 .text-light ::after  {
-    color: rgb(255,100,100);
+    color: rgb(200,200,200);
 }
     .text-light:hover {
-        color: rgb(255,100,100);
+        color: rgb(200,200,200);
     }
     .text-dark {
         --bs-text-opacity: 1;

@@ -1,7 +1,8 @@
 ﻿using HtmlAgilityPack;
+using System.Buffers.Text;
 using System.Net;
 
-namespace MangaWeb.APIClient
+namespace MangaWeb.APIClients
 {
     public class AnimeAndHentaiImageClient : RestClientApi
     {
@@ -15,13 +16,17 @@ namespace MangaWeb.APIClient
             "Shalltear Bloodfallen","Hitagi Senjougahara","Shinobu Oshino","Yotsugi Ononoki","Chika Fujiwara",
             "Kaguya Shinomiya","Aqua Konosuba","Lalatina Dustiness Ford","Megumin","Wiz Konosuba","Sylvia Konosuba" };
 
-        public async Task<byte[]> GetRandomImageAsByteArray(AnimeType animeType = AnimeType.Casual)
+        public async Task<string> GetRandomImageAsString(AnimeType animeType = AnimeType.Casual)
         {
             var randomTopic = animeType == AnimeType.Casual
-                ?  GetRandomAnimeCharacterTopic() :  GetRandomHentaiTopic();
+                ? GetRandomAnimeCharacterTopic() : GetRandomHentaiTopic();
             var imagesLinksList = await GetImagesUrlsByTitle(randomTopic);
-            return await WebClient
+            var imageBytes = await WebClient
                 .DownloadDataTaskAsync(GetRandomImageUrlFormList(imagesLinksList));
+            var base64 = Convert.ToBase64String(imageBytes);
+            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+
+            return imgSrc;
         }
 
         public async Task<List<string>> GetImagesUrlsByTitle(string title, AnimeType animeType = AnimeType.Casual)

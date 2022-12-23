@@ -1,11 +1,11 @@
 ﻿using HtmlAgilityPack;
-using MangaWeb.APIClient.Services;
+using MangaWeb.APIClients.Services;
 using MangaWeb.Enums;
 using MangaWeb.Managers;
 using RestSharp;
 using System.Net;
 
-namespace MangaWeb.APIClient
+namespace MangaWeb.APIClients
 {
     public class RestClientApi
     {
@@ -19,7 +19,7 @@ namespace MangaWeb.APIClient
 
         public RestClientApi()
         {
-            RestClient = new RestClient(BaseUrl);
+            RestClient = new RestClient(MyAnimeListUrl);
             WebClient = new WebClient();
         }
 
