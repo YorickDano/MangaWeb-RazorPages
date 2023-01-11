@@ -5,13 +5,14 @@ namespace MangaWeb.APIClients.Services
     public class RequestBuilder
     {
         private RestRequest? Request;
-        public static RestRequest Get = new RestRequest();
+
         public RequestBuilder CreateRequest()
         {
             if (Request == null)
             {
                 Request = new RestRequest();
             }
+            Request.AddHeader("X-MAL-CLIENT-ID", "6114d00ca681b7701d1e15fe11a4987e");
 
             return this;
         }

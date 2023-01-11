@@ -4,6 +4,7 @@
 
 using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,15 +17,18 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
+        public readonly UIValuesManager UIValuesManager;
 
         public IndexModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            AnimeAndHentaiImageClient animeAndHentaiImageClient)
+            AnimeAndHentaiImageClient animeAndHentaiImageClient,
+            UIValuesManager uIValuesManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _animeAndHentaiClient = animeAndHentaiImageClient;
+            UIValuesManager = uIValuesManager;
         }
 
         /// <summary>
@@ -166,6 +170,26 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);
 
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetChangeLanguageAsync(string language)
+        {
+            if(language == "eng")
+            {
+                UIValuesManager.SetEnglish();
+            }
+            else
+            {
+                UIValuesManager.SetRussian();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            await LoadAsync(user);
             return Page();
         }
     }

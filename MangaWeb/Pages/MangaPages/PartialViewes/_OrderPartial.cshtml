@@ -1,14 +1,16 @@
-﻿
+﻿@using MangaWeb.Managers;
+@inject UIValuesManager uiValueManager;
+
 
 <aside class="rightOptions">
 
         <form class="whiteText20" method="get">
-            Order by:
+        @uiValueManager.OrderBy:
             <select name="Option" asp-items="Model.OrderOptions">
-                <option>No option</option>
+                <option>@uiValueManager.NoOptions</option>
             </select>
             <br />
-            <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">Geners<i id="arrow" class="arrow down"></i></div>
+        <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">@uiValueManager.Genres<i id="arrow" class="arrow down"></i></div>
 
             <div id="genersSelector" style="display: none;" class="genersSelector">
             @for (var i = 0; i < Model.Genres.Count; ++i)
@@ -20,24 +22,24 @@
             }
             </div>
             <div id="scoresSelector" class="scoresSelector">
-                Chapters<br />
-                <input type="text" name="CountOfChaptersFrom" placeholder="From" class="orderInput" />
+            @uiValueManager.Chapters<br />
+            <input type="text" name="CountOfChaptersFrom" placeholder="@uiValueManager.From" class="orderInput" />
                 <span>—</span>
-                <input type="text" name="CountOfChaptersTo" placeholder="To" class="orderInput" />
+            <input type="text" name="CountOfChaptersTo" placeholder="@uiValueManager.To" class="orderInput" />
             </div>
             <div id="scoresSelector" class="scoresSelector">
-                Score<br />
-                <input type="text" name="ScoreFrom" placeholder="From" class="orderInput" />
+            @uiValueManager.Score<br />
+            <input type="text" name="ScoreFrom" placeholder="@uiValueManager.From" class="orderInput" />
                 <span>—</span>
-                <input type="text" name="ScoreTo" placeholder="To" class="orderInput" />
+            <input type="text" name="ScoreTo" placeholder="@uiValueManager.To" class="orderInput" />
             </div>
             <div id="genersSelector" class="yearsSelector">
-                Year<br />
-                <input type="text" name="YearFrom" placeholder="From" class="orderInput" />
+                @uiValueManager.Year<br />
+            <input type="text" name="YearFrom" placeholder="@uiValueManager.From" class="orderInput" />
                 <span>—</span>
-                <input type="text" name="YearTo" placeholder="To" class="orderInput" />
+                <input type="text" name="YearTo" placeholder="@uiValueManager.To" class="orderInput" />
             </div>
-            <input asp-page-handler="Order" class="width100 btn btn-lg btn-primary" type="submit" value="Submit" />
+        <input asp-page-handler="Order" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@uiValueManager.Submit" />
         </form>
 
     </aside>

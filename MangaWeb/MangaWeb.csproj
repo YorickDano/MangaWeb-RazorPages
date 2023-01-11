@@ -8,8 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlazorPolyfill.Server" Version="6.0.200" />
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <Compile Remove="Areas\Identity\Pages\Account\NewFolder\**" />
+    <Content Remove="Areas\Identity\Pages\Account\NewFolder\**" />
+    <EmbeddedResource Remove="Areas\Identity\Pages\Account\NewFolder\**" />
+    <None Remove="Areas\Identity\Pages\Account\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.RouteAnalyzer" Version="0.5.3" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.12" />
@@ -22,14 +28,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
+    <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="RestSharp" Version="108.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\Account\NewFolder\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
   <ItemGroup>

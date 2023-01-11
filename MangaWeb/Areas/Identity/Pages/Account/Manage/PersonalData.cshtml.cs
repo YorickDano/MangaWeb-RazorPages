@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,12 +13,16 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
+        public UIValuesManager UIValuesManager;
+
         public PersonalDataModel(
             UserManager<MangaWebUser> userManager,
-            ILogger<PersonalDataModel> logger)
+            ILogger<PersonalDataModel> logger,
+            UIValuesManager uIValuesManager)
         {
             _userManager = userManager;
             _logger = logger;
+            UIValuesManager = uIValuesManager;
         }
 
         public async Task<IActionResult> OnGet()

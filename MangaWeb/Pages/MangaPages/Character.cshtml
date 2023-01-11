@@ -1,32 +1,29 @@
 ﻿@page "{id?}"
 @model MangaWeb.Pages.MangaPages.CharacterModel
-@{
-    var characterRole = "";
-}
 
 
 <dl class="row">
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.MangaCharacter.ImageUrl)
+        @Html.DisplayNameFor(model => model.UIValuesManager.Image)
     </dt>
     <dd class="col-sm-10">
         <img src="@Html.DisplayFor(model => model.MangaCharacter.ImageUrl)" class="imageCharacterPage">
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.MangaCharacter.Name)
+        @Html.DisplayNameFor(model => model.UIValuesManager.Name)
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model =>model.MangaCharacter.Name)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.MangaCharacter.IsMain)
+        @Html.DisplayNameFor(model => model.UIValuesManager.IsMain)
     </dt>
     <dd class="col-sm-10">
         @Html.Raw($" <input id='@Model.MangaCharacter.Id' onclick='return false;' class='generCheckBox' type='checkbox' {(Model.MangaCharacter.IsMain ? "checked" : "unchecked")} />")
         <label for="@Model.MangaCharacter.Id"></label>
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.MangaCharacter.Description)
+        @Html.DisplayNameFor(model => model.UIValuesManager.Description)
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model =>model.MangaCharacter.Description)

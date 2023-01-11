@@ -17,7 +17,7 @@ namespace MangaWeb.Authorization
         {
             var appUser = await _userManager.GetUserAsync(context.User);
 
-            if (appUser == null || !appUser.CreatedManga?.Contains(manga.Id) != null 
+            if (appUser == null || appUser.CreatedManga?.Contains(manga.Id) == null 
                 || appUser.Role == Role.User)
             {
                 return;

@@ -5,6 +5,7 @@
     var volumes = Model.Manga.CountOfVolume == -1 ? "unknow" : Model.Manga.CountOfVolume.ToString();
     var chapters = Model.Manga.CountOfChapters == -1 ? "unknow" : Model.Manga.CountOfChapters.ToString();
     var ranked = Model.Manga.Ranked == -1 ? "unknow" : Model.Manga.Ranked.ToString();
+    var score = Model.Manga.Score == -1 ? "unknow" : Model.Manga.Score.ToString();
 
 
 }
@@ -14,29 +15,35 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.OriginTitle)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Title)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.OriginTitle)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.MangaImageUrl)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Image)
         </dt>
         <dd class="col-sm-10">
             <img src="@Model.Manga.MangaImageUrl" style="height:320px;width:225px;">
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Score)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Type)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Manga.Type)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UIValuesManager.Score)
 
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Manga.Score)
+            @Html.DisplayFor(model => score)
 
         </dd>
         @if (Model.Manga.Language == Models.Language.en)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Manga.Popularity)
+                @Html.DisplayNameFor(model => model.UIValuesManager.Popularity)
 
             </dt>
             <dd class="col-sm-10">
@@ -44,7 +51,7 @@
 
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Manga.Ranked)
+                @Html.DisplayNameFor(model => model.UIValuesManager.Ranked)
 
             </dt>
             <dd class="col-sm-10">
@@ -53,7 +60,7 @@
             </dd>
         }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.CountOfVolume)
+            @Html.DisplayNameFor(model =>model.UIValuesManager.Volumes)
 
         </dt>
         <dd class="col-sm-10">
@@ -61,7 +68,7 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.CountOfChapters  )
+            @Html.DisplayNameFor(model => model.UIValuesManager.Chapters  )
 
         </dt>
         <dd class="col-sm-10">
@@ -69,7 +76,7 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Published )
+            @Html.DisplayNameFor(model =>model.UIValuesManager.Published )
 
         </dt>
         <dd class="col-sm-10">
@@ -77,7 +84,7 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Status)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Status)
 
         </dt>
         <dd class="col-sm-10">
@@ -85,13 +92,13 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Description)
+            @Html.DisplayNameFor(model =>model.UIValuesManager.Description)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Genres)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Genres)
         </dt>
         <dd class="col-sm-10">
             @{
@@ -111,7 +118,7 @@
             }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Characters)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Characters)
         </dt>
 
         <dd class="col-sm-10">
@@ -123,7 +130,7 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Manga.Autors)
+            @Html.DisplayNameFor(model => model.UIValuesManager.Autors)
         </dt>
         <dd class="col-sm-10">
             @{
@@ -152,7 +159,7 @@
 
 
         <div class="alignInLineBlock whiteText20">
-            Add to favorite
+            @Model.UIValuesManager.AddToFavorite
 
             <button class="favButton" asp-page-handler="AddToFavorite">
                 <div class="@(Model.CurrentUserFavoritesManga.Contains(Model.Manga.Id) ? "iconFilled" : "icon")">
@@ -164,10 +171,10 @@
                     </svg>
                 </div>
             </button>
-            <input asp-page-handler="EditManga" type="submit" class="w-25 btn btn-lg btn-primary" value="Edit" />
-            <input asp-page-handler="MangaDeletion" type="submit" class="w-25 btn btn-lg btn-primary" value="Delete" />
-            <input asp-page-handler="DownloadData" type="submit" class="w-25 btn btn-lg btn-primary" value="Download" />
-            <input asp-page-handler="UpdateManga" type="submit" class="w-25 btn btn-lg btn-primary" value="Update info" />
+            <input asp-page-handler="EditManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Edit" />
+            <input asp-page-handler="MangaDeletion" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Delete" />
+            <input asp-page-handler="DownloadData" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Download" />
+            <input asp-page-handler="UpdateManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.UpdateInfo" />
         </div>
 
     </form>

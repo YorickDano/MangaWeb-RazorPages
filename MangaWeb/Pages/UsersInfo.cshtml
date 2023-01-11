@@ -4,13 +4,22 @@
 
 
 @{
-foreach (var user in Model.Users)
-{
-        <a asp-page="./User" asp-route-id="@user.Id">
-    <h2>@user.UserName</h2>
-    <img class="usersInfoImage" src="@user.ProfileImage" />
+    foreach (var user in Model.Users)
+    {
+        <a asp-page="./User" asp-route-userName="@user.UserName">
+            <h2>@user.UserName</h2>
+            <img class="usersInfoImage" src="@user.ProfileImage" />
         </a>
-    <br />
-}
+        <br />
+        @if (Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin)
+        {
+            <form method="get">
+                <input id="id" hidden value="@user.Id" />
+                <input asp-page-handler="BanUser" type="submit" class="w-25 btn btn-lg btn-primary" value="Ban" />
+                <input asp-page-handler="UnbanUser" type="submit" class="w-25 btn btn-lg btn-primary" value="Unban" />
+            </form>
+        }
+        <br />
+    }
 }
 

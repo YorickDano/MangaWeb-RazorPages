@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using MangaWeb.Managers;
+@inject UIValuesManager uiValuesManager;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,8 +8,8 @@
     <title>@ViewData["Title"] - MangaWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-  
-    
+
+
 </head>
 <body>
     <header>
@@ -21,20 +23,17 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Index">@uiValuesManager.Manga</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Index">Manga</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/UsersInfo">@uiValuesManager.Users</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/UsersInfo">Users</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">Create</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">@uiValuesManager.Create    </a>
                         </li>
                     </ul>
                 </div>
-                <partial name="_LoginPartial"/>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>
@@ -46,14 +45,15 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - MangaWeb - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2022 - MangaWeb
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  
+    <script src="~/js/site.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
-    
+
 </body>
 </html>

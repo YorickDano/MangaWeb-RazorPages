@@ -3,6 +3,7 @@
 #nullable disable
 
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,14 +17,18 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
+        public UIValuesManager UIValuesManager;
+
         public ChangePasswordModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+            UIValuesManager uIValuesManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            UIValuesManager = uIValuesManager;
         }
 
         /// <summary>

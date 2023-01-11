@@ -1,9 +1,11 @@
 using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Managers;
 using MangaWeb.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Query;
 using System.ComponentModel.DataAnnotations;
 
 namespace MangaWeb.Pages.MangaPages
@@ -12,19 +14,27 @@ namespace MangaWeb.Pages.MangaPages
     {
         private readonly MangaWebContext _context;
         private readonly UserManager<MangaWebUser> _userManager;
+        private readonly ResearchMangaClient _researchMangaClient;
+        private readonly ResearchRuMangaClient _researchRuMangaClient;
 
-        public CreateExpandedModel(MangaWebContext context, UserManager<MangaWebUser> userManager)
+        public UIValuesManager UIValuesManager;
+
+        public CreateExpandedModel(MangaWebContext context, 
+            UserManager<MangaWebUser> userManager,ResearchMangaClient researchMangaClient, 
+            ResearchRuMangaClient researchRuMangaClient, UIValuesManager uIValuesManager)
         {
             _context = context;
             _userManager = userManager;
+            _researchMangaClient = researchMangaClient;
+            _researchRuMangaClient = researchRuMangaClient;
+            UIValuesManager = uIValuesManager;
         }
 
         [BindProperty]
         [Required]
         [MinLength(1)]
         public string MangaTitleInput { get; set; }
-        private readonly string ClientID = "_si76ZjflE4TgeVKK-1poihsD2HU6SV9Xgy3RSV2ZMg";
-        private readonly string ClientSecret = "ZfzQAjn0E6zHe8JB0aAbJ8W-hMnStDAB_EDH8XD8o7I";
+
         [BindProperty]
         public bool IsRussian { get; set; }
 
@@ -42,14 +52,12 @@ namespace MangaWeb.Pages.MangaPages
 
             if (!IsRussian)
             {
-                ResearchMangaClient reseachClient = new();
-                 manga = await reseachClient.GetFullManga(MangaTitleInput);
+                  manga = await _researchMangaClient.GetFullManga(MangaTitleInput);
             }
             else
             {
-               
-                ResearchRuMangaClient reseachClient = new();
-                manga = await reseachClient.GetManga(MangaTitleInput);
+
+                manga = await _researchRuMangaClient.GetManga(MangaTitleInput);
             }
 
             await _context.Manga.AddAsync(manga);
@@ -64,7 +72,9 @@ namespace MangaWeb.Pages.MangaPages
                 appUser.CreatedManga.Add(manga.Id);
             }
             await _userManager.UpdateAsync(appUser);
+            
             GC.Collect();
+
             return RedirectToPage($"/MangaPages/Manga", new { id = manga.Id });
         }
     }

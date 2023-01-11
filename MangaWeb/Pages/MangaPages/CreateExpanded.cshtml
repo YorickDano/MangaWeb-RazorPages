@@ -8,13 +8,13 @@
 
 
 
-<h2>Enter title of manga</h2>
+<h2>@Model.UIValuesManager.EnterMangaTitle</h2>
 <form method="post">
  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <input class="form-control"  asp-for="MangaTitleInput" type="text" />
  <span asp-validation-for="MangaTitleInput" class="text-danger"></span>
  <br />
- <label asp-for="IsRussian">You want manga on russian?</label>
+        <label asp-for="IsRussian">@Model.UIValuesManager.YouWantRuManga</label>
  <br />
   <input class="generCheckBox" style="z-index:100;opacity:100;" asp-for="IsRussian" type="checkbox" />
      

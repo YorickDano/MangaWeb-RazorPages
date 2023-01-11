@@ -1,4 +1,4 @@
-﻿@page "{id}"
+﻿@page "{userName}"
 @model MangaWeb.Pages.UserModel
 @{
 
@@ -8,7 +8,7 @@
 
 <h4>User's favorite manga</h4>
 <br />
-@if (Model.FavoriteManga != null)
+@if (Model.FavoriteManga != null || Model.FavoriteManga.Count == 0)
 {
     @foreach (var manga in Model.FavoriteManga)
     {

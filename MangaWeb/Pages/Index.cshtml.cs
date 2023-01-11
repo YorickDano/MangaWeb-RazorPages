@@ -1,4 +1,5 @@
-﻿using MangaWeb.APIClients;
+﻿using AspNetCore.RouteAnalyzer;
+using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ namespace MangaWeb.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-
 
         public IndexModel(ILogger<IndexModel> logger)
         {

@@ -10,8 +10,13 @@ using System.Web;
 
 namespace MangaWeb.APIClients
 {
-    public class MangaCharacterClient : ResearchMangaClient
+    public class MangaCharacterClient 
     {
+        private protected const string MyAnimeListUrl = "https://myanimelist.net";
+        private protected const string MyAnimeListApiUrl = "https://api.myanimelist.net";
+        private protected RestClient RestClient  =new RestClient(MyAnimeListUrl);
+        private protected RequestBuilder RequestBuilder = new RequestBuilder();
+
         public async Task<Manga> GetAllCharacters(string title, Manga manga, string mangaUrlName)
         {
             var htmlDocument = new HtmlDocument();
@@ -29,11 +34,11 @@ namespace MangaWeb.APIClients
 
             var responsesCharactersPages = new List<RestResponse>();
             var requests = charactersLinks.Select(x => RequestBuilder.CreateRequest()
-            .SetRequestResource(x.Replace(BaseUrl, String.Empty)).GetRequest());
-            var requestExecutor = new RequestExecutor(BaseUrl);
+            .SetRequestResource(x.Replace(MyAnimeListUrl, String.Empty)).GetRequest());
+            var requestExecutor = new RequestExecutor(MyAnimeListUrl);
 
             var htmlCharactersDocuments = await Task.WhenAll(requests.Select(x => requestExecutor.SendRequestAsync(x)));
-            manga.Characters.AddRange(await GetMangaCharacters(htmlCharactersDocuments));
+            manga.Characters.AddRange(htmlCharactersDocuments.Select(x => GetMangaCharacter(x).Result));
 
             var imagesUrlsForCharacters = await GetImagesUrlsForCharacters(charactersLinks.Select(x => x + "/pics"));
 
@@ -71,9 +76,9 @@ namespace MangaWeb.APIClients
         {
             var allImages = new List<List<string>>();
 
-            var requestExecutor = new RequestExecutor(BaseUrl);
+            var requestExecutor = new RequestExecutor(MyAnimeListUrl);
             var imagesRequests = characterImagesLinks.Select(x => RequestBuilder.CreateRequest()
-                    .SetRequestResource(x.Replace(BaseUrl, string.Empty)).GetRequest());
+                    .SetRequestResource(x.Replace(MyAnimeListUrl, string.Empty)).GetRequest());
             var htmlCharactersDocuments = await Task.WhenAll(imagesRequests.Select(x => requestExecutor.SendRequestAsync(x)));
 
             foreach (var characterDocument in htmlCharactersDocuments)
@@ -87,6 +92,7 @@ namespace MangaWeb.APIClients
                 allImages.Add(imagesForCharacter);
             }
 
+            Array.Clear(htmlCharactersDocuments);
             return allImages;
         }
     }

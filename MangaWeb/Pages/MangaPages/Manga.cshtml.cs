@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using NAudio.Wave;
 
 namespace MangaWeb.Pages.MangaPages
 {
@@ -16,15 +17,20 @@ namespace MangaWeb.Pages.MangaPages
         private readonly MangaWebContext _context;
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly IAuthorizationService _authorizationService;
+        private readonly ResearchMangaClient _researchMangaClient;
+
+        public UIValuesManager UIValuesManager;
         public IEnumerable<int> CurrentUserFavoritesManga;
         public bool IsSeeAll { get; set; } = false;
 
-        public MangaModel(MangaWebContext context, 
-            UserManager<MangaWebUser> userManager, IAuthorizationService authorizationService)
+        public MangaModel(MangaWebContext context,
+            UserManager<MangaWebUser> userManager, IAuthorizationService authorizationService,
+            ResearchMangaClient researchMangaClient, UIValuesManager uIValuesManager)
         {
             _context = context;
             _userManager = userManager;
             _authorizationService = authorizationService;
+            UIValuesManager = uIValuesManager;
         }
 
         public Manga? Manga { get; set; }
@@ -32,6 +38,14 @@ namespace MangaWeb.Pages.MangaPages
 
         public async Task<IActionResult> OnGet(int? id)
         {
+            //WaveStream mainOutputStream = new Mp3FileReader(Path.Combine(Environment.CurrentDirectory, "sounds", "yameiiVSTheWorld.mp3"));
+            //WaveChannel32 volumeStream = new WaveChannel32(mainOutputStream);
+
+            //WaveOutEvent player = new WaveOutEvent();
+
+            //player.Init(volumeStream);
+            //player.Play();
+
             if (id is null)
             {
                 return NotFound();
@@ -41,7 +55,7 @@ namespace MangaWeb.Pages.MangaPages
 
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-            
+
             if (Manga is null)
             {
                 return NotFound();
@@ -57,7 +71,8 @@ namespace MangaWeb.Pages.MangaPages
             var result = await _authorizationService.AuthorizeAsync(User, Manga, "CanManageManga");
             if (!result.Succeeded)
             {
-                return new ForbidResult();
+                return RedirectToPage("/Account/AccessDenied",
+                    new { area= "Identity", message = "You didn't create this manga, so you cannot delete it", statusCode = 403 });
             }
 
             var charactersOfMaga = _context.MangaCharacter.Where(x => x.Manga.Id == id);
@@ -110,7 +125,7 @@ namespace MangaWeb.Pages.MangaPages
 
             await _userManager.UpdateAsync(user);
 
-            return Redirect($"/MangaPages/ExpandedManga?id={id}");
+            return Redirect($"/MangaPages/Manga?id={id}");
         }
 
         public async Task<IActionResult> OnGetUpdateMangaAsync(int id)
@@ -123,12 +138,18 @@ namespace MangaWeb.Pages.MangaPages
             {
                 return NotFound();
             }
-
-            Manga.CloneFrom(await new ResearchMangaClient().UpdateMangaAsync(Manga));
+            if(Manga.Language == Language.en)
+            {
+                Manga.CloneFrom(await _researchMangaClient.UpdateMangaAsync(Manga));
+            }
+            else
+            {
+                Manga.CloneFrom(await new ResearchRuMangaClient().UpdateMangaAsync(Manga));
+            }
             _context.Manga.Update(Manga);
             await _context.SaveChangesAsync();
 
-            return Redirect($"/MangaPages/ExpandedManga?id={id}");
+            return Redirect($"/MangaPages/Manga?id={id}");
         }
         public async Task<IActionResult> OnGetEditMangaAsync(int id)
         {
@@ -141,6 +162,6 @@ namespace MangaWeb.Pages.MangaPages
 
             return Redirect($"/MangaPages/Edit?id={id}");
         }
-        
+
     }
 }

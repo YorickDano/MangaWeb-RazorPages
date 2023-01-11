@@ -68,7 +68,7 @@ namespace MangaWeb.Pages.MangaPages
             return RedirectToPage("./Manga",new {id = manga.Id});
         }
 
-        public async Task ApiSetting()
+        public void ApiSetting()
         {
             RestClientApi restClientApi = new RestClientApi();
 
@@ -88,7 +88,7 @@ namespace MangaWeb.Pages.MangaPages
             public int CountOfVolume { get; set; }
             [Display(Name = "Chapters")]
             public int CountOfChapters { get; set; }
-            public double Score { get; set; }
+            public float Score { get; set; }
             public int Ranked { get; set; }
             public int Popularity { get; set; }
             public string Genres { get; set; }

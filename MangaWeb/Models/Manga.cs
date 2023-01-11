@@ -15,7 +15,7 @@ namespace MangaWeb.Models
         public int CountOfVolume { get; set; }
         [Display(Name = "Chapters")]
         public int CountOfChapters { get; set; }
-        public double Score { get; set; }
+        public float Score { get; set; }
         public int Ranked { get; set; }
         public int Popularity { get; set; }
         public IEnumerable<string> Genres { get; set; }
@@ -25,7 +25,7 @@ namespace MangaWeb.Models
         [Display(Name = "Year of issue")]
         public int YearOfIssue { get; set; }
         public Language Language { get; set; }
-        public MangaType Type { get; set; }
+        public string Type { get; set; }
 
 
         public static Manga CreateNew()
@@ -58,6 +58,7 @@ namespace MangaWeb.Models
             this.Description = otherManga.Description;
             this.Published = otherManga.Published;
             this.CountOfChapters = otherManga.CountOfChapters;
+            this.CountOfVolume = otherManga.CountOfVolume;
             this.Score = otherManga.Score;
             this.Ranked = otherManga.Ranked;
             this.Popularity = otherManga.Popularity;
@@ -66,6 +67,7 @@ namespace MangaWeb.Models
             this.Autors = new List<string>(otherManga.Autors);
             this.Characters = new List<MangaCharacter>(otherManga.Characters);
             this.YearOfIssue = otherManga.YearOfIssue;
+            this.Type = otherManga.Type;
         }
     }
     public enum MangaStatus
@@ -73,6 +75,7 @@ namespace MangaWeb.Models
         Publishing,
         Finished,
         Announced,
+        Discontinued,
         Frozen,
         Издано,
         Выходит
@@ -87,6 +90,10 @@ namespace MangaWeb.Models
     {
         Manga,
         Manhwa,
-        Manhua
+        Manhua,
+        Novel,
+        One_shot,
+        Doujinshi,
+        Oel
     }
 }

@@ -20,9 +20,9 @@ namespace MangaWeb.Pages
             _context = context;
         }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string userName)
         {
-            User = await _userManager.FindByIdAsync(id);
+            User = await _userManager.FindByNameAsync(userName);
 
             if(User == null)
             {

@@ -24,16 +24,21 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
 
+        public UIValuesManager UIValuesManager;
+
         public EmailModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
             IEmailSender emailSender,
-            IOptionsSnapshot<MailSenderOptions> configuration)
+            IOptionsSnapshot<MailSenderOptions> configuration,
+            UIValuesManager uIValuesManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _mailManager = new MailManager(configuration);
+            UIValuesManager = 
+            UIValuesManager = uIValuesManager;
         }
 
         /// <summary>

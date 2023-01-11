@@ -35,7 +35,7 @@ namespace MangaWeb.Pages.MangaPages
         public async Task<IActionResult> OnPostAsync(int id)
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(x => x.Id == id);
-            var score = double.Parse(Input.Score.Replace(".", ",").Trim());
+            var score = float.Parse(Input.Score.Replace(".", ",").Trim());
             Manga.OriginTitle = Input.OriginTitle;
             Manga.Description = Input.Description;
             Manga.Autors = new List<string>(Input.Autors.Split(",", StringSplitOptions.RemoveEmptyEntries));

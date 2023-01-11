@@ -3,7 +3,6 @@ using MangaWeb.APIClients.Services;
 using MangaWeb.Managers;
 using MangaWeb.Models;
 using Newtonsoft.Json;
-using NUglify.JavaScript.Syntax;
 using RestSharp;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -16,13 +15,13 @@ namespace MangaWeb.APIClients
         private RestClient Client { get; set; }
         private readonly string BaseUrl = "https://shikimori.one";
 
-
         private RequestBuilder RequestBuilder { get; set; }
 
         public ResearchRuMangaClient()
         {
             RequestBuilder = new RequestBuilder();
             Client = new RestClient(BaseUrl);
+            
         }
 
         public async Task<Manga> GetManga(string title)
@@ -43,7 +42,7 @@ namespace MangaWeb.APIClients
             var mainCharactersNames = mainCharactersBlock.InnerText;
                 
             manga = await SetMangaCharacters(manga, htmlDocument, mainCharactersNames);
-
+            Client.Dispose();
             return manga;
         }
 
@@ -76,7 +75,7 @@ namespace MangaWeb.APIClients
             var characterName = string.Empty;
             foreach (var document in documents)
             {
-                characterName = document.DocumentNode.SelectSingleNode("//div[contains(text(),'русски')]/following-sibling::div").InnerText;
+                characterName = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
                 characters.Add(new MangaCharacter()
                 {
                     Name = characterName,
@@ -91,8 +90,8 @@ namespace MangaWeb.APIClients
 
         public async Task<Manga> SetMangaInfo(Manga manga, HtmlDocument document, string url)
         {
-            manga.Type = MangaType.Manga;
             manga.Language = Language.ru;
+            manga.Type = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
             manga.OriginTitle = document.DocumentNode.SelectSingleNode("//h1").InnerText.Split('/')[0];
             manga.Status = document.DocumentNode.SelectSingleNode("//span[contains(@class,'anime_status')]")
                 .GetAttributeValue("data-text", MangaStatus.Выходит);
@@ -103,13 +102,13 @@ namespace MangaWeb.APIClients
             var volumeCount = 0;
             var volumeString = document.DocumentNode.SelectSingleNode("//div[text()='Тома:']/following-sibling::div")?.InnerText;
             manga.CountOfVolume = int.TryParse(volumeString, out volumeCount) ? volumeCount : -1;
-            manga.Genres = document.DocumentNode.SelectNodes("//a/span[@class='genre-ru']").Select(x => x.InnerText).ToList();
+            manga.Genres = new List<string>( document.DocumentNode.SelectNodes("//a/span[@class='genre-ru']").Select(x => x.GetDirectInnerText()));
             manga.Published = document.DocumentNode.SelectSingleNode("//span[contains(@class,'b-tooltipped dotted mobile')]")
                 .GetAttributeValue("title", "Не известно");
             manga.Description = document.DocumentNode.SelectSingleNode("//div[@class='b-text_with_paragraphs']").InnerText;
             manga.MangaImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']/img").GetAttributeValue("src", DefaultValuesManager.DefaultMangaImageUrl);
             manga.YearOfIssue = int.Parse(manga.Published.Split(' ')[^2]);
-            manga.Score = double.Parse(document.DocumentNode.SelectSingleNode("//div[contains(@class,'score-value')]").InnerText.Replace('.',','));
+            manga.Score = float.Parse(document.DocumentNode.SelectSingleNode("//div[contains(@class,'score-value')]").InnerText.Replace('.',','));
             var htmlDocument = new HtmlDocument();
             var autorsPageResponse = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource(url + "/resources").GetRequest());
@@ -117,7 +116,7 @@ namespace MangaWeb.APIClients
 
             manga.Autors = htmlDocument.DocumentNode
                .SelectNodes("//div[contains(@class,'c-authors')]//a/span[@class='name-ru']")
-               .Select(x => x.InnerText).ToList();
+               .Select(x => x.InnerText);
 
             return manga;
         }
@@ -130,6 +129,11 @@ namespace MangaWeb.APIClients
             var responseObj = JsonConvert.DeserializeObject<List<Root>>(response.Content)[0];
 
             return responseObj.url;
+        }
+
+        public async Task<Manga> UpdateMangaAsync(Manga currentManga)
+        {
+            return await GetManga(currentManga.OriginTitle);
         }
     }
 }

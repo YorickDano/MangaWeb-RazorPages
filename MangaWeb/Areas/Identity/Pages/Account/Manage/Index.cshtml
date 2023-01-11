@@ -1,7 +1,8 @@
-﻿@page
+﻿@page "{handler?}"
+@using MangaWeb.Managers;
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = Model.UIValuesManager.Profile;
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
@@ -11,12 +12,13 @@
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if(Model.Image != null){
-                 <div class="form-floating">
-                     <img class="profileImage" src="@Model.Image"/>
+            @if (Model.Image != null)
+            {
+                <div class="form-floating">
+                    <img class="profileImage" src="@Model.Image" />
                 </div>
             }
-           <br />
+            <br />
             <div class="form-floating">
                 <input asp-for="Username" class="form-control" disabled />
                 <label asp-for="Username" class="form-label"></label>
@@ -25,30 +27,41 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>    
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Model.UIValuesManager.Save</button>
         </form>
         <br />
         <form asp-action="AddImage" method="post" enctype="multipart/form-data">
-              <div class="form-floating">
-                <input type="file" asp-for="FormFile"  accept=".jpg, .jpeg, .png" class="form-control" multiple/>       
+            <div class="form-floating">
+                <input type="file" asp-for="FormFile" accept=".jpg, .jpeg, .png" class="form-control" multiple />
             </div>
-      
-            <input id="update-profile-image-button" asp-page-handler="AddImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Add Image">
+
+            <input id="update-profile-image-button" asp-page-handler="AddImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.UIValuesManager.AddImage">
         </form>
         <br />
         <form asp-action="SetRandomAnimeProfileImage" method="post" enctype="multipart/form-data">
-            <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random anime profile image">
-            </form>
+            <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.UIValuesManager.SetRandAnimImg">
+        </form>
         @if (Model.MangaWebUser.Role != Role.User)
         {
-            <br/>
+            <br />
             <form asp-action="SetRandomHentaiProfileImage" method="post" enctype="multipart/form-data">
-            <input id="update-profile-image-button" asp-page-handler="SetRandomHentaiProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random hentai profile image">
+                <input id="update-profile-image-button" asp-page-handler="SetRandomHentaiProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random hentai profile image">
             </form>
         }
-       
-        
+        <br />
+        @Model.UIValuesManager.ChooseLanguage
+        <div style="display:inline-flex; width:200px;">
+            <form method="get" >
+                <button class="buttonLanguage" value="ru" name="language" type="submit" asp-page-handler="ChangeLanguage">
+                    <img class="@(Model.UIValuesManager.IsEnlish() ? "languageImg" : "languageImgSelected")" src="~/img/Russia.png" />
+                </button>
+                <button class="buttonLanguage" value="eng" name="language" type="submit" asp-page-handler="ChangeLanguage">
+                    <img class="@(Model.UIValuesManager.IsEnlish() ? "languageImgSelected" : "languageImg")" src="~/img/UK.png" />
+                </button>
+            </form>
+        </div>
+
     </div>
 </div>
 

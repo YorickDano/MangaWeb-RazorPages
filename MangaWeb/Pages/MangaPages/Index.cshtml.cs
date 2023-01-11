@@ -1,5 +1,4 @@
-﻿
-using MangaWeb.Areas.Identity.Data;
+﻿using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
 using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +13,12 @@ namespace MangaWeb.Pages.MangaPages
         private readonly MangaWebContext _context;
 
         public MangaWebUser? MangaWebUser { get; set; } = default!;
+        public UIValuesManager UIValuesManager;
 
-        public IndexModel(MangaWebContext context)
+        public IndexModel(MangaWebContext context, UIValuesManager uIValuesManager)
         {
             _context = context;
+            UIValuesManager = uIValuesManager;
             OrderOptions = new List<SelectListItem>
             {
                 new SelectListItem
@@ -49,7 +50,7 @@ namespace MangaWeb.Pages.MangaPages
         public OrderInputModel? Input { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
-        {         
+        {        
             Manga = await _context.Manga.Select(x => x).ToListAsync();
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -80,10 +81,8 @@ namespace MangaWeb.Pages.MangaPages
                 Manga = await _context.Manga.Where(x=>x.OriginTitle!.Contains(SearchString)).ToListAsync();
             }
 
-            var allGenres = _context.Manga.Select(x =>  x.Genres);
-
-            Genres = new List<string>((IEnumerable<string>)allGenres);
-
+            var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();
+            Genres = new List<string>(allGenres);
             GenersSelectedList = new SelectList(allGenres);
 
             return Page();
@@ -164,11 +163,6 @@ namespace MangaWeb.Pages.MangaPages
                 Manga = Manga.Where(x => x.YearOfIssue <= yearTo).ToList();
             }
         }
-        private async Task OrderByTwo<T>(T? from, T? to)
-        {
-
-        }
-
         private void OrderByScore(double? scoreFrom, double? scoreTo)
         {
 

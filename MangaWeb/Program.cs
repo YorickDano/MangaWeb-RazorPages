@@ -1,10 +1,8 @@
-using Blazor.Polyfill.Server;
-using MangaWeb.APIClients;
+using AspNetCore.RouteAnalyzer;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Authorization;
 using MangaWeb.Managers;
 using MangaWeb.Models.OptionModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,15 +15,13 @@ builder.Services.AddControllers()
 {
     option.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
 });
-builder.Services.AddSingleton<AnimeAndHentaiImageClient>();
-builder.Services.AddScoped<IAuthorizationHandler, IsMangaOwnerHandler>();
-
+builder.AddServices();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-builder.Services.AddBlazorPolyfill();
+builder.Services.AddMvc();
+builder.Services.AddRouteAnalyzer();
 
 var connectionString = TestConnectionManager.GetLocalDataBaseConnectionString();
     builder.Services.AddDbContext<MangaWebContext>(options =>
@@ -51,7 +47,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseBlazorPolyfill();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -61,8 +56,7 @@ app.UseAuthorization();
 
 
 app.MapRazorPages();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+
 
 if (app.Environment.IsDevelopment())
 {

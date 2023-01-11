@@ -12,9 +12,6 @@
 <h1>@ViewData["Title"]</h1>
 
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <form method="post">
 
     <select asp-for="MangaGenre" asp-items="Model.GenersSelectedList">
@@ -28,16 +25,16 @@
 <div class="background">
     <partial name="PartialViewes/_OrderPartial" />
     <div class="mangas">
-     @*   @foreach (var item in Model.Manga)
+        @*   @foreach (var item in Model.Manga)
         {
 
-            <div class="manga-card">
-                <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
-            </div>
+        <div class="manga-card">
+        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
+        </div>
 
         }*@
 
-        <h2 class="text-black">Manga</h2>
+        <h2 class="text-black">@Model.UIValuesManager.Manga</h2>
 
 
         @foreach (var item in Model.Manga)
@@ -56,23 +53,28 @@
 
                     <div class="mangaInfoCenter">
                         <div class="mangaInfoDesc">
-                            <b><big>Description:</big></b> @item.Description
+                            <b><big>@Model.UIValuesManager.Description:</big></b> @item.Description
                         </div>
-                        <b><big>Geners:</big></b> @string.Join(" ",item.Genres)
+                        <b><big>@Model.UIValuesManager.Genres:</big></b> @string.Join(" ",item.Genres)
                     </div>
                     <div class="mangaInfoRight">
-                        <b><big>Score:</big></b> @item.Score<br>
-                        <b><big>Popularity:</big></b> @item.Popularity
-                        <b><big>Ranked:</big></b> @item.Ranked<br>
+                        <b><big>@Model.UIValuesManager.Type:</big></b> @item.Type<br>
+                        <b><big>@Model.UIValuesManager.Score:</big></b> @item.Score<br>
+                        @if (item.Language != Models.Language.ru)
+                        {
+                            <b><big>@Model.UIValuesManager.Popularity:</big></b> @item.Popularity
+                            <b><big>@Model.UIValuesManager.Ranked:</big></b> @item.Ranked
+                            <br>
+                        }
                         @if (item.CountOfVolume == -1)
                         {
-                            volumesUnknown = "<b><big>Volumes:</big></b> Unknown";
-                            chaptersUnknown = "<b><big>Chapters:</big></b> Unknown";
+                            volumesUnknown = $"<b><big>{@Model.UIValuesManager.Volumes}:</big></b> Unknown";
+                            chaptersUnknown = $"<b><big>{@Model.UIValuesManager.Chapters}:</big></b> Unknown";
                         }
                         else
                         {
-                            volumesUnknown = $"<b><big>Volumes:</big></b> {@item.CountOfVolume}";
-                            chaptersUnknown = $"<b><big>Chapters:</big></b> {@item.CountOfChapters}";
+                            volumesUnknown = $"<b><big>{@Model.UIValuesManager.Volumes}:</big></b> {@item.CountOfVolume}";
+                            chaptersUnknown = $"<b><big>{@Model.UIValuesManager.Chapters}:</big></b> {@item.CountOfChapters}";
                         }
                         @Html.Raw(volumesUnknown)
                         @Html.Raw(chaptersUnknown)
@@ -80,11 +82,11 @@
 
                         @if (item.Status == Models.MangaStatus.Finished)
                         {
-                            statusFinished = $"<b><big>Published:</big></b> {item.Published}";
+                            statusFinished = $"<b><big>{@Model.UIValuesManager.Published}:</big></b> {item.Published}";
                         }
                         else
                         {
-                            statusFinished = $"<b><big>Status:</big></b> {item.Status}";
+                            statusFinished = $"<b><big>{@Model.UIValuesManager.Status}:</big></b> {item.Status}";
                         }
                         @Html.Raw(statusFinished)
 
