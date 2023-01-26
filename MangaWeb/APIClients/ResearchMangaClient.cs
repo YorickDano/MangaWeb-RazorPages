@@ -4,9 +4,7 @@ using MangaWeb.APIClients.Services;
 using MangaWeb.Managers;
 using MangaWeb.Models;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Newtonsoft.Json;
-using NuGet.Versioning;
 using RestSharp;
 using System.Globalization;
 using static MangaWeb.APIClients.Models.MangaUrlInfoModel;
@@ -33,8 +31,6 @@ namespace MangaWeb.APIClients
         public async Task<Manga> GetFullManga(string title)
         {
             Manga = Manga.CreateNew();
-      //      var htmlDocument = new HtmlDocument();
-     //       var mangaUrlName = await GetManagaUrl(title);
             var mangaUrlInfoRequest = RequestBuilder.CreateRequest().SetRequestResource("/v2/manga")
                 .AddRequestParameter("q", title).GetRequest();
             var response = (await RestClient.ExecuteAsync(mangaUrlInfoRequest)).Content;
@@ -47,7 +43,10 @@ namespace MangaWeb.APIClients
             var mangaInfoTask = SetMangaInfoFromApiAsync(desiralizeInfoResponse);
             var charactersTask = SetMangaCharacters(Manga, title);
             var mangaAutorsTask = SetMangaAutorsAsync(desiralizeInfoResponse.id);
-            Task.WaitAll(mangaInfoTask, charactersTask, mangaAutorsTask);
+            var mangaLinksTask = new MangaReadLinksClient().FindLinksForAsync(title);
+            Task.WaitAll(mangaInfoTask, charactersTask, mangaAutorsTask, mangaLinksTask);
+
+            Manga.ReadLinks = mangaLinksTask.Result;
 
             RestClient.Dispose();
             return Manga;
@@ -60,24 +59,14 @@ namespace MangaWeb.APIClients
             Manga.Description = info.synopsis;
             switch (info.status)
             {
-                case "currently_publishing":
+                case "finished":
                     {
-                        Manga.Status = MangaStatus.Publishing;
-                        break;
-                    }
-                case "announced":
-                    {
-                        Manga.Status = MangaStatus.Announced;
-                        break;
-                    }
-                case "frozen":
-                    {
-                        Manga.Status = MangaStatus.Frozen;
+                        Manga.Status = MangaStatus.Finished;
                         break;
                     }
                 default:
                     {
-                        Manga.Status = MangaStatus.Finished;
+                        Manga.Status = MangaStatus.Publishing;
                         break;
                     }
             }
@@ -103,7 +92,7 @@ namespace MangaWeb.APIClients
             var htmlDocument = new HtmlDocument();
 
             htmlDocument.LoadHtml(response.Content);
-            Manga.Autors = new List<string>(htmlDocument.DocumentNode
+            Manga.Authors = new List<string>(htmlDocument.DocumentNode
                 .SelectNodes("//span[contains(text(),'Authors')]/../a")
                 .Select(x => x.GetDirectInnerText().Replace(",", string.Empty)));
             RestClient.Dispose();
@@ -116,7 +105,7 @@ namespace MangaWeb.APIClients
         protected async Task<string> GetManagaUrl(string title)
         {
             var htmlDocument = await GetHtmlOfMangaSearchFromMyAnimeListAsync(title);
-            var mangaLink = htmlDocument.DocumentNode.SelectSingleNode("//td[contains(text(),'Manga')]/parent::tr//a")
+            var mangaLink = htmlDocument.DocumentNode.SelectSingleNode("//a[@class='hoverinfo_trigger']")
                 .GetAttributeValue("href", DefaultValuesManager.DefaultMangaLink);
 
             return mangaLink.Replace(MyAnimeListUrl, "");
@@ -174,7 +163,7 @@ namespace MangaWeb.APIClients
             var yearTry = 0;
             Manga.YearOfIssue = int.TryParse(yearStr, out yearTry) ? yearTry : 0;
             Manga.Genres = new List<string>(documentNode.SelectNodes("//span[@itemprop='genre']").Select(x => x.GetDirectInnerText()));
-            Manga.Autors = new List<string>(documentNode.SelectNodes("//span[contains(text(),'Authors')]/../a").Select(x => x.GetDirectInnerText().Replace(",", string.Empty)));
+            Manga.Authors = new List<string>(documentNode.SelectNodes("//span[contains(text(),'Authors')]/../a").Select(x => x.GetDirectInnerText().Replace(",", string.Empty)));
             Manga.Popularity = int.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Popularity')]/..").GetDirectInnerText().Trim().TrimStart('#'));
             var rankedTry = 0;
             Manga.Ranked = int.TryParse(documentNode.SelectSingleNode("//span[contains(text(),'Ranked')]/..").GetDirectInnerText().Trim().TrimStart('#'), out rankedTry) ? rankedTry : -1;

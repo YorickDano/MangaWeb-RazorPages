@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using MangaWeb.APIClients.Models;
 using MangaWeb.APIClients.Services;
 using MangaWeb.Managers;
 using MangaWeb.Models;
@@ -6,7 +7,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using static MangaWeb.Models.ShikimoriMangaSearchJson;
+using RuMangaUrlInfo = MangaWeb.APIClients.Models.RuMangaUrlInfoModel;
 
 namespace MangaWeb.APIClients
 {
@@ -27,14 +28,12 @@ namespace MangaWeb.APIClients
         public async Task<Manga> GetManga(string title)
         {
             var manga = new Manga();
-            var url = await GetMangaUrl(title);
-            var mangaPageResponse = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
-                .SetRequestResource(url.Remove(0, 1)).AddHeadersForShikimori().GetRequest());
+            var mangaMainInfo = await GetMangaMainInfo(title);
+
             var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(mangaPageResponse.Content);
-            manga = await SetMangaInfo(manga, htmlDocument, url);
+            manga = await SetMangaInfo(manga, mangaMainInfo, mangaMainInfo.url);
             var mangaCharctersPageResponse = await Client.ExecuteAsync(
-                RequestBuilder.CreateRequest().SetRequestResource(url + "/characters")
+                RequestBuilder.CreateRequest().SetRequestResource(mangaMainInfo.url + "/characters")
                 .AddHeadersForShikimori().GetRequest());
             htmlDocument.LoadHtml(mangaCharctersPageResponse.Content);
             var mainCharactersBlock = htmlDocument.DocumentNode
@@ -42,6 +41,10 @@ namespace MangaWeb.APIClients
             var mainCharactersNames = mainCharactersBlock.InnerText;
                 
             manga = await SetMangaCharacters(manga, htmlDocument, mainCharactersNames);
+
+            var mangaLinks = await new MangaReadLinksClient().FindLinksForAsync(title);
+            manga.ReadLinks = mangaLinks;
+
             Client.Dispose();
             return manga;
         }
@@ -72,14 +75,13 @@ namespace MangaWeb.APIClients
         public async Task<IEnumerable<MangaCharacter>> GetCharacters(IEnumerable<HtmlDocument> documents, string mainCharactersNames)
         {
             var characters = new List<MangaCharacter>();
-            var characterName = string.Empty;
             foreach (var document in documents)
             {
-                characterName = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
+                string characterName = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
                 characters.Add(new MangaCharacter()
                 {
                     Name = characterName,
-                    ImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']/img").Attributes["src"].Value,
+                    ImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']//img").Attributes["src"].Value,
                     Description = document.DocumentNode.SelectSingleNode("//div[@class='text' and @itemprop='description']").InnerText,
                     IsMain = mainCharactersNames.Contains(characterName)
                  });
@@ -88,47 +90,44 @@ namespace MangaWeb.APIClients
             return characters;
         }
 
-        public async Task<Manga> SetMangaInfo(Manga manga, HtmlDocument document, string url)
+        public async Task<Manga> SetMangaInfo(Manga manga, RuMangaUrlInfo.Root mangaMainInfo, string url)
         {
             manga.Language = Language.ru;
-            manga.Type = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
-            manga.OriginTitle = document.DocumentNode.SelectSingleNode("//h1").InnerText.Split('/')[0];
-            manga.Status = document.DocumentNode.SelectSingleNode("//span[contains(@class,'anime_status')]")
-                .GetAttributeValue("data-text", MangaStatus.Выходит);
 
-            var chaptersCount = 0;
-            var chaptersString = document.DocumentNode.SelectSingleNode("//div[text()='Главы:']/following-sibling::div")?.InnerText;
-            manga.CountOfChapters = int.TryParse(chaptersString, out chaptersCount) ? chaptersCount : -1;
-            var volumeCount = 0;
-            var volumeString = document.DocumentNode.SelectSingleNode("//div[text()='Тома:']/following-sibling::div")?.InnerText;
-            manga.CountOfVolume = int.TryParse(volumeString, out volumeCount) ? volumeCount : -1;
-            manga.Genres = new List<string>( document.DocumentNode.SelectNodes("//a/span[@class='genre-ru']").Select(x => x.GetDirectInnerText()));
-            manga.Published = document.DocumentNode.SelectSingleNode("//span[contains(@class,'b-tooltipped dotted mobile')]")
-                .GetAttributeValue("title", "Не известно");
-            manga.Description = document.DocumentNode.SelectSingleNode("//div[@class='b-text_with_paragraphs']").InnerText;
-            manga.MangaImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']/img").GetAttributeValue("src", DefaultValuesManager.DefaultMangaImageUrl);
-            manga.YearOfIssue = int.Parse(manga.Published.Split(' ')[^2]);
-            manga.Score = float.Parse(document.DocumentNode.SelectSingleNode("//div[contains(@class,'score-value')]").InnerText.Replace('.',','));
+            manga.OriginTitle = mangaMainInfo.russian;
+            manga.MangaImageUrl = BaseUrl + mangaMainInfo.image.original;
+            manga.Type = char.ToUpper(mangaMainInfo.kind[0]) + mangaMainInfo.kind.Substring(1).Replace('_', ' ');
+            manga.Score = float.Parse(mangaMainInfo.score);
+            manga.CountOfVolume = mangaMainInfo.volumes == 0 && mangaMainInfo.kind != "manga" ? 1 : mangaMainInfo.volumes;
+            manga.CountOfChapters = mangaMainInfo.chapters == 0 ? -1 : mangaMainInfo.chapters;
+            manga.Published = mangaMainInfo.aired_on + " - " + mangaMainInfo.released_on;
+            manga.YearOfIssue = int.Parse(mangaMainInfo.aired_on.Remove(4));
+            manga.Status = mangaMainInfo.status == "released" ? MangaStatus.Издано : MangaStatus.Выходит;
+
+            var restMangaInfo = JsonConvert.DeserializeObject<RuMangaInfoModel.Root>((await Client.ExecuteAsync(RequestBuilder.CreateRequest()
+                .SetRequestResource($"/api/mangas/{mangaMainInfo.id}").GetRequest())).Content);
+            manga.Genres = restMangaInfo.genres.Select(x => x.russian);
+            manga.Description = restMangaInfo.description;
+
             var htmlDocument = new HtmlDocument();
             var autorsPageResponse = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource(url + "/resources").GetRequest());
             htmlDocument.LoadHtml(autorsPageResponse.Content);
-
-            manga.Autors = htmlDocument.DocumentNode
+            manga.Authors = htmlDocument.DocumentNode
                .SelectNodes("//div[contains(@class,'c-authors')]//a/span[@class='name-ru']")
                .Select(x => x.InnerText);
 
             return manga;
         }
 
-        private async Task<string> GetMangaUrl(string title)
+        private async Task<RuMangaUrlInfo.Root> GetMangaMainInfo(string title)
         {
             var response = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource("/api/mangas").AddRequestParameter("search", title).GetRequest());
 
-            var responseObj = JsonConvert.DeserializeObject<List<Root>>(response.Content)[0];
+            var responseObj = JsonConvert.DeserializeObject<List<RuMangaUrlInfo.Root>>(response.Content)[0];
 
-            return responseObj.url;
+            return responseObj;
         }
 
         public async Task<Manga> UpdateMangaAsync(Manga currentManga)

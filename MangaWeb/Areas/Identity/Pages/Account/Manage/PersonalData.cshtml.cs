@@ -1,10 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 using MangaWeb.Areas.Identity.Data;
-using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Areas.Identity.Pages.Account.Manage
 {
@@ -13,16 +13,16 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
-        public UIValuesManager UIValuesManager;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
         public PersonalDataModel(
             UserManager<MangaWebUser> userManager,
             ILogger<PersonalDataModel> logger,
-            UIValuesManager uIValuesManager)
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _logger = logger;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         public async Task<IActionResult> OnGet()

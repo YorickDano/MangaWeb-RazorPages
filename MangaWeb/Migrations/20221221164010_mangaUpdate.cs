@@ -113,7 +113,7 @@ namespace MangaWeb.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Autors",
+                name: "Authors",
                 table: "Manga",
                 type: "nvarchar(max)",
                 nullable: true,
@@ -276,7 +276,7 @@ namespace MangaWeb.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Autors",
+                name: "Authors",
                 table: "Manga",
                 type: "nvarchar(max)",
                 nullable: false,

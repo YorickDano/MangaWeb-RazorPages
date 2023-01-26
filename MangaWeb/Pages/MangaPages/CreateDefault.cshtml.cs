@@ -4,6 +4,7 @@ using MangaWeb.Filters;
 using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Buffers.Text;
 using System.ComponentModel.DataAnnotations;
@@ -16,9 +17,13 @@ namespace MangaWeb.Pages.MangaPages
     {
         private readonly MangaWebContext _context;
 
-        public CreateDefaultModel(MangaWebContext context)
+        public readonly IStringLocalizer<SharedResource> Localizer;
+
+        public CreateDefaultModel(MangaWebContext context, 
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            Localizer = localizer;
         }
 
         public IActionResult OnGet()
@@ -42,7 +47,7 @@ namespace MangaWeb.Pages.MangaPages
 
                 manga.OriginTitle = Input.OriginTitle;
                 manga.Popularity = Input.Popularity;
-                manga.Autors = Input.Autors.Split(',',StringSplitOptions.RemoveEmptyEntries).ToList();
+                manga.Authors = Input.Autors.Split(',',StringSplitOptions.RemoveEmptyEntries).ToList();
                 manga.Status = Input.Status;
                 manga.CountOfChapters = Input.CountOfChapters;
                 manga.CountOfVolume = Input.CountOfVolume;

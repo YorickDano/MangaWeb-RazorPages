@@ -2,11 +2,15 @@
 @using MangaWeb.Areas.Identity.Data;
 @using MangaWeb.Models;
 @using MangaWeb.Pages.Shared
+@using Microsoft.AspNetCore.Mvc.Localization;
 @using Microsoft.EntityFrameworkCore;
 @model IndexModel
+@inject IViewLocalizer Localizer
 @inject MangaWebContext context;
 @{
     ViewData["Title"] = "Home page";
+    var a = Localizer.GetAllStrings();
+    var d = 0;
 }
 
 

@@ -6,9 +6,13 @@ using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace MangaWeb.Areas.Identity.Pages.Account.Manage
 {
@@ -17,18 +21,18 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
-        public readonly UIValuesManager UIValuesManager;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
         public IndexModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
             AnimeAndHentaiImageClient animeAndHentaiImageClient,
-            UIValuesManager uIValuesManager)
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _animeAndHentaiClient = animeAndHentaiImageClient;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         /// <summary>
@@ -93,6 +97,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            LanguageManager.IsEnglish = Request.Cookies.Where(x => x.Key.Contains("Culture"))
+                .Any(x => x.Value.Contains("en"));
 
             await LoadAsync(user);
             return Page();
@@ -154,7 +160,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-         //   user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray(AnimeType.Hentai);
+            //   user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsByteArray(AnimeType.Hentai);
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);
@@ -173,16 +179,17 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnGetChangeLanguageAsync(string language)
+        public async Task<IActionResult> OnPostChangeLanguageAsync(string language)
         {
-            if(language == "eng")
+            if (language == "en")
             {
-                UIValuesManager.SetEnglish();
+                LanguageManager.Set(Response, language);
             }
             else
             {
-                UIValuesManager.SetRussian();
+                LanguageManager.Set(Response, language);
             }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -190,7 +197,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
-            return Page();
+
+            return Redirect(Request.Path);
         }
     }
 }

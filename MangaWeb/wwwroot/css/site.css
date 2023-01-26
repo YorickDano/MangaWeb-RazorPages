@@ -178,12 +178,45 @@ img {
     z-index: -1;
     opacity: 0;
 }
-
-    .generCheckBox + label {
-        display: inline-flex;
-        align-items: center;
-        cursor: pointer;
-    }
+.inlineContainer {
+    overflow: auto;
+    word-spacing: 5px;
+    font-size: 0;
+    height: auto;
+}
+.ratingGenre {
+    display: inline;
+    font-size: 28px;
+    font-weight: 600;
+    color: rgb(100,100,100);
+    background-color: rgb(15,15,15);
+    padding-left: 4px;
+    padding-right: 4px;
+    cursor: pointer;
+}
+.ratingGenreSelected {
+    display: inline;
+    font-size: 28px;
+    font-weight: 600;
+    color: rgb(235,235,235);
+    background-color: rgb(60,60,60);
+    padding-left: 4px;
+    padding-right: 4px;
+    cursor:pointer;
+}
+textarea{
+    overflow:hidden;
+    overflow-wrap:break-word;
+    padding: 8px 16px;
+    background: transparent;
+    color:rgb(240,240,240);
+    min-height:80px;
+}
+.generCheckBox + label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
 
         .generCheckBox + label::before {
             content: '';

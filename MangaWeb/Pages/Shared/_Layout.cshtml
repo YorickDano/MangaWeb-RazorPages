@@ -1,5 +1,6 @@
 ﻿@using MangaWeb.Managers;
-@inject UIValuesManager uiValuesManager;
+@using Microsoft.AspNetCore.Mvc.Localization;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,13 +24,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Index">@uiValuesManager.Manga</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Index">@Model.Localizer["Manga"].Value</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/UsersInfo">@uiValuesManager.Users</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/UsersInfo">@Model.Localizer["Users"].Value</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">@uiValuesManager.Create    </a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">@Model.Localizer["Create"].Value</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Rating">@Model.Localizer["Rating"].Value</a>
                         </li>
                     </ul>
                 </div>

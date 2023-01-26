@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -17,10 +18,14 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<MangaWebUser> signInManager, ILogger<LoginModel> logger)
+        public readonly IStringLocalizer<SharedResource> Localizer;
+
+        public LoginModel(SignInManager<MangaWebUser> signInManager, 
+            ILogger<LoginModel> logger, IStringLocalizer<SharedResource> localizer)
         {
             _signInManager = signInManager;
             _logger = logger;
+            Localizer = localizer;
         }
 
         [BindProperty]

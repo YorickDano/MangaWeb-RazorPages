@@ -3,14 +3,10 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Index";
     var statusFinished = "";
     var volumesUnknown = "";
     var chaptersUnknown = "";
 }
-
-<h1>@ViewData["Title"]</h1>
-
 
 <form method="post">
 
@@ -34,7 +30,7 @@
 
         }*@
 
-        <h2 class="text-black">@Model.UIValuesManager.Manga</h2>
+        <h2 class="text-black">@Model.Localizer["Manga"].Value</h2>
 
 
         @foreach (var item in Model.Manga)
@@ -53,28 +49,28 @@
 
                     <div class="mangaInfoCenter">
                         <div class="mangaInfoDesc">
-                            <b><big>@Model.UIValuesManager.Description:</big></b> @item.Description
+                            <b><big>@Model.Localizer["Description"].Value:</big></b> @item.Description
                         </div>
-                        <b><big>@Model.UIValuesManager.Genres:</big></b> @string.Join(" ",item.Genres)
+                        <b><big>@Model.Localizer["Genres"].Value:</big></b> @string.Join(", ",item.Genres)
                     </div>
                     <div class="mangaInfoRight">
-                        <b><big>@Model.UIValuesManager.Type:</big></b> @item.Type<br>
-                        <b><big>@Model.UIValuesManager.Score:</big></b> @item.Score<br>
+                        <b><big>@Model.Localizer["Type"].Value:</big></b> @item.Type<br>
+                        <b><big>@Model.Localizer["Score"].Value:</big></b> @item.Score<br>
                         @if (item.Language != Models.Language.ru)
                         {
-                            <b><big>@Model.UIValuesManager.Popularity:</big></b> @item.Popularity
-                            <b><big>@Model.UIValuesManager.Ranked:</big></b> @item.Ranked
+                            <b><big>@Model.Localizer["Popularity"].Value:</big></b> @item.Popularity
+                            <b><big>@Model.Localizer["Ranked"].Value:</big></b> @item.Ranked
                             <br>
                         }
                         @if (item.CountOfVolume == -1)
                         {
-                            volumesUnknown = $"<b><big>{@Model.UIValuesManager.Volumes}:</big></b> Unknown";
-                            chaptersUnknown = $"<b><big>{@Model.UIValuesManager.Chapters}:</big></b> Unknown";
+                            volumesUnknown = $"<b><big>{@Model.Localizer["Volumes"].Value}:</big></b> Unknown";
+                            chaptersUnknown = $"<b><big>{@Model.Localizer["Chapters"].Value}:</big></b> Unknown";
                         }
                         else
                         {
-                            volumesUnknown = $"<b><big>{@Model.UIValuesManager.Volumes}:</big></b> {@item.CountOfVolume}";
-                            chaptersUnknown = $"<b><big>{@Model.UIValuesManager.Chapters}:</big></b> {@item.CountOfChapters}";
+                            volumesUnknown = $"<b><big>{@Model.Localizer["Volumes"].Value}:</big></b> {@item.CountOfVolume}";
+                            chaptersUnknown = $"<b><big>{@Model.Localizer["Chapters"].Value}:</big></b> {@item.CountOfChapters}";
                         }
                         @Html.Raw(volumesUnknown)
                         @Html.Raw(chaptersUnknown)
@@ -82,11 +78,11 @@
 
                         @if (item.Status == Models.MangaStatus.Finished)
                         {
-                            statusFinished = $"<b><big>{@Model.UIValuesManager.Published}:</big></b> {item.Published}";
+                            statusFinished = $"<b><big>{@Model.Localizer["Published"].Value}:</big></b> {item.Published}";
                         }
                         else
                         {
-                            statusFinished = $"<b><big>{@Model.UIValuesManager.Status}:</big></b> {item.Status}";
+                            statusFinished = $"<b><big>{@Model.Localizer["Status"].Value}:</big></b> {item.Status}";
                         }
                         @Html.Raw(statusFinished)
 

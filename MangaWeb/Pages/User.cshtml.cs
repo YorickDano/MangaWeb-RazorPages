@@ -3,6 +3,7 @@ using MangaWeb.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages
 {
@@ -13,11 +14,13 @@ namespace MangaWeb.Pages
 
         public MangaWebUser User { get; set; }
         public List<Manga> FavoriteManga { get; set; }
-
-        public UserModel(UserManager<MangaWebUser> userManager, MangaWebContext context)
+        public IStringLocalizer<SharedResource> Localizer;
+        public UserModel(UserManager<MangaWebUser> userManager,
+            MangaWebContext context, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _context = context;
+            Localizer = localizer;
         }
 
         public async Task<IActionResult> OnGetAsync(string userName)

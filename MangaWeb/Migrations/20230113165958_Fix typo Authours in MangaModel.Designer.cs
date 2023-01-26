@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    [Migration("20221220130524_Initial")]
-    partial class Initial
+    [Migration("20230113165958_Fix typo Authours in MangaModel")]
+    partial class FixtypoAuthoursinMangaModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace MangaWeb.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedManga")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -69,8 +72,8 @@ namespace MangaWeb.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<byte[]>("ProfileImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -107,7 +110,6 @@ namespace MangaWeb.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Authors")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountOfChapters")
@@ -117,36 +119,40 @@ namespace MangaWeb.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genres")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Language")
+                        .HasColumnType("int");
+
                     b.Property<string>("MangaImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OriginTitle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Popularity")
                         .HasColumnType("int");
 
                     b.Property<string>("Published")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Ranked")
                         .HasColumnType("int");
 
-                    b.Property<double>("Score")
-                        .HasColumnType("float");
+                    b.Property<string>("ReadLinks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Score")
+                        .HasColumnType("real");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearOfIssue")
                         .HasColumnType("int");
@@ -165,25 +171,21 @@ namespace MangaWeb.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagesUrls")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MangaId")
+                    b.Property<int?>("MangaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -205,7 +207,6 @@ namespace MangaWeb.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VolumeNumber")
@@ -225,10 +226,9 @@ namespace MangaWeb.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MangaReadId")
+                    b.Property<int?>("MangaReadId")
                         .HasColumnType("int");
 
                     b.Property<int>("PageNumber")
@@ -383,8 +383,7 @@ namespace MangaWeb.Migrations
                     b.HasOne("MangaWeb.Models.Manga", "Manga")
                         .WithMany("Characters")
                         .HasForeignKey("MangaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Manga");
                 });
@@ -394,8 +393,7 @@ namespace MangaWeb.Migrations
                     b.HasOne("MangaWeb.Models.MangaRead", "MangaRead")
                         .WithMany("Pages")
                         .HasForeignKey("MangaReadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("MangaRead");
                 });

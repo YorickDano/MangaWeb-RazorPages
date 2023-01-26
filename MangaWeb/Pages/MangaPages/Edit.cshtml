@@ -102,18 +102,12 @@
                     ? "color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
                        class="status" onclick="StatusChecked('Finished')" id="fin" value="Finished" readonly />
                 <br />
-                <input style='@(Model.Manga.Status == Models.MangaStatus.Announced
-                    ? "color: color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
-                       class="status" onclick="StatusChecked('Announced')" id="ann" value="Announced" readonly />
-                <input style='@(Model.Manga.Status == Models.MangaStatus.Frozen
-                    ? "color:rgb(210,210,210);background-color:rgb(50, 50, 50)": "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);")'
-                       class="status" onclick="StatusChecked('Frozen')" id="fro" value="Frozen" readonly />
                 <span asp-validation-for="Input.Status" class="text-danger"></span>
             </div>
              <div class="form-group">
                 <label asp-for="Input.Autors" class="control-label"></label>
                 <div id="autors" style="display: inline-block;"> </div>
-                <input id="autorAsp" asp-for="Input.Autors" value="@string.Join(", ",Model.Manga.Autors)" readonly class="form-control" />
+                <input id="autorAsp" asp-for="Input.Autors" value="@string.Join(", ",Model.Manga.Authors)" readonly class="form-control" />
                 <input id="autorInput" class="form-control" />
                 <input onclick="AddToListAut()" type="button" value="Add" />
                 <input onclick="RemoveLastFromListAut()" type="button" value="Remove last" />

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -31,6 +32,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly MailManager _mailManager;
         private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
 
+        public readonly IStringLocalizer<SharedResource> Localizer;
+
 
         public RegisterModel(
             UserManager<MangaWebUser> userManager,
@@ -38,7 +41,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             SignInManager<MangaWebUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IOptionsSnapshot<MailSenderOptions> configuration)
+            IOptionsSnapshot<MailSenderOptions> configuration,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -49,6 +53,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             this.configuration = configuration;
             _mailManager = new MailManager(configuration);
             _animeAndHentaiClient = new AnimeAndHentaiImageClient();
+            Localizer = localizer;
         }
 
         /// <summary>

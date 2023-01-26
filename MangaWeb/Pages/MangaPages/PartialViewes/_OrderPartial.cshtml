@@ -1,45 +1,68 @@
 ﻿@using MangaWeb.Managers;
-@inject UIValuesManager uiValueManager;
 
 
 <aside class="rightOptions">
 
-        <form class="whiteText20" method="get">
-        @uiValueManager.OrderBy:
-            <select name="Option" asp-items="Model.OrderOptions">
-                <option>@uiValueManager.NoOptions</option>
-            </select>
-            <br />
-        <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">@uiValueManager.Genres<i id="arrow" class="arrow down"></i></div>
+    <form class="whiteText20" method="get">
+        @Model.Localizer["OrderBy"].Value:
+        <select name="Option" asp-items="Model.OrderOptions">
+            <option>@Model.Localizer["NoOptions"].Value</option>
+        </select>
+        <br />
+        <div onclick="genersLinkClick()" id="genersLink" class="genersLinkDark whiteText20">@Model.Localizer["Genres"].Value<i id="arrow" class="arrow down"></i></div>
 
-            <div id="genersSelector" style="display: none;" class="genersSelector">
+        <div id="genersSelector" style="display: none;" class="genersSelector">
             @for (var i = 0; i < Model.Genres.Count; ++i)
             {
-                        <div class="generToSelect">
-                            <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" />
-                            <label for="@Model.Genres[i]">@Model.Genres[i]</label>
-                        </div>
+                <div class="generToSelect">
+                    <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" />
+                    <label for="@Model.Genres[i]">@Model.Genres[i]</label>
+                </div>
             }
+        </div>
+        <div id="scoresSelector" class="scoresSelector">
+            @Model.Localizer["Chapters"].Value<br />
+            <input type="text" name="CountOfChaptersFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <span>—</span>
+            <input type="text" name="CountOfChaptersTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+        </div>
+        <div id="scoresSelector" class="scoresSelector">
+            @Model.Localizer["Score"].Value<br />
+            <input type="text" name="ScoreFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <span>—</span>
+            <input type="text" name="ScoreTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+        </div>
+        <div id="genersSelector" class="yearsSelector">
+            @Model.Localizer["Year"].Value<br />
+            <input type="text" name="YearFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <span>—</span>
+            <input type="text" name="YearTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+            <br />
+            <div class="generToSelect">
+                <input id="@Model.Localizer["Ongoing"]" name="Status" value="@Model.Localizer["Ongoing"]"
+                       type="checkbox" class="generCheckBox" onclick="MangaStatusChecker('on')" />
+                <label for="@Model.Ongoing">@Model.Localizer["Ongoing"]</label>
+                <input id="@Model.Localizer["Released"]" name="Status" value="@Model.Localizer["Released"]"
+                       type="checkbox" class="generCheckBox" onclick="MangaStatusChecker('re')" />
+                <label for="@Model.Released">@Model.Localizer["Released"]</label>
             </div>
-            <div id="scoresSelector" class="scoresSelector">
-            @uiValueManager.Chapters<br />
-            <input type="text" name="CountOfChaptersFrom" placeholder="@uiValueManager.From" class="orderInput" />
-                <span>—</span>
-            <input type="text" name="CountOfChaptersTo" placeholder="@uiValueManager.To" class="orderInput" />
-            </div>
-            <div id="scoresSelector" class="scoresSelector">
-            @uiValueManager.Score<br />
-            <input type="text" name="ScoreFrom" placeholder="@uiValueManager.From" class="orderInput" />
-                <span>—</span>
-            <input type="text" name="ScoreTo" placeholder="@uiValueManager.To" class="orderInput" />
-            </div>
-            <div id="genersSelector" class="yearsSelector">
-                @uiValueManager.Year<br />
-            <input type="text" name="YearFrom" placeholder="@uiValueManager.From" class="orderInput" />
-                <span>—</span>
-                <input type="text" name="YearTo" placeholder="@uiValueManager.To" class="orderInput" />
-            </div>
-        <input asp-page-handler="Order" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@uiValueManager.Submit" />
-        </form>
+        </div>
+        <input asp-page-handler="Order" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Submit"].Value" />
+    </form>
+    <script>
+        function MangaStatusChecker(status) {
+            var ongoEl = document.getElementById("Ongoing");
+            ongoEl = ongoEl == null ? document.getElementById("Выходит") : ongoEl;
+            var releEl = document.getElementById("Released");
+            releEl = releEl == null ? document.getElementById("Завершён") : releEl;
 
-    </aside>
+            if (status === 'on')
+            {
+                releEl.checked = false;
+            }
+            else{
+                ongoEl.checked = false;
+            }
+        }
+    </script>
+</aside>

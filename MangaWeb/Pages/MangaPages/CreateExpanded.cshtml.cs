@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace MangaWeb.Pages.MangaPages
@@ -17,17 +18,17 @@ namespace MangaWeb.Pages.MangaPages
         private readonly ResearchMangaClient _researchMangaClient;
         private readonly ResearchRuMangaClient _researchRuMangaClient;
 
-        public UIValuesManager UIValuesManager;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
         public CreateExpandedModel(MangaWebContext context, 
             UserManager<MangaWebUser> userManager,ResearchMangaClient researchMangaClient, 
-            ResearchRuMangaClient researchRuMangaClient, UIValuesManager uIValuesManager)
+            ResearchRuMangaClient researchRuMangaClient, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _userManager = userManager;
             _researchMangaClient = researchMangaClient;
             _researchRuMangaClient = researchRuMangaClient;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         [BindProperty]

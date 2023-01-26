@@ -1,10 +1,10 @@
 ﻿@using MangaWeb.Managers;
 @using Microsoft.AspNetCore.Identity
 @using MangaWeb.Areas.Identity.Data
+@using Microsoft.AspNetCore.Mvc.Localization;
 
 @inject SignInManager<MangaWebUser> SignInManager
 @inject UserManager<MangaWebUser> UserManager
-@inject UIValuesManager uiValuesManager
 
 <ul class="navbar-nav" style="align-items: center;">
     @if (SignInManager.IsSignedIn(User))
@@ -12,11 +12,11 @@
         var user = await UserManager.GetUserAsync(User);
 
         <li class="nav-item">
-            <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@uiValuesManager.Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.Localizer["Hello"].Value @UserManager.GetUserName(User)!</a>
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit" class="text-light">@uiValuesManager.Logout</button>
+                <button id="logout" type="submit" class="text-light">@Model.Localizer["Logout"].Value</button>
             </form>
         </li>
         <li class="nav-item">
@@ -26,10 +26,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">@uiValuesManager.Register</a>
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">@Model.Localizer["Register"].Value</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">@uiValuesManager.Login</a>
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">@Model.Localizer["Login"].Value</a>
         </li>
     }
 </ul>

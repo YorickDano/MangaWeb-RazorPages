@@ -12,6 +12,7 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     }
     public DbSet<Manga> Manga { get; set; } = default!;
     public DbSet<MangaCharacter> MangaCharacter { get; set; } = default!;
+    public DbSet<Comment> Comments { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -22,7 +23,12 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
                v => string.Join(',', v),
                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
         builder.Entity<Manga>()
-           .Property(e => e.Autors)
+          .Property(e => e.ReadLinks)
+          .HasConversion(
+              v => string.Join('>', v),
+              v => v.Split('>', StringSplitOptions.RemoveEmptyEntries).ToList());
+        builder.Entity<Manga>()
+           .Property(e => e.Authors)
            .HasConversion(
                v => string.Join(',', v),
                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());

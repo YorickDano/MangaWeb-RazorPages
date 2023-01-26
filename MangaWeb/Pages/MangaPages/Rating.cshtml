@@ -1,0 +1,68 @@
+﻿@page "{handler?}"
+@model MangaWeb.Pages.MangaPages.RatingModel
+
+<h2>Top manga by score</h2>
+<div class="mangaTop">
+    @foreach (var manga in Model.TopScoreManga)
+    {
+        <div class="manga-card">
+            <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+                <img class="imgMangaCart" src="@manga.MangaImageUrl">
+                <div class="manga-card-text">@Html.DisplayFor(modelItem => manga.OriginTitle)</div>
+            </a>
+        </div>
+    }
+</div>
+<h2>Top manga by Genres</h2>
+<h4>Choose genres</h4>
+<form method="get">
+    <div class="inlineContainer">
+        <div id="genresInput" hidden></div>
+        @foreach (var genre in Model.Genres)
+        {
+            <div id="@genre" onclick="GenreHandler('@genre')" class="ratingGenre">@genre</div>
+        }
+    </div>
+    <br />
+    <input style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" asp-page-handler="TopMangaByGenres" value="See" />
+    <br />
+</form>
+
+    @if (Model.TopGenreManga != null && Model.TopGenreManga.Count != 0)
+    {
+        @foreach (var manga in Model.TopGenreManga)
+        {
+            <div class="manga-card">
+                <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+                    <img class="imgMangaCart" src="@manga.MangaImageUrl">
+                    <div class="manga-card-text">@Html.DisplayFor(modelItem => manga.OriginTitle)</div>
+                </a>
+            </div>
+        }
+    }
+
+<script>
+    var genres = [];
+
+    function GenreHandler(genre) {
+        var selectedGenre = document.getElementById(genre);
+        if (genres.includes(genre)) {
+            const index = genres.indexOf(genre);
+            if (index > -1) {
+                genres.splice(index, 1);
+            }
+            selectedGenre.className = "ratingGenre";
+        }
+        else {
+            genres.push(genre);
+            selectedGenre.className = "ratingGenreSelected";
+        }
+        var genresInputEl = document.getElementById("genresInput");
+        genresInputEl.innerHTML = "";
+
+        genres.forEach((x) => {
+            genresInputEl.innerHTML += "<input name='genres' hidden value='" + x + "' />";
+        });
+
+    }
+</script>

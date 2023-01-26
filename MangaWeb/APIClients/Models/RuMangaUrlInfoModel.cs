@@ -1,6 +1,6 @@
-﻿namespace MangaWeb.Models
+﻿namespace MangaWeb.APIClients.Models
 {
-    public class ShikimoriMangaSearchJson
+    public class RuMangaUrlInfoModel
     {
         public class Image
         {
@@ -25,6 +25,7 @@
             public string aired_on { get; set; }
             public string released_on { get; set; }
         }
+
 
     }
 }

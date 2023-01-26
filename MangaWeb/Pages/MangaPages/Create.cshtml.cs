@@ -2,16 +2,16 @@ using MangaWeb.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages.MangaPages
 {
     public class CreateModel : PageModel
     {
-        public UIValuesManager UIValuesManager;
-
-        public CreateModel(UIValuesManager uIValuesManager)
+        public IStringLocalizer<SharedResource> Localizer;
+        public CreateModel(IStringLocalizer<SharedResource> localizer)
         {
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         public async Task<IActionResult> OnGetAsync()

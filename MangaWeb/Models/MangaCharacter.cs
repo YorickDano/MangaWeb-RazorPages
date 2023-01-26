@@ -14,6 +14,7 @@ namespace MangaWeb.Models
         public bool IsMain { get; set; }
         public string Description { get; set; }
         public List<string> ImagesUrls { get; set; }
+        public List<Comment> Comments { get; set; } 
         [JsonIgnore]
         public Manga Manga { get; set; }
 

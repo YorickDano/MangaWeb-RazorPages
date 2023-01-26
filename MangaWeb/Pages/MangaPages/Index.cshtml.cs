@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MangaWeb.Pages.MangaPages
 {
@@ -13,12 +15,12 @@ namespace MangaWeb.Pages.MangaPages
         private readonly MangaWebContext _context;
 
         public MangaWebUser? MangaWebUser { get; set; } = default!;
-        public UIValuesManager UIValuesManager;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
-        public IndexModel(MangaWebContext context, UIValuesManager uIValuesManager)
+        public IndexModel(MangaWebContext context,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
-            UIValuesManager = uIValuesManager;
             OrderOptions = new List<SelectListItem>
             {
                 new SelectListItem
@@ -32,7 +34,9 @@ namespace MangaWeb.Pages.MangaPages
                     Text = "Score"
                 }
             };
-
+            Localizer = localizer;
+            Ongoing = Localizer["Ongoing"];
+            Released = Localizer["Released"];
         }
 
         public List<Manga> Manga { get; set; } = default!;
@@ -42,6 +46,8 @@ namespace MangaWeb.Pages.MangaPages
         public SelectList? GenersSelectedList { get; set; }
 
         public List<string>? Genres { get; set; }
+        public string Ongoing { get; set; }
+        public string Released { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? MangaGenre { get; set; }
 
@@ -50,7 +56,7 @@ namespace MangaWeb.Pages.MangaPages
         public OrderInputModel? Input { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
-        {        
+        {
             Manga = await _context.Manga.Select(x => x).ToListAsync();
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -75,10 +81,10 @@ namespace MangaWeb.Pages.MangaPages
         public async Task<IActionResult> OnPostAsync()
         {
             Manga = await _context.Manga.ToListAsync();
-          
+
             if (!string.IsNullOrEmpty(SearchString))
             {
-                Manga = await _context.Manga.Where(x=>x.OriginTitle!.Contains(SearchString)).ToListAsync();
+                Manga = await _context.Manga.Where(x => x.OriginTitle!.Contains(SearchString)).ToListAsync();
             }
 
             var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();
@@ -96,7 +102,7 @@ namespace MangaWeb.Pages.MangaPages
             _context.MangaCharacter.RemoveRange(characters);
             await _context.SaveChangesAsync();
             Manga = await _context.Manga.Select(x => x).ToListAsync();
-           
+
             return Page();
         }
 
@@ -106,10 +112,11 @@ namespace MangaWeb.Pages.MangaPages
         {
             Manga = await _context.Manga.Select(x => x).ToListAsync();
             await OrderByOption(input.Option);
-             OrderByGenrse(input.Geners);
-             OrderByYear(input.YearFrom, input.YearTo);
-             OrderByScore(input.ScoreFrom, input.ScoreTo);
+            OrderByGenrse(input.Geners);
+            OrderByYear(input.YearFrom, input.YearTo);
+            OrderByScore(input.ScoreFrom, input.ScoreTo);
             OrderByCountOfChapters(input.CountOfChaptersFrom, input.CountOfChaptersTo);
+            OrderByStatus(input.Status);
             var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();
             Genres = new List<string>(allGenres);
             GenersSelectedList = new SelectList(allGenres);
@@ -201,6 +208,16 @@ namespace MangaWeb.Pages.MangaPages
             }
         }
 
+        public void OrderByStatus(string status)
+        {
+            if (!string.IsNullOrEmpty(status))
+            {
+                Manga = Manga.Where(x => status == "Ongoing" 
+                ? (x.Status == MangaStatus.Publishing || x.Status == MangaStatus.Выходит) 
+                : (x.Status == MangaStatus.Finished || x.Status == MangaStatus.Издано)).ToList();
+            }
+        }
+
 
         public class OrderInputModel
         {
@@ -212,6 +229,7 @@ namespace MangaWeb.Pages.MangaPages
             public int? YearTo { get; set; }
             public double? ScoreFrom { get; set; }
             public double? ScoreTo { get; set; }
+            public string Status { get; set; }
         }
     }
 }

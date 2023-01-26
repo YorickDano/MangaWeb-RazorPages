@@ -3,6 +3,7 @@ using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,13 +12,17 @@ namespace MangaWeb.Pages.MangaPages
     public class EditModel : PageModel
     {
         private readonly MangaWebContext _context;
+
+        public readonly IStringLocalizer<SharedResource> Localizer;
         public Manga? Manga { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
-        public EditModel(MangaWebContext context)
+        public EditModel(MangaWebContext context, 
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            Localizer = localizer;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -38,7 +43,7 @@ namespace MangaWeb.Pages.MangaPages
             var score = float.Parse(Input.Score.Replace(".", ",").Trim());
             Manga.OriginTitle = Input.OriginTitle;
             Manga.Description = Input.Description;
-            Manga.Autors = new List<string>(Input.Autors.Split(",", StringSplitOptions.RemoveEmptyEntries));
+            Manga.Authors = new List<string>(Input.Autors.Split(",", StringSplitOptions.RemoveEmptyEntries));
             Manga.Score = score;
             Manga.CountOfChapters = Input.CountOfChapters;
             Manga.CountOfVolume = Input.CountOfVolume;

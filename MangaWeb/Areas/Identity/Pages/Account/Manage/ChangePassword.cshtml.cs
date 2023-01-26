@@ -7,6 +7,7 @@ using MangaWeb.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace MangaWeb.Areas.Identity.Pages.Account.Manage
@@ -17,18 +18,18 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<MangaWebUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
-        public UIValuesManager UIValuesManager;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
         public ChangePasswordModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
             ILogger<ChangePasswordModel> logger,
-            UIValuesManager uIValuesManager)
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         /// <summary>

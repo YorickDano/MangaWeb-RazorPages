@@ -109,7 +109,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Autors")
+                    b.Property<string>("Authors")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountOfChapters")

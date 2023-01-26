@@ -5,6 +5,7 @@
     
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>982384ba-15e9-4b09-a1a1-476d397918b9</UserSecretsId>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,17 @@
     <Content Remove="Areas\Identity\Pages\Account\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Identity\Pages\Account\NewFolder\**" />
     <None Remove="Areas\Identity\Pages\Account\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\SharedResource.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </Content>
+    <Content Include="Resources\SharedResource.ru.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator></Generator>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

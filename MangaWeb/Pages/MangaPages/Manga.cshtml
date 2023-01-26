@@ -1,39 +1,37 @@
 ﻿@page "{handler?}"
+@using MangaWeb.Models;
 @model MangaWeb.Pages.MangaPages.MangaModel
 @{
-
-    var volumes = Model.Manga.CountOfVolume == -1 ? "unknow" : Model.Manga.CountOfVolume.ToString();
-    var chapters = Model.Manga.CountOfChapters == -1 ? "unknow" : Model.Manga.CountOfChapters.ToString();
-    var ranked = Model.Manga.Ranked == -1 ? "unknow" : Model.Manga.Ranked.ToString();
-    var score = Model.Manga.Score == -1 ? "unknow" : Model.Manga.Score.ToString();
-
-
+    var ranked = Model.Manga.Ranked == -1 ? Model.Localizer["Unknow"] : Model.Manga.Ranked.ToString();
+    var score = Model.Manga.Score == -1 ? Model.Localizer["Unknow"] : Model.Manga.Score.ToString();
+    var ruLinksToRead = Model.Manga.ReadLinks.Where(x => x.Contains("mangalib"));
+    var engLinksToRead = Model.Manga.ReadLinks.Where(x => !x.Contains("mangalib"));
 }
 
 <div>
-    <h4>Manga</h4>
+    <h4>@Model.Localizer["Manga"]</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Title)
+            @Model.Localizer["Title"]
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.OriginTitle)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Image)
+            @Model.Localizer["Image"]
         </dt>
         <dd class="col-sm-10">
             <img src="@Model.Manga.MangaImageUrl" style="height:320px;width:225px;">
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Type)
+            @Model.Localizer["Type"]
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.Type)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Score)
+            @Model.Localizer["Score"]
 
         </dt>
         <dd class="col-sm-10">
@@ -43,7 +41,7 @@
         @if (Model.Manga.Language == Models.Language.en)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UIValuesManager.Popularity)
+                @Model.Localizer["Popularity"]
 
             </dt>
             <dd class="col-sm-10">
@@ -51,74 +49,85 @@
 
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UIValuesManager.Ranked)
+                @Model.Localizer["Ranked"]
 
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => ranked)
-
+            </dd>
+        }
+        @if (Model.Manga.Status == MangaStatus.Finished
+             || Model.Manga.Status == MangaStatus.Издано)
+        {
+            <dt class="col-sm-2">
+                @Model.Localizer["Volumes"]
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Manga.CountOfVolume)
+            </dd>
+            <dt class="col-sm-2">
+                @Model.Localizer["Chapters"]
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model =>  model.Manga.CountOfChapters)
             </dd>
         }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model =>model.UIValuesManager.Volumes)
-
+            @Model.Localizer["Published"]
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => volumes)
-
+            @Html.DisplayFor(model => model.Manga.Published)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Chapters  )
-
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => chapters)
-
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model =>model.UIValuesManager.Published )
-
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Manga.Published )
-
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Status)
-
+            @Model.Localizer["Status"].Value
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.Status)
-
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model =>model.UIValuesManager.Description)
+            @Model.Localizer["Description"]
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Manga.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Genres)
+            @Model.Localizer["Genres"]
         </dt>
         <dd class="col-sm-10">
-            @{
-                var genersCount = Model.Manga.Genres.Count();
-            }
-            @for (var i = 0; i < genersCount; ++i)
-            {
-                if (genersCount > 1 && i < genersCount - 1)
-                { 
-                    @string.Concat(Model.Manga.Genres.ElementAt(i),",");  
+            @string.Join(", ",Model.Manga.Genres)
+        </dd>
+        @if (Model.Manga.ReadLinks != null)
+        {
+            <dt class="col-sm-2">
+                @Model.Localizer["LinksToRead"]
+            </dt>
+            <dd class="col-sm-10">
+                @if (ruLinksToRead.Count() != 0)
+                {
+                    <big>@Model.Localizer["Russian"]</big>
+
+                    <br />
+                    for(short i =0; i < ruLinksToRead.Count();++i)
+                    {
+                        <a href="@ruLinksToRead.ElementAt(i)">Read - @(i + 1) source</a>
+                    }
                 }
 
-                else
+                @if (engLinksToRead.Count() != 0)
                 {
-                    @string.Concat(Model.Manga.Genres.ElementAt(i));
+                    <br />
+                    @Model.Localizer["English"]
+                    <br />
+                    for (short i = 0; i < engLinksToRead.Count(); ++i)
+                    {
+                        <a href="@engLinksToRead.ElementAt(i)">Read - @(i + 1) source</a>
+                    }
                 }
-            }
-        </dd>
+               
+            </dd>
+        }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Characters)
+            @Model.Localizer["Characters"]
         </dt>
 
         <dd class="col-sm-10">
@@ -130,26 +139,10 @@
 
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UIValuesManager.Autors)
+            @Model.Localizer["Authors"]
         </dt>
         <dd class="col-sm-10">
-            @{
-                var autorCount = Model.Manga.Autors.Count();
-            } 
-            @for (var i = 0; i < autorCount; ++i)
-            {
-                if (autorCount > 1 && i < autorCount - 1)
-                {
-                    @string.Concat(Model.Manga.Autors.ElementAt(i),",")
-                    ;
-                }
-
-                else
-                {
-                    @string.Concat(Model.Manga.Autors.ElementAt(i))
-                    ;
-                }
-            }
+            @string.Join(", ", Model.Manga.Authors)
         </dd>
     </dl>
     <hr />
@@ -159,7 +152,7 @@
 
 
         <div class="alignInLineBlock whiteText20">
-            @Model.UIValuesManager.AddToFavorite
+            @Model.Localizer["AddToFavorite"]
 
             <button class="favButton" asp-page-handler="AddToFavorite">
                 <div class="@(Model.CurrentUserFavoritesManga.Contains(Model.Manga.Id) ? "iconFilled" : "icon")">
@@ -171,17 +164,19 @@
                     </svg>
                 </div>
             </button>
-            <input asp-page-handler="EditManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Edit" />
-            <input asp-page-handler="MangaDeletion" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Delete" />
-            <input asp-page-handler="DownloadData" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.Download" />
-            <input asp-page-handler="UpdateManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.UIValuesManager.UpdateInfo" />
+            <input asp-page-handler="EditManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Edit"]" />
+            <input asp-page-handler="MangaDeletion" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Delete"]" />
+            <input asp-page-handler="DownloadData" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Download"]" />
+            <input asp-page-handler="UpdateManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["UpdateInfo"]" />
         </div>
+    </form>
 
+    <form method="post">
+        <input type="hidden" name="id" value="@Model.Manga.Id" />
+        <textarea name="body">
+
+        </textarea>
+        <input asp-page-handler="CreateComment" type="submit" value="Create"/>
     </form>
 
 </div>
-
-
-
-
-

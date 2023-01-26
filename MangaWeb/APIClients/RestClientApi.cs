@@ -13,7 +13,7 @@ namespace MangaWeb.APIClients
         private protected readonly Uri BaseUrl = new Uri("https://www.google.com/");
         private readonly object _locker = new();
         protected RestClient RestClient;
-        protected RequestBuilder RequestBuilder = new RequestBuilder();
+        protected RequestBuilder RequestBuilder = new();
         protected WebClient WebClient;
 
 

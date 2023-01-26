@@ -8,8 +8,6 @@ namespace MangaWeb.APIClients.Services
         private static string BaseUrl { get; set; }
         private static string EndAdd { get; set; }
 
-
-
         public static void ChangeBaseUrlOn(this RestClient restClient, string url)
         {
             BaseUrl = url;

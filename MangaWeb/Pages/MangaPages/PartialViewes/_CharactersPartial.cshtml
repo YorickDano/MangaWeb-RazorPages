@@ -1,5 +1,6 @@
 ﻿@using MangaWeb.Managers;
-@inject UIValuesManager uiValueManager; 
+@using Microsoft.Extensions.Localization;
+
 
 @for (var i = 0; i < Model.Manga.Characters.Count; ++i)
 {
@@ -26,7 +27,7 @@
 {
     <br />
     <form method="get">
-        <input id="HideShowCharacters" onclick="ShowAllCharacters()" class="w-25 btn btn-lg btn-primary" type="button" value="@uiValueManager.SeeAll" />
+        <input id="HideShowCharacters" onclick="ShowAllCharacters()" class="w-25 btn btn-lg btn-primary" type="button" value="@Model.Localizer["SeeAll"]" />
     </form>
 }
 
@@ -35,19 +36,19 @@
     function ShowAllCharacters() {
         var elements = document.getElementsByClassName("item");
         var button = document.getElementById("HideShowCharacters");
-        if (button.value === "Hide") {
+        if (button.value === "Hide" || button.value === "Спрятать") {
             Array.prototype.forEach.call(elements, function (element, index) {
                 if (index >= 14) {
                     element.style.display = "none"
                 }
             });
-            button.value = "See all";
+                button.value = "@Html.Raw(@Model.Localizer["SeeAll"].Value)";
             return;
         }
         Array.prototype.forEach.call(elements, function (element) {
             element.style.display = "inline-block"
         });
-        button.value = "Hide";
+            button.value = "@Html.Raw(@Model.Localizer["Hide"].Value)";
     }
 
 </script>

@@ -1,8 +1,11 @@
 ﻿@page "{handler?}"
 @using MangaWeb.Managers;
+@using Microsoft.AspNetCore.Mvc.Localization;
 @model IndexModel
+
 @{
-    ViewData["Title"] = Model.UIValuesManager.Profile;
+  
+    ViewData["Title"] = Model.Localizer["Profile"].Value;
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
@@ -28,7 +31,7 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Model.UIValuesManager.Save</button>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Model.Localizer["Save"].Value</button>
         </form>
         <br />
         <form asp-action="AddImage" method="post" enctype="multipart/form-data">
@@ -36,11 +39,11 @@
                 <input type="file" asp-for="FormFile" accept=".jpg, .jpeg, .png" class="form-control" multiple />
             </div>
 
-            <input id="update-profile-image-button" asp-page-handler="AddImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.UIValuesManager.AddImage">
+            <input id="update-profile-image-button" asp-page-handler="AddImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.Localizer["AddImage"].Value">
         </form>
         <br />
         <form asp-action="SetRandomAnimeProfileImage" method="post" enctype="multipart/form-data">
-            <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.UIValuesManager.SetRandAnimImg">
+            <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.Localizer["SetRandAnimImg"].Value">
         </form>
         @if (Model.MangaWebUser.Role != Role.User)
         {
@@ -50,14 +53,14 @@
             </form>
         }
         <br />
-        @Model.UIValuesManager.ChooseLanguage
+        @Model.Localizer["ChooseLanguage"].Value
         <div style="display:inline-flex; width:200px;">
-            <form method="get" >
+            <form method="post" >
                 <button class="buttonLanguage" value="ru" name="language" type="submit" asp-page-handler="ChangeLanguage">
-                    <img class="@(Model.UIValuesManager.IsEnlish() ? "languageImg" : "languageImgSelected")" src="~/img/Russia.png" />
+                    <img class="@(LanguageManager.IsEnlish() ? "languageImg" : "languageImgSelected")" src="~/img/Russia.png" />
                 </button>
-                <button class="buttonLanguage" value="eng" name="language" type="submit" asp-page-handler="ChangeLanguage">
-                    <img class="@(Model.UIValuesManager.IsEnlish() ? "languageImgSelected" : "languageImg")" src="~/img/UK.png" />
+                <button class="buttonLanguage" value="en" name="language" type="submit" asp-page-handler="ChangeLanguage">
+                    <img class="@(LanguageManager.IsEnlish() ? "languageImgSelected" : "languageImg")" src="~/img/UK.png" />
                 </button>
             </form>
         </div>

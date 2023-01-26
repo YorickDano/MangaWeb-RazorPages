@@ -6,10 +6,10 @@
 
 <div style="display:inline-block;margin-left:auto;margin-right:auto;">
     <button class="w-40 btn btn-lg btn-primary" style="height: 200px;margin-left:10px;">
-        <a style="text-decoration:none; font-size:50px; color:white;" asp-page="./CreateDefault">@Model.UIValuesManager.CreateManually</a>
+        <a style="text-decoration:none; font-size:50px; color:white;" asp-page="./CreateDefault">@Model.Localizer["CreateManually"].Value</a>
     </button>
     <button class="w-40 btn btn-lg btn-primary" style="height: 200px;margin-left:10px;">
-        <a style="text-decoration:none; font-size:50px; color:white;" asp-page="./CreateExpanded">@Model.UIValuesManager.CreateAuto</a>
+        <a style="text-decoration:none; font-size:50px; color:white;" asp-page="./CreateExpanded">@Model.Localizer["CreateAuto"].Value</a>
     </button>
 </div>
 

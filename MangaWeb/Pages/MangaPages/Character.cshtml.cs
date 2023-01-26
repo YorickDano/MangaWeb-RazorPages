@@ -4,6 +4,7 @@ using MangaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages.MangaPages
 {
@@ -12,12 +13,13 @@ namespace MangaWeb.Pages.MangaPages
         private readonly MangaWebContext _context;
 
         public MangaCharacter MangaCharacter;
-        public UIValuesManager UIValuesManager;
+        public IStringLocalizer<SharedResource> Localizer;
 
-        public CharacterModel(MangaWebContext mangaWebContext, UIValuesManager uIValuesManager)
+        public CharacterModel(MangaWebContext mangaWebContext, 
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = mangaWebContext;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)

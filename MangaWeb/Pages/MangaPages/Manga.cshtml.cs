@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using NAudio.Wave;
 
 namespace MangaWeb.Pages.MangaPages
@@ -19,18 +20,20 @@ namespace MangaWeb.Pages.MangaPages
         private readonly IAuthorizationService _authorizationService;
         private readonly ResearchMangaClient _researchMangaClient;
 
-        public UIValuesManager UIValuesManager;
         public IEnumerable<int> CurrentUserFavoritesManga;
+        public readonly IStringLocalizer<SharedResource> Localizer;
+
         public bool IsSeeAll { get; set; } = false;
 
         public MangaModel(MangaWebContext context,
             UserManager<MangaWebUser> userManager, IAuthorizationService authorizationService,
-            ResearchMangaClient researchMangaClient, UIValuesManager uIValuesManager)
+            ResearchMangaClient researchMangaClient, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _userManager = userManager;
             _authorizationService = authorizationService;
-            UIValuesManager = uIValuesManager;
+            Localizer = localizer;
+            _researchMangaClient = researchMangaClient;
         }
 
         public Manga? Manga { get; set; }
@@ -163,5 +166,14 @@ namespace MangaWeb.Pages.MangaPages
             return Redirect($"/MangaPages/Edit?id={id}");
         }
 
+        public async Task<IActionResult> OnPostCreateCommentAsync(int? id,string body)
+        {
+            var mangaUser = _userManager.GetUserAsync(User);
+            var manga = await _context.Manga.FirstAsync(x => x.Id == id);
+            var comment = new Comment() { Body = body, AuthorId = mangaUser.Id, Date = DateTime.Now, Manga = manga };
+            await _context.Comments.AddAsync(comment);
+           
+            return await OnGet(id);
+        }
     }
 }

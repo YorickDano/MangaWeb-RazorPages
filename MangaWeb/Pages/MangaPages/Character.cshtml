@@ -4,26 +4,26 @@
 
 <dl class="row">
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.UIValuesManager.Image)
+        @Model.Localizer["Image"]
     </dt>
     <dd class="col-sm-10">
         <img src="@Html.DisplayFor(model => model.MangaCharacter.ImageUrl)" class="imageCharacterPage">
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.UIValuesManager.Name)
+        @Model.Localizer["Name"]
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model =>model.MangaCharacter.Name)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.UIValuesManager.IsMain)
+        @Model.Localizer["IsMain"]
     </dt>
     <dd class="col-sm-10">
         @Html.Raw($" <input id='@Model.MangaCharacter.Id' onclick='return false;' class='generCheckBox' type='checkbox' {(Model.MangaCharacter.IsMain ? "checked" : "unchecked")} />")
         <label for="@Model.MangaCharacter.Id"></label>
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.UIValuesManager.Description)
+        @Model.Localizer["Description"]
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model =>model.MangaCharacter.Description)

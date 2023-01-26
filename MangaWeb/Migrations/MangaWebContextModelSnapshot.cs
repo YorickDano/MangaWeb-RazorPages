@@ -99,6 +99,38 @@ namespace MangaWeb.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MangaWeb.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MangaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("MangaId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
                 {
                     b.Property<int>("Id")
@@ -107,7 +139,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Autors")
+                    b.Property<string>("Authors")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CountOfChapters")
@@ -139,6 +171,9 @@ namespace MangaWeb.Migrations
 
                     b.Property<int>("Ranked")
                         .HasColumnType("int");
+
+                    b.Property<string>("ReadLinks")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Score")
                         .HasColumnType("real");
@@ -373,6 +408,21 @@ namespace MangaWeb.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MangaWeb.Models.Comment", b =>
+                {
+                    b.HasOne("MangaWeb.Models.MangaCharacter", "Character")
+                        .WithMany("Comments")
+                        .HasForeignKey("CharacterId");
+
+                    b.HasOne("MangaWeb.Models.Manga", "Manga")
+                        .WithMany("Comments")
+                        .HasForeignKey("MangaId");
+
+                    b.Navigation("Character");
+
+                    b.Navigation("Manga");
+                });
+
             modelBuilder.Entity("MangaWeb.Models.MangaCharacter", b =>
                 {
                     b.HasOne("MangaWeb.Models.Manga", "Manga")
@@ -447,6 +497,13 @@ namespace MangaWeb.Migrations
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
                 {
                     b.Navigation("Characters");
+
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("MangaWeb.Models.MangaCharacter", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaRead", b =>
