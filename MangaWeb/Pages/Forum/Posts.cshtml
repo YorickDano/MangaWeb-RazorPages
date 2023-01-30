@@ -1,0 +1,21 @@
+﻿@page "{id}"
+@model MangaWeb.Pages.Forum.PostsModel
+@{
+}
+
+<a asp-page="./Topics">Back to Topics</a>
+<br />
+ <form method="post">
+        
+        <input type="hidden" name="id" value="@Model.Topic.Id" />
+        <textarea oninput="auto_grow(this)" placeholder="Write your post" name="body"></textarea>
+        <br>
+    <input asp-page-handler="CreatePost" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
+    </form>
+    <br />
+    @foreach(var post in Model.Posts)
+    {
+        <div>
+            <h4><img class="headerImage" src="@post.AuthorImgSrc" />  @post.AuthorName</h4><h5>@post.Content</h5><h6>@post.Date.ToShortTimeString() @post.Date.ToShortDateString()</h6>
+        </div>
+    }

@@ -180,6 +180,9 @@
   <data name="EnterMangaTitle" xml:space="preserve">
     <value>Введите название манги</value>
   </data>
+  <data name="Forum" xml:space="preserve">
+    <value>Форум</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>От</value>
   </data>

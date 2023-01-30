@@ -204,18 +204,29 @@ img {
     padding-right: 4px;
     cursor:pointer;
 }
-textarea{
-    overflow:hidden;
-    overflow-wrap:break-word;
-    padding: 8px 16px;
-    background: transparent;
+textarea {
+    resize: none;
+    overflow: hidden;
+    height:55px;
+    max-height: 100px;
+    width:90%;
+    padding:6px 8px;
     color:rgb(240,240,240);
-    min-height:80px;
+    font-size:28px;
+    font-weight:500;
+    background-color:rgb(45,45,45);
 }
 .generCheckBox + label {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
+}
+.forumItem{
+    background-color:rgb(45,45,45);
+    border: 1px solid rgb(55,55,55);
+    border-radius: 10px 10px;
+    padding: 5px 8px;
+    margin: 20px 0;
 }
 
         .generCheckBox + label::before {

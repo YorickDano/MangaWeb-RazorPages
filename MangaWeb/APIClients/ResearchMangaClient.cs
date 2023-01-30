@@ -41,7 +41,7 @@ namespace MangaWeb.APIClients
                 " rank popularity genres created_at media_type status num_volumes num_chapters authors").GetRequest();
             var desiralizeInfoResponse = JsonConvert.DeserializeObject<MangaInfoModel.Root>((await RestClient.ExecuteAsync(mangaInfoRequest)).Content);
             var mangaInfoTask = SetMangaInfoFromApiAsync(desiralizeInfoResponse);
-            var charactersTask = SetMangaCharacters(Manga, title);
+            var charactersTask = SetMangaCharacters(Manga, desiralizeInfoResponse.id);
             var mangaAutorsTask = SetMangaAutorsAsync(desiralizeInfoResponse.id);
             var mangaLinksTask = new MangaReadLinksClient().FindLinksForAsync(title);
             Task.WaitAll(mangaInfoTask, charactersTask, mangaAutorsTask, mangaLinksTask);
@@ -176,10 +176,10 @@ namespace MangaWeb.APIClients
 
         private int DefaultNumber = -1;
 
-        private async Task<Manga> SetMangaCharacters( Manga manga, string title)
+        private async Task<Manga> SetMangaCharacters(Manga manga, int id)
         {
-            var mangaName = await GetManagaUrl(title);
-            return await _mangaCharacterClient.GetAllCharacters(manga.OriginTitle, manga, mangaName); ;
+         
+            return await _mangaCharacterClient.GetAllCharacters(manga.OriginTitle, manga, id); ;
         }
     }
 }

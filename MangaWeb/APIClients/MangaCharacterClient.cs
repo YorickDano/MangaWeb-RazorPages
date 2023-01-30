@@ -17,14 +17,14 @@ namespace MangaWeb.APIClients
         private protected RestClient RestClient  =new RestClient(MyAnimeListUrl);
         private protected RequestBuilder RequestBuilder = new RequestBuilder();
 
-        public async Task<Manga> GetAllCharacters(string title, Manga manga, string mangaUrlName)
+        public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
         {
             var htmlDocument = new HtmlDocument();
-            var requestCharactersList = RequestBuilder.CreateRequest().SetRequestResource($"{mangaUrlName}/characters").GetRequest();
+            var requestCharactersList = RequestBuilder.CreateRequest().SetRequestResource($"manga/{id}/{title}/characters").GetRequest();
             var responseCharactersList = await RestClient.ExecuteAsync(requestCharactersList);
-
+            
             htmlDocument.LoadHtml(responseCharactersList.Content);
-
+            
             var charactersNodes = htmlDocument.DocumentNode.SelectNodes("//div[contains(@class,'picSurround')]/a");
             if(charactersNodes == null)
             {
@@ -47,7 +47,7 @@ namespace MangaWeb.APIClients
                 imagesUrlsForCharacters[i].Remove(manga.Characters[i].ImageUrl);
                 manga.Characters[i].ImagesUrls = imagesUrlsForCharacters[i];
             }
-
+            htmlCharactersDocuments = null;
             return manga;
         }
         private async Task<IEnumerable<MangaCharacter>> GetMangaCharacters(IEnumerable<HtmlDocument> htmlDocuments)
@@ -92,7 +92,7 @@ namespace MangaWeb.APIClients
                 allImages.Add(imagesForCharacter);
             }
 
-            Array.Clear(htmlCharactersDocuments);
+            htmlCharactersDocuments = null;
             return allImages;
         }
     }

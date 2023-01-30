@@ -8,7 +8,8 @@ namespace MangaWeb.Models
         public int Id { get; set; }
         public string Body { get; set; }
         public DateTime Date { get; set; }
-        public int AuthorId { get; set; }
+        public string AuthorName { get; set; }
+        public string AuthorImgSrc { get; set; }
 
         [JsonIgnore]
         public Manga Manga { get; set; }

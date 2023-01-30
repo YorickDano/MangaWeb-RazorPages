@@ -40,7 +40,22 @@
         <img class="imageCharacterPage" src="@image">
     }
 }
+<br />
+<br />
+<form method="post">
 
+    <input type="hidden" name="id" value="@Model.MangaCharacter.Id" />
+    <textarea oninput="auto_grow(this)" placeholder="Write your comment" name="body"></textarea>
+    <br>
+    <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
+</form>
+<br />
+@foreach (var comment in Model.Comments)
+{
+    <div>
+        <h4><img class="headerImage" src="@comment.AuthorImgSrc" />  @comment.AuthorName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
+    </div>
+}
 
 
 

@@ -34,3 +34,6 @@ function genersLinkClick() {
         arrow.classList.replace("down", "up");
     }
 }
+function auto_grow(element) {
+    element.style.height = (element.scrollHeight) + "px";
+}

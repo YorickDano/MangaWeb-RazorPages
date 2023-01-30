@@ -1,4 +1,5 @@
 ﻿using MangaWeb.Models;
+using MangaWeb.Models.ForumModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     public DbSet<Manga> Manga { get; set; } = default!;
     public DbSet<MangaCharacter> MangaCharacter { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
+    public DbSet<Topic> Topics { get; set; } = default!;
+    public DbSet<Post> Posts { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -180,6 +180,9 @@
   <data name="EnterMangaTitle" xml:space="preserve">
     <value>Enter title of manga</value>
   </data>
+  <data name="Forum" xml:space="preserve">
+    <value>Forum</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>From</value>
   </data>
