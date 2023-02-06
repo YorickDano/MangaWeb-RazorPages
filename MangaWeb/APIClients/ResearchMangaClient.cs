@@ -33,8 +33,12 @@ namespace MangaWeb.APIClients
             Manga = Manga.CreateNew();
             var mangaUrlInfoRequest = RequestBuilder.CreateRequest().SetRequestResource("/v2/manga")
                 .AddRequestParameter("q", title).GetRequest();
-            var response = (await RestClient.ExecuteAsync(mangaUrlInfoRequest)).Content;
-            var desiralizeUrlResponse = JsonConvert.DeserializeObject<Root>(response);
+            var response = (await RestClient.ExecuteAsync(mangaUrlInfoRequest));
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return null;
+            }
+            var desiralizeUrlResponse = JsonConvert.DeserializeObject<Root>(response.Content);
             var mangaId = desiralizeUrlResponse.data[0].node.id;
             var mangaInfoRequest = RequestBuilder.CreateRequest().SetRequestResource($"/v2/manga/{mangaId}")
                 .AddRequestParameter("fields", "title main_picture start_date end_date synopsis mean" +

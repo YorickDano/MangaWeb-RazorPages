@@ -163,11 +163,21 @@ namespace MangaWeb.Pages.MangaPages
 
         public async Task<IActionResult> OnPostCreateCommentAsync(int? id,string body)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+            }
             var mangaUser = await _userManager.GetUserAsync(User);
             var manga = await _context.Manga.FirstAsync(x => x.Id == id);
-            var comment = new Comment() { Body = body, AuthorName = mangaUser.UserName,
-                AuthorImgSrc = mangaUser.ProfileImage, Date = DateTime.Now, Manga = manga };
-            await _context.Comments.AddAsync(comment);
+      
+            await _context.Comments.AddAsync(new Comment()
+            {
+                Body = body,
+                AuthorName = mangaUser.UserName,
+                AuthorImgSrc = mangaUser.ProfileImage,
+                Date = DateTime.Now,
+                Manga = manga
+            });
             await _context.SaveChangesAsync();
 
             return RedirectToPage("Manga",new {id = id});

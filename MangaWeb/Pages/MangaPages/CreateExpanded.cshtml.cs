@@ -19,7 +19,7 @@ namespace MangaWeb.Pages.MangaPages
         private readonly ResearchRuMangaClient _researchRuMangaClient;
 
         public readonly IStringLocalizer<SharedResource> Localizer;
-
+        public string ServerUnavailableMessage { get; private set; } = null;
         public CreateExpandedModel(MangaWebContext context, 
             UserManager<MangaWebUser> userManager,ResearchMangaClient researchMangaClient, 
             ResearchRuMangaClient researchRuMangaClient, IStringLocalizer<SharedResource> localizer)
@@ -53,12 +53,17 @@ namespace MangaWeb.Pages.MangaPages
 
             if (!IsRussian)
             {
-                  manga = await _researchMangaClient.GetFullManga(MangaTitleInput);
+                manga = await _researchMangaClient.GetFullManga(MangaTitleInput);
             }
             else
             {
-
                 manga = await _researchRuMangaClient.GetManga(MangaTitleInput);
+            }
+
+            if(manga == null)
+            {
+                ServerUnavailableMessage = "Server is not available, please try a few minute later.";
+                return Page();
             }
 
             await _context.Manga.AddAsync(manga);
@@ -73,8 +78,6 @@ namespace MangaWeb.Pages.MangaPages
                 appUser.CreatedManga.Add(manga.Id);
             }
             await _userManager.UpdateAsync(appUser);
-            
-            GC.Collect();
 
             return RedirectToPage($"/MangaPages/Manga", new { id = manga.Id });
         }

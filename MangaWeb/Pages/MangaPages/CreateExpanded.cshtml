@@ -3,10 +3,10 @@
 @{
 }
 
-
-
-
-
+@if (!string.IsNullOrEmpty(Model.ServerUnavailableMessage))
+{
+    <partial name="../Areas/Identity/Pages/Account/_StatusMessage" model="Model.ServerUnavailableMessage" />
+}
 
 <h2>@Model.Localizer["EnterMangaTitle"].Value</h2>
 <form method="post">

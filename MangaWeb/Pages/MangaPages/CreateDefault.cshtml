@@ -5,21 +5,19 @@
     ViewData["Title"] = "Create";
 }
 <style>
-    .status
-    {
-        font-size:24px;
-        font-weight:700;
-        display:inline-block;
-         color: rgb(50,50,50);
+    .status {
+        font-size: 24px;
+        font-weight: 700;
+        display: inline-block;
+        color: rgb(50,50,50);
         background-color: rgb(210,210,210);
         border: 0;
         margin: 2px;
     }
- .inputModel
- {
-    width: auto;
 
- }
+    .inputModel {
+        width: auto;
+    }
 </style>
 
 <h1>@Model.Localizer["Create"]</h1>
@@ -27,20 +25,20 @@
 <h4>@Model.Localizer["Manga"]</h4>
 <hr />
 
-    @if(TempData["AlertMessage"] != null)
-    {
-        <div class="alert alert-danger" style="font-size: 20px;font-weight:600;">
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-danger" style="font-size: 20px;font-weight:600;">
         <strong>Fail </strong>
-        @TempData["AlertMessage"] 
-        </div>
-    }
+        @TempData["AlertMessage"]
+    </div>
+}
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.OriginTitle"  class="control-label"></label>
+                <label asp-for="Input.OriginTitle" class="control-label"></label>
                 <input asp-for="Input.OriginTitle" id="OriginTitle" class="form-control" />
                 <span asp-validation-for="Input.OriginTitle" class="text-danger"></span>
             </div>
@@ -50,7 +48,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Description" class="control-label"></label>
-                <input asp-for="Input.Description" id="Description" class="form-control" />
+                <br />
+                <textarea class="descTextArea" oninput="auto_grow(this)" asp-for="Input.Description" id="Description" class="form-control"></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -58,8 +57,8 @@
                 <div id="genres" style="display: inline-block;"> </div>
                 <input id="genreAsp" asp-for="Input.Genres" readonly class="form-control" />
                 <input id="genreInput" class="form-control" />
-                <input onclick="AddToList()" type="button" value="Add"/>
-                <input onclick="RemoveLastFromList()" type="button" value="Remove last"/>
+                <input class="createButton btn btn-primary" onclick="AddToList()" type="button" value="Add" />
+                <input class="createButton btn btn-primary" onclick="RemoveLastFromList()" type="button" value="Remove last" />
             </div>
             <div class="form-group">
                 <label asp-for="Input.Description" class="control-label"></label>
@@ -102,18 +101,15 @@
                 <input id="Status" value="" asp-for="Input.Status" hidden />
                 <input style="" class="status" onclick="StatusChecked('Publishing')" id="pub" value="Publishing" readonly />
                 <input style="" class="status" onclick="StatusChecked('Finished')" id="fin" value="Finished" readonly />
-                <br />
-                <input style="" class="status" onclick="StatusChecked('Announced')" id="ann" value="Announced" readonly />
-                <input style="" class="status" onclick="StatusChecked('Frozen')" id="fro" value="Frozen"  />
                 <span asp-validation-for="Input.Popularity" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Input.Autors" class="control-label"></label>
                 <div id="autors" style="display: inline-block;"> </div>
                 <input id="autorAsp" asp-for="Input.Autors" readonly class="form-control" />
                 <input id="autorInput" class="form-control" />
-                <input onclick="AddToListAut()" type="button" value="Add" />
-                <input onclick="RemoveLastFromListAut()" type="button" value="Remove last" />
+                <input class="createButton btn btn-primary" onclick="AddToListAut()" type="button" value="Add" />
+                <input class="createButton btn btn-primary" onclick="RemoveLastFromListAut()" type="button" value="Remove last" />
             </div>
             <div class="form-group">
                 <label asp-for="Input.YearOfIssue" class="control-label"></label>
@@ -136,26 +132,23 @@
 <script>
     var genres = [];
     var autors = [];
-    function AddToList()
-    {
+    function AddToList() {
         var element = document.getElementById("genreInput");
         genres.push(element.value);
         element.value = "";
         UpdateView();
     }
-    function RemoveLastFromList()
-    {
+    function RemoveLastFromList() {
         genres.pop();
         UpdateView();
     }
-    function UpdateView()
-    { 
+    function UpdateView() {
         var res = document.getElementById("genreAsp");
         res.ariaReadOnly = false;
         res.value = "";
         res.value += genres.join(",");
         res.ariaReadOnly = true;
-  
+
     }
     function AddToListAut() {
         var element = document.getElementById("autorInput");
@@ -167,36 +160,35 @@
         autors.pop();
         UpdateViewAut();
     }
- 
+
     function UpdateViewAut() {
-        var res =  document.getElementById("autorAsp");
+        var res = document.getElementById("autorAsp");
         res.ariaReadOnly = false;
         res.value = "";
         res.value += autors.join(",");
         res.ariaReadOnly = true;
     }
 
-    function StatusChecked(status)
-    {
+    function StatusChecked(status) {
         var els = document.getElementsByClassName("status");
 
-        for(var i =0;i<els.length;++i)
-        {
+        for (var i = 0; i < els.length; ++i) {
             if (els[i].value === status) {
                 els[i].style = "color:rgb(210,210,210);background-color:rgb(50, 50, 50)";
                 document.getElementById("Status").innerText = status.toString();
                 document.getElementById("Status").value = status.toString();
             }
-            else 
-            {
+            else {
                 els[i].style = "color: rgb(50, 50, 50); background-color: rgb(210, 210, 210);";
             }
         }
-       
+
     }
-    
+
 </script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

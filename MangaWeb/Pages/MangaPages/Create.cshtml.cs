@@ -9,6 +9,7 @@ namespace MangaWeb.Pages.MangaPages
     public class CreateModel : PageModel
     {
         public IStringLocalizer<SharedResource> Localizer;
+  
         public CreateModel(IStringLocalizer<SharedResource> localizer)
         {
             Localizer = localizer;

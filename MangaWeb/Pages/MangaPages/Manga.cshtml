@@ -174,7 +174,7 @@
     <form method="post">
         
         <input type="hidden" name="id" value="@Model.Manga.Id" />
-        <textarea oninput="auto_grow(this)" placeholder="Write your comment" name="body"></textarea>
+        <textarea class="comment" oninput="auto_grow(this)" placeholder="Write your comment" name="body"></textarea>
         <br>
         <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
     </form>

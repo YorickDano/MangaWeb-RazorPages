@@ -35,6 +35,10 @@ namespace MangaWeb.Pages.MangaPages
         }
         public async Task<IActionResult> OnPostCreateCommentAsync(int? id, string body)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+            }
             var mangaUser = await _userManager.GetUserAsync(User);
             var character = await _context.MangaCharacter.FirstAsync(x => x.Id == id);
             var comment = new Comment()

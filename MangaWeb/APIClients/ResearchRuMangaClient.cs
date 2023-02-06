@@ -1,12 +1,9 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClients.Models;
 using MangaWeb.APIClients.Services;
-using MangaWeb.Managers;
 using MangaWeb.Models;
 using Newtonsoft.Json;
 using RestSharp;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using RuMangaUrlInfo = MangaWeb.APIClients.Models.RuMangaUrlInfoModel;
 
 namespace MangaWeb.APIClients

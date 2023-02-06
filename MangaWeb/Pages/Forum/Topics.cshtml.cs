@@ -39,6 +39,10 @@ namespace MangaWeb.Pages
 
         public async Task<IActionResult> OnPostCreateTopicAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+            }
             var user = await UserManager.GetUserAsync(User);
             if (!ModelState.IsValid)
             {

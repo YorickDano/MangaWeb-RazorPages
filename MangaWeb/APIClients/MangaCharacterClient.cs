@@ -12,52 +12,56 @@ namespace MangaWeb.APIClients
 {
     public class MangaCharacterClient 
     {
-        private protected const string MyAnimeListUrl = "https://myanimelist.net";
-        private protected const string MyAnimeListApiUrl = "https://api.myanimelist.net";
-        private protected RestClient RestClient  =new RestClient(MyAnimeListUrl);
-        private protected RequestBuilder RequestBuilder = new RequestBuilder();
+        private const string MyAnimeListUrl = "https://myanimelist.net";
+        private RestClient RestClient;
+        private RequestBuilder RequestBuilder;
+        private RequestExecutor RequestExecutor;
+
+        public MangaCharacterClient() 
+        {
+            RestClient = new RestClient(MyAnimeListUrl);
+            RequestBuilder = new RequestBuilder();
+            RequestExecutor = new RequestExecutor(MyAnimeListUrl);
+        }
 
         public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
         {
-            var htmlDocument = new HtmlDocument();
-            var requestCharactersList = RequestBuilder.CreateRequest().SetRequestResource($"manga/{id}/{title}/characters").GetRequest();
-            var responseCharactersList = await RestClient.ExecuteAsync(requestCharactersList);
-            
-            htmlDocument.LoadHtml(responseCharactersList.Content);
-            
-            var charactersNodes = htmlDocument.DocumentNode.SelectNodes("//div[contains(@class,'picSurround')]/a");
-            if(charactersNodes == null)
-            {
-                return manga;
-            }
-            var charactersLinks = charactersNodes.Select(x => x.Attributes["href"].Value); 
-
-            var responsesCharactersPages = new List<RestResponse>();
-            var requests = charactersLinks.Select(x => RequestBuilder.CreateRequest()
-            .SetRequestResource(x.Replace(MyAnimeListUrl, String.Empty)).GetRequest());
-            var requestExecutor = new RequestExecutor(MyAnimeListUrl);
-
-            var htmlCharactersDocuments = await Task.WhenAll(requests.Select(x => requestExecutor.SendRequestAsync(x)));
-            manga.Characters.AddRange(htmlCharactersDocuments.Select(x => GetMangaCharacter(x).Result));
-
+            var charactersLinks = await GetCharacterLinks(id, title);
+            var charactersDetails = await GetCharacterDetails(charactersLinks);
             var imagesUrlsForCharacters = await GetImagesUrlsForCharacters(charactersLinks.Select(x => x + "/pics"));
-
+            manga.Characters.AddRange(charactersDetails);
+            
             for (var i = 0; i < manga.Characters.Count; ++i)
             {
                 imagesUrlsForCharacters[i].Remove(manga.Characters[i].ImageUrl);
                 manga.Characters[i].ImagesUrls = imagesUrlsForCharacters[i];
             }
-            htmlCharactersDocuments = null;
+
+            RestClient.Dispose();
+
             return manga;
         }
-        private async Task<IEnumerable<MangaCharacter>> GetMangaCharacters(IEnumerable<HtmlDocument> htmlDocuments)
+
+        private async Task<List<string>> GetCharacterLinks(int id, string title)
         {
-            var characters = new List<MangaCharacter>();
-            foreach(var htmlDocument in htmlDocuments)
-            {
-                characters.Add(await GetMangaCharacter(htmlDocument));
-            }
-            return characters;
+            var htmlDocument = new HtmlDocument();
+            var requestCharactersList = RequestBuilder.CreateRequest().SetRequestResource($"manga/{id}/{title}/characters").GetRequest();
+            var responseCharactersList = await RestClient.ExecuteAsync(requestCharactersList);
+
+            htmlDocument.LoadHtml(responseCharactersList.Content);
+
+            var charactersNodes = htmlDocument.DocumentNode.SelectNodes("//div[contains(@class,'picSurround')]/a");
+        
+            return charactersNodes == null ? new List<string>() : charactersNodes.Select(x => x.Attributes["href"].Value).ToList();
+        }
+
+        private async Task<IEnumerable<MangaCharacter>> GetCharacterDetails(List<string> characterLinks)
+        {
+            var requests = characterLinks.Select(x => RequestBuilder.CreateRequest()
+                .SetRequestResource(x.Replace(MyAnimeListUrl, String.Empty)).GetRequest());
+
+            var htmlCharactersDocuments = await Task.WhenAll(requests.Select(x => RequestExecutor.SendRequestAsync(x)));
+            return await Task.WhenAll(htmlCharactersDocuments.Select(x => GetMangaCharacter(x)));
         }
 
         private async Task<MangaCharacter> GetMangaCharacter(HtmlDocument htmlDocument)
@@ -76,10 +80,9 @@ namespace MangaWeb.APIClients
         {
             var allImages = new List<List<string>>();
 
-            var requestExecutor = new RequestExecutor(MyAnimeListUrl);
             var imagesRequests = characterImagesLinks.Select(x => RequestBuilder.CreateRequest()
                     .SetRequestResource(x.Replace(MyAnimeListUrl, string.Empty)).GetRequest());
-            var htmlCharactersDocuments = await Task.WhenAll(imagesRequests.Select(x => requestExecutor.SendRequestAsync(x)));
+            var htmlCharactersDocuments = await Task.WhenAll(imagesRequests.Select(x => RequestExecutor.SendRequestAsync(x)));
 
             foreach (var characterDocument in htmlCharactersDocuments)
             {
@@ -92,7 +95,6 @@ namespace MangaWeb.APIClients
                 allImages.Add(imagesForCharacter);
             }
 
-            htmlCharactersDocuments = null;
             return allImages;
         }
     }

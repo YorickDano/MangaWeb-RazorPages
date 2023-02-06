@@ -204,17 +204,32 @@ img {
     padding-right: 4px;
     cursor:pointer;
 }
-textarea {
+.descTextArea {
     resize: none;
     overflow: hidden;
-    height:55px;
+    height: 55px;
     max-height: 100px;
-    width:90%;
-    padding:6px 8px;
-    color:rgb(240,240,240);
-    font-size:28px;
-    font-weight:500;
-    background-color:rgb(45,45,45);
+    width: 100%;
+    padding: 6px 8px;
+    color: rgb(240,240,240);
+    font-size: 28px;
+    font-weight: 500;
+    background-color: rgb(45,45,45);
+}
+.createButton{
+    margin-top:8px;
+}
+.comment {
+    resize: none;
+    overflow: hidden;
+    height: 55px;
+    max-height: 100px;
+    width: 90%;
+    padding: 6px 8px;
+    color: rgb(240,240,240);
+    font-size: 28px;
+    font-weight: 500;
+    background-color: rgb(45,45,45);
 }
 .generCheckBox + label {
     display: inline-flex;

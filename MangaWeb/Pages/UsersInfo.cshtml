@@ -11,7 +11,7 @@
             <img class="usersInfoImage" src="@user.ProfileImage" />
         </a>
         <br />
-        @if (Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin)
+        @if (Model.CurrentUser != null && Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin)
         {
             <form method="get">
                 <input id="id" hidden value="@user.Id" />
