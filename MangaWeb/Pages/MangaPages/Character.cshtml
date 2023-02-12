@@ -53,7 +53,7 @@
 @foreach (var comment in Model.Comments)
 {
     <div>
-        <h4><img class="headerImage" src="@comment.AuthorImgSrc" />  @comment.AuthorName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
+        <h4><a asp-page="../User" asp-route-userName="@comment.AuthorName"><img class="headerImage" src="@comment.AuthorImgSrc" /></a>  @comment.AuthorName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
     </div>
 }
 

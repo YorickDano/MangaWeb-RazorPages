@@ -82,7 +82,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name = "User Name")]
+            [Display(Name = "MangaWebUser Name")]
             public string UserName { get; set; }
 
             /// <summary>
@@ -136,7 +136,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("MangaWebUser created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

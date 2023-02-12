@@ -3,20 +3,27 @@
 @{
 
 }
-<h2>@Model.User.UserName</h2>
-<img style="height:320px;width:225px;" src="@Model.User.ProfileImage" />
-
+@if (!string.IsNullOrEmpty(Model.YouWriteToYourselfMessage))
+{
+    <partial name="../Areas/Identity/Pages/Account/_StatusMessage" model="Model.YouWriteToYourselfMessage" />
+}
+<h2>@Model.MangaWebUser.UserName</h2>
+<img class="usersInfoImage" src="@Model.MangaWebUser.ProfileImage" />
+<form method="post">
+    <input hidden name="userName" value="@Model.MangaWebUser.UserName" />
+<input asp-page-handler="WriteToUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Write"]" />
+</form>
 <h4>User's favorite manga</h4>
 <br />
 @if (Model.FavoriteManga != null && Model.FavoriteManga.Count != 0)
 {
     @foreach (var manga in Model.FavoriteManga)
     {
-        <div class="item" style="display:inline-block">
-            <a asp-page="./MangaPages/Manga" asp-route-id="@manga.Id">
-                <img class="characterImage" src="@manga.MangaImageUrl" />
+        <div class="manga-card">
+            <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+                <img class="imgMangaCart" src="@manga.MangaImageUrl">
+                <div class="manga-card-text">@Html.DisplayFor(modelItem => manga.OriginTitle)</div>
             </a>
-            <span class="caption">@string.Concat($"{manga.OriginTitle}")</span>
         </div>
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -16,11 +17,14 @@ namespace MangaWeb.Areas.Identity.Pages.Account
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly IEmailSender _sender;
+        public readonly IStringLocalizer<SharedResource> Localizer;
 
-        public RegisterConfirmationModel(UserManager<MangaWebUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<MangaWebUser> userManager, 
+            IEmailSender sender, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _sender = sender;
+            Localizer = localizer;
         }
 
         /// <summary>

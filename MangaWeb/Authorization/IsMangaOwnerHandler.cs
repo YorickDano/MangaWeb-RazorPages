@@ -12,8 +12,8 @@ namespace MangaWeb.Authorization
         {
             _userManager = userManager;
         }
-        protected override async Task HandleRequirementAsync(
-            AuthorizationHandlerContext context, IsMangaOwnerRequirement requirement, Manga manga)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            IsMangaOwnerRequirement requirement, Manga manga)
         {
             var appUser = await _userManager.GetUserAsync(context.User);
 

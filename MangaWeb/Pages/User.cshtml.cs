@@ -12,9 +12,10 @@ namespace MangaWeb.Pages
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly MangaWebContext _context;
 
-        public MangaWebUser User { get; set; }
+        public MangaWebUser MangaWebUser { get; set; }
         public List<Manga> FavoriteManga { get; set; }
         public IStringLocalizer<SharedResource> Localizer;
+        public string YouWriteToYourselfMessage { get; set; }
         public UserModel(UserManager<MangaWebUser> userManager,
             MangaWebContext context, IStringLocalizer<SharedResource> localizer)
         {
@@ -25,18 +26,42 @@ namespace MangaWeb.Pages
 
         public async Task<IActionResult> OnGetAsync(string userName)
         {
-            User = await _userManager.FindByNameAsync(userName);
+            MangaWebUser = await _userManager.FindByNameAsync(userName);
 
-            if(User == null)
+            if(MangaWebUser == null)
             {
                 return NotFound();
             }
-            if (User.FavoriteManga != null)
+            if (MangaWebUser.FavoriteManga != null)
             {
-                FavoriteManga = _context.Manga.Where(x => User.FavoriteManga.Contains(x.Id)).ToList();
+                FavoriteManga = _context.Manga.Where(x => MangaWebUser.FavoriteManga.Contains(x.Id)).ToList();
             }
 
             return Page();
+        }
+        public async Task<IActionResult> OnPostWriteToUserAsync(string userName)
+        {
+            MangaWebUser = await _userManager.GetUserAsync(User);
+
+            if(MangaWebUser.UserName == userName)
+            {
+                YouWriteToYourselfMessage = "You can't write to yourself.";
+                if (MangaWebUser.FavoriteManga != null)
+                {
+                    FavoriteManga = _context.Manga.Where(x => MangaWebUser.FavoriteManga.Contains(x.Id)).ToList();
+                }
+                return Page();
+            }
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Page();
+            }
+
+            return RedirectToPage("Conversation", new
+            {
+                userNameWriteTo = userName
+            });
         }
     }
 }

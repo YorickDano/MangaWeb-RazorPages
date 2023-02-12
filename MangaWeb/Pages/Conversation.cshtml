@@ -1,0 +1,123 @@
+﻿@page
+@model MangaWeb.Pages.MessageModel
+@{
+}
+<head>
+    <style>
+        .chat-box {
+            width: 1000px;
+            min-height: 600px;
+            overflow-y: scroll;
+            padding: 10px;
+            border: 1px solid gray;
+            margin: 0 auto;
+            display: block;
+            max-height:760px;
+        }
+
+        /* style for each message bubble */
+        .message-bubble {
+            color: rgb(240,240,240);
+            font-size: 28px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-width: 60%;
+            display: block;
+            clear: both;
+        }
+
+            /* align messages to the right */
+            .message-bubble.right {
+                background-color: rgb(45,45,45);
+                float: right;
+            }
+
+            .message-bubble.left {
+                background-color: rgb(25,25,25);
+                float: left;
+            }
+
+        .input-container {
+            width: 1000px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        .messageInput {
+            color: rgb(240,240,240);
+            font-size: 28px;
+            font-weight: 600;
+            width: 85%;
+            background-color: rgb(40,40,40);
+            margin-bottom: 7px;
+            margin-right: 10px;
+            margin-top:3px;
+        }
+
+        .chat-box::-webkit-scrollbar {
+            width: 15px;
+        }
+
+        .chat-box::-webkit-scrollbar-track {
+            background-color: rgb(25,25,25);
+            border-radius: 80px;
+        }
+
+        .chat-box::-webkit-scrollbar-thumb {
+            background-color: rgb(55,55,55);
+            border-radius: 80px;
+        }
+    </style>
+</head>
+<body>
+    <!-- the chat box container -->
+    <div class="chat-box">
+        <!-- sample message bubbles -->
+        <div class="message-bubble left">
+            Hey, how's it going?
+        </div>
+        <div class="message-bubble right">
+            I'm good, thanks! How about you?
+        </div>
+        <div class="message-bubble left">
+            I'm doing well, thanks.
+        </div>
+        <div class="message-bubble left">
+            Hey, how's it going?
+        </div>
+        <div class="message-bubble right">
+            I'm good, thanks! How about you?
+        </div>
+        <div class="message-bubble left">
+            I'm doing well, thanks.
+        </div>
+        <div class="message-bubble left">
+            Hey, how's it going?
+        </div>
+            <div class="message-bubble right">
+            I'm good, thanks! How about you?
+        </div>
+            <div class="message-bubble left">
+            I'm doing well, thanks.
+        </div>
+        <div class="message-bubble left">
+            Hey, how's it going?
+        </div>
+        <div class="message-bubble right">
+            I'm good, thanks! How about you?
+        </div>
+        <div class="message-bubble left">
+            I'm doing well, thanks.
+        </div>
+    </div>
+    <form method="post">
+    <div class="input-container">
+            <input class="messageInput" type="text" id="message-input" name="messageInput" placeholder="Write a message..." />
+            <input asp-page-handler="SendMessage" type="submit" class="w-15 btn btn-lg btn-primary" value="Send">
+    </div>
+    </form>
+</body>

@@ -4,6 +4,7 @@ using MangaWeb.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    partial class MangaWebContextModelSnapshot : ModelSnapshot
+    [Migration("20230212075511_Add message model")]
+    partial class Addmessagemodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,28 +134,6 @@ namespace MangaWeb.Migrations
                     b.HasIndex("MangaId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("MangaWeb.Models.Conversation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Conversation");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Post", b =>
@@ -368,9 +348,6 @@ namespace MangaWeb.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ConversationId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
@@ -381,8 +358,6 @@ namespace MangaWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
 
                     b.ToTable("Messages");
                 });
@@ -568,15 +543,6 @@ namespace MangaWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("MangaRead");
-                });
-
-            modelBuilder.Entity("MangaWeb.Models.Message", b =>
-                {
-                    b.HasOne("MangaWeb.Models.Conversation", "Conversation")
-                        .WithMany()
-                        .HasForeignKey("ConversationId");
-
-                    b.Navigation("Conversation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
