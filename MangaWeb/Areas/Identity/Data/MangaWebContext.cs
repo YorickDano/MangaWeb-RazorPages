@@ -13,6 +13,7 @@ public class MangaWebContext : IdentityDbContext<MangaWebUser>
     }
     public DbSet<Manga> Manga { get; set; } = default!;
     public DbSet<MangaCharacter> MangaCharacter { get; set; } = default!;
+    public DbSet<Conversation> Conversations { get; set; } = default!;
     public DbSet<Message> Messages { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
     public DbSet<Topic> Topics { get; set; } = default!;

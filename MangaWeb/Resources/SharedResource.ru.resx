@@ -201,6 +201,9 @@
   <data name="IsMain" xml:space="preserve">
     <value>Главный?</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Русский</value>
+  </data>
   <data name="LinksToRead" xml:space="preserve">
     <value>Ссылки для чтения</value>
   </data>

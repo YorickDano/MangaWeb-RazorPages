@@ -1,0 +1,71 @@
+﻿@page
+@model MangaWeb.Pages.ChatsModel
+@{
+}
+<style>
+
+    .chats {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .chat {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+        .chat:hover {
+            background-color: #111111;
+        }
+
+        .chat .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-right: 20px;
+            background-color: #ccc;
+        }
+
+        .chat .info {
+            flex: 1;
+        }
+
+            .chat .info .name {
+                font-size: 26px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .chat .info .message {
+                color: #666;
+                font-size: 16px;
+            }
+
+    .active-chat {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="chats">
+    @foreach (var conversation in Model.Conversations)
+    {
+        var otherUsername = conversation.FirstUserImageSrc == Model.CurrentUserImageSrc
+        ? conversation.SecondUserName : conversation.FirstUserName;
+        <a asp-page="Conversation" asp-route-userNameWriteTo="@otherUsername">
+            <div class="chat">
+                <img class="avatar" src="@(Model.CurrentUserImageSrc == conversation.FirstUserImageSrc
+                    ? conversation.SecondUserImageSrc : conversation.FirstUserImageSrc)" />
+                <div class="info">
+                    <div class="name">
+                        @otherUsername
+                    </div>
+                </div>
+                <div class="time">@conversation.Created</div>
+            </div>
+        </a>
+    }
+</div>

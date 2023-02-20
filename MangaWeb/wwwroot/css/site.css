@@ -391,8 +391,6 @@ svg {
  
 }
 
-
-
 .heart-background {
     position: absolute;
     left: 0;
@@ -414,4 +412,9 @@ svg {
 imageCharacterPage {
     width: 225px;
     height: 350px;
+}
+
+.chat .time {
+    color: #999;
+    font-size: 18px;
 }

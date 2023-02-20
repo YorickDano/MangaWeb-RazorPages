@@ -201,6 +201,9 @@
   <data name="IsMain" xml:space="preserve">
     <value>Is main?</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>English</value>
+  </data>
   <data name="LinksToRead" xml:space="preserve">
     <value>Links to read</value>
   </data>

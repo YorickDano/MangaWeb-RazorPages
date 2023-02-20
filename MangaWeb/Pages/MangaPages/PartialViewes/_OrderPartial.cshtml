@@ -46,21 +46,41 @@
                        type="checkbox" class="generCheckBox" onclick="MangaStatusChecker('re')" />
                 <label for="@Model.Released">@Model.Localizer["Released"]</label>
             </div>
+            <div class="generToSelect">
+                <input id="@Model.Localizer["English"]" name="Language" value="@Model.Localizer["English"]"
+                       type="checkbox" class="generCheckBox" onclick="MangaLanguageChecker('eng')" />
+                <label for="@Model.English">@Model.Localizer["English"]</label>
+                <input id="@Model.Localizer["Russian"]" name="Language" value="@Model.Localizer["Russian"]"
+                       type="checkbox" class="generCheckBox" onclick="MangaLanguageChecker('ru')" />
+                <label for="@Model.Russian">@Model.Localizer["Russian"]</label>
+            </div>
         </div>
         <input asp-page-handler="Order" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Submit"].Value" />
     </form>
     <script>
+        function MangaLanguageChecker(language) {
+            var ongoEl = document.getElementById("English");
+            ongoEl = ongoEl == null ? document.getElementById("Английский") : ongoEl;
+            var releEl = document.getElementById("Russian");
+            releEl = releEl == null ? document.getElementById("Русский") : releEl;
+
+            if (language === 'eng') {
+                releEl.checked = false;
+            }
+            else{
+                ongoEl.checked = false;
+            }
+        }
         function MangaStatusChecker(status) {
             var ongoEl = document.getElementById("Ongoing");
             ongoEl = ongoEl == null ? document.getElementById("Выходит") : ongoEl;
             var releEl = document.getElementById("Released");
             releEl = releEl == null ? document.getElementById("Завершён") : releEl;
 
-            if (status === 'on')
-            {
+            if (status === 'on') {
                 releEl.checked = false;
             }
-            else{
+            else {
                 ongoEl.checked = false;
             }
         }

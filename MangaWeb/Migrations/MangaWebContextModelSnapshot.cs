@@ -145,7 +145,13 @@ namespace MangaWeb.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FirstUserImageSrc")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondUserImageSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondUserName")
@@ -153,7 +159,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversation");
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Post", b =>
@@ -573,7 +579,7 @@ namespace MangaWeb.Migrations
             modelBuilder.Entity("MangaWeb.Models.Message", b =>
                 {
                     b.HasOne("MangaWeb.Models.Conversation", "Conversation")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("ConversationId");
 
                     b.Navigation("Conversation");
@@ -628,6 +634,11 @@ namespace MangaWeb.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MangaWeb.Models.Conversation", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Topic", b =>

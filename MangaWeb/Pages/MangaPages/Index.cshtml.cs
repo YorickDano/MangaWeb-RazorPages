@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MangaWeb.Pages.MangaPages
@@ -37,6 +38,8 @@ namespace MangaWeb.Pages.MangaPages
             Localizer = localizer;
             Ongoing = Localizer["Ongoing"];
             Released = Localizer["Released"];
+            English = Localizer["English"];
+            Russian = Localizer["Russian"];
         }
 
         public List<Manga> Manga { get; set; } = default!;
@@ -48,6 +51,8 @@ namespace MangaWeb.Pages.MangaPages
         public List<string>? Genres { get; set; }
         public string Ongoing { get; set; }
         public string Released { get; set; }
+        public string English { get; set; }
+        public string Russian { get; set; }
         [BindProperty(SupportsGet = true)]
         public string? MangaGenre { get; set; }
 
@@ -117,6 +122,7 @@ namespace MangaWeb.Pages.MangaPages
             OrderByScore(input.ScoreFrom, input.ScoreTo);
             OrderByCountOfChapters(input.CountOfChaptersFrom, input.CountOfChaptersTo);
             OrderByStatus(input.Status);
+            OrderByLanguage(input.Language);
             var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();
             Genres = new List<string>(allGenres);
             GenersSelectedList = new SelectList(allGenres);
@@ -218,6 +224,14 @@ namespace MangaWeb.Pages.MangaPages
             }
         }
 
+        public void OrderByLanguage(string language)
+        {
+            if (!string.IsNullOrEmpty(language))
+            {
+                Manga = Manga.Where(x => language == "English"
+                ? x.Language == Language.en : x.Language == Language.ru).ToList();
+            }
+        }
 
         public class OrderInputModel
         {
@@ -230,6 +244,7 @@ namespace MangaWeb.Pages.MangaPages
             public double? ScoreFrom { get; set; }
             public double? ScoreTo { get; set; }
             public string Status { get; set; }
+            public string Language { get; set; }
         }
     }
 }

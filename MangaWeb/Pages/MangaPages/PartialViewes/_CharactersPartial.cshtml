@@ -23,7 +23,7 @@
         <span class="caption">@string.Concat($"{character.Name}", $" ({role})")</span>
     </div>
 }
-@if (Model.Manga.Characters.Count >= 14)
+@if (Model.Manga.Characters.Count > 14)
 {
     <br />
     <form method="get">

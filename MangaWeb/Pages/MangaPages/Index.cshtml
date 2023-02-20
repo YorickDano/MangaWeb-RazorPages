@@ -10,9 +10,6 @@
 
 <form method="post">
 
-    <select asp-for="MangaGenre" asp-items="Model.GenersSelectedList">
-        <option value="">All</option>
-    </select>
     Title: <input asp-for="SearchString" />
     <input type="submit" value="Filter" />
 
@@ -21,14 +18,6 @@
 <div class="background">
     <partial name="PartialViewes/_OrderPartial" />
     <div class="mangas">
-        @*   @foreach (var item in Model.Manga)
-        {
-
-        <div class="manga-card">
-        <a class="text-decoration-none" asp-page="./ExpandedManga" asp-route-id="@item.Id"><img src="@item.MainImageUrl"><div class="manga-card-text">@Html.DisplayFor(modelItem => item.Title)</div></a>
-        </div>
-
-        }*@
 
         <h2 class="text-black">@Model.Localizer["Manga"].Value</h2>
 
