@@ -1,5 +1,6 @@
 ﻿using MangaWeb.APIClients;
 using MangaWeb.Authorization;
+using MangaWeb.Filters;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MangaWeb.Managers

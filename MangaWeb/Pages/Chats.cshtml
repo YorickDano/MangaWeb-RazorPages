@@ -3,7 +3,16 @@
 @{
 }
 <style>
-
+    .new-message-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #f00;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+    }
     .chats {
         display: flex;
         flex-direction: column;
@@ -69,3 +78,21 @@
         </a>
     }
 </div>
+<script>
+    function checkForNewMessages() {
+        // Get the chat box element
+        var chatBox = document.getElementById("chat-box");
+
+        // Check if there are new messages
+        if (chatBox.scrollHeight > chatBox.clientHeight) {
+            // If there are new messages, display a notification
+            var notification = document.createElement("div");
+            notification.classList.add("new-message-notification");
+            notification.textContent = "New messages!";
+            document.body.appendChild(notification);
+        }
+    }
+
+    
+    setInterval(checkForNewMessages, 5000);
+</script>

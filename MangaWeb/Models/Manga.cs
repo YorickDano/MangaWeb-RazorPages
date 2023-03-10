@@ -41,6 +41,7 @@ namespace MangaWeb.Models
         public Language Language { get; set; }
          [Display(Name = "Type")]
         public string Type { get; set; }
+        public string Creator { get; set; }
 
 
         public static Manga CreateNew()

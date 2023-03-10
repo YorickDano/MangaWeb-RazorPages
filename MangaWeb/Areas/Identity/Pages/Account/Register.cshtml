@@ -1,11 +1,14 @@
-﻿@page
+﻿    @page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
 
 <h1>@ViewData["Title"]</h1>
-
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <partial name="_StatusMessage" model="Model.ErrorMessage" />
+}
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">

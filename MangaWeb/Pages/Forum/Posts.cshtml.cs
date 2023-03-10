@@ -1,4 +1,5 @@
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Filters;
 using MangaWeb.Models;
 using MangaWeb.Models.ForumModels;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages.Forum
 {
+    
     public class PostsModel : PageModel
     {
         private readonly MangaWebContext _context;

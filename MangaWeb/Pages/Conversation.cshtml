@@ -1,5 +1,5 @@
-﻿@page
-@model MangaWeb.Pages.MessageModel
+﻿@page "{handler?}"
+@model MangaWeb.Pages.ConversationModel
 @{
 }
 <head>
@@ -101,34 +101,79 @@
             margin: 0;
         }
     </style>
+
 </head>
 <body>
- 
-        <div class="chat-head">
-            <img src="@Model.UserWriteToImageSrc" alt="User Avatar">
-            <h3 class="user-name">@Model.UserWriteToName</h3>
-        </div>
+    <div class="chat-head">
+        <img src="@Model.UserWriteToImageSrc" alt="User Avatar">
+        <h3 class="user-name">@Model.UserWriteToName</h3>
+        <span class="badge"></span>
+    </div>
 
     <div class="chat-box">
-
         @if (Model.Conversation.Messages is not null)
         {
             @foreach (var message in Model.Conversation.Messages)
             {
-                <div class="message-bubble
-            @(message.UserNameFrom == Model.CurrentUserName ? "right" : "left")">
+
+                var IsCurrentUserAuthor = message.UserNameFrom == Model.CurrentUserName;
+
+                <div id="@(message.IsViewed ? "" : "last-message")" class="message-bubble @(IsCurrentUserAuthor ? "right" : "left")"
+             data-message-id="@message.Id"
+             data-viewed="@message.IsViewed">
                     @message.Body
                     <div class="timeChat">@message.DateTime.ToShortTimeString() @message.DateTime.ToShortDateString()</div>
+                    @if (IsCurrentUserAuthor)
+                    {
+                        <img style="height:20px;width:20px;opacity:.6;" src="@(message.IsViewed ? "/img/Viewed.png" : "/img/NotViewed.png")">
+                    }
                 </div>
             }
         }
     </div>
+
     <form method="post">
         <div class="input-container">
-            <input name="userNameWriteTo" hidden value="@(Model.Conversation.FirstUserName == Model.CurrentUserName
-                ? Model.Conversation.SecondUserName : Model.Conversation.FirstUserName)" />
+            <input id="userNameWriteTo" name="userNameWriteTo" hidden value="@(Model.Conversation.FirstUserName == Model.CurrentUserName ? Model.Conversation.SecondUserName : Model.Conversation.FirstUserName)" />
             <input class="messageInput" type="text" id="message-input" name="messageInput" placeholder="Write a message..." />
             <input asp-page-handler="SendMessage" type="submit" class="w-15 btn btn-lg btn-primary" value="Send">
         </div>
     </form>
+    <script>
+        var lastMessage = document.getElementById("last-message");
+        lastMessage.scrollIntoView();
+        var chatBox = document.querySelector(".chat-box");
+        var messageBubbles = document.querySelectorAll(".message-bubble");
+
+        // set message as viewed when user scrolls to it
+        chatBox.addEventListener("scroll", function () {
+            messageBubbles.forEach(function (bubble) {
+                if (isScrolledIntoView(bubble) && bubble.getAttribute("data-viewed") === "False") {
+                    bubble.setAttribute("data-viewed", "True");
+                    var messageId = bubble.getAttribute("data-message-id");
+                    var userNameWriteTo = document.getElementById("userNameWriteTo").value;
+                    $.ajax({
+                        url: '?handler=MarkMessageAsViewed&messageId=' + messageId + '&userNameWriteTo=' + userNameWriteTo,
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (error) {
+                            console.log("Error: " + error);
+                        }
+                    });
+                }
+            });
+        });
+
+
+        // helper function to check if an element is in view
+        function isScrolledIntoView(element) {
+            var rect = element.getBoundingClientRect();
+            var elemTop = rect.top;
+            var elemBottom = rect.bottom;
+            var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+            return isVisible;
+        }
+    </script>
 </body>
+

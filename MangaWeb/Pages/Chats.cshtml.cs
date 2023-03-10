@@ -1,18 +1,21 @@
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Filters;
 using MangaWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using System.Security.Permissions;
 
 namespace MangaWeb.Pages
 {
+    [IsAuthenticatedFilter]
     public class ChatsModel : PageModel
     {
         private readonly MangaWebContext _context;
         private readonly UserManager<MangaWebUser> _userManager;
         
-
         public List<Conversation> Conversations { get; set; }
         public readonly IStringLocalizer<SharedResource> Localizer;
         public string CurrentUserName;
@@ -29,6 +32,7 @@ namespace MangaWeb.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var currentUser = await _userManager.GetUserAsync(User);
+           
             CurrentUserImageSrc = currentUser.ProfileImage;
             CurrentUserName = currentUser.UserName;
             Conversations = _context.Conversations.Where(x => x.FirstUserName == currentUser.UserName

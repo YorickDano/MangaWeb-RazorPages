@@ -2,6 +2,7 @@
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Filters;
 using MangaWeb.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
@@ -16,14 +17,17 @@ namespace MangaWeb.Pages.MangaPages
     public class CreateDefaultModel : PageModel
     {
         private readonly MangaWebContext _context;
-
+        private readonly UserManager<MangaWebUser> _userManager;
         public readonly IStringLocalizer<SharedResource> Localizer;
 
+
         public CreateDefaultModel(MangaWebContext context, 
-            IStringLocalizer<SharedResource> localizer)
+            IStringLocalizer<SharedResource> localizer,
+            UserManager<MangaWebUser> userManager)
         {
             _context = context;
             Localizer = localizer;
+            _userManager = userManager;
         }
 
         public IActionResult OnGet()
@@ -43,8 +47,6 @@ namespace MangaWeb.Pages.MangaPages
             var manga = new Manga();
             try
             {
-               
-
                 manga.OriginTitle = Input.OriginTitle;
                 manga.Popularity = Input.Popularity;
                 manga.Authors = Input.Autors.Split(',',StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -63,6 +65,7 @@ namespace MangaWeb.Pages.MangaPages
                     var imgSrc = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(ms.ToArray()));
                     manga.MangaImageUrl = imgSrc; 
                 }
+                manga.Creator = (await _userManager.GetUserAsync(User)).UserName;
                 await _context.Manga.AddAsync(manga);
                 await _context.SaveChangesAsync();
             }

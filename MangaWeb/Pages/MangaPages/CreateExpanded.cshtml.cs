@@ -53,19 +53,19 @@ namespace MangaWeb.Pages.MangaPages
 
             if (!IsRussian)
             {
-                manga = await _researchMangaClient.GetFullManga(MangaTitleInput);
+                manga = await _researchMangaClient.GetManga(MangaTitleInput, _context.Manga.Select(x => x.OriginTitle));
             }
             else
             {
-                manga = await _researchRuMangaClient.GetManga(MangaTitleInput);
+                manga = await _researchRuMangaClient.GetManga(MangaTitleInput, _context.Manga.Select(x=>x.OriginTitle));
             }
 
             if(manga == null)
             {
-                ServerUnavailableMessage = "Server is not available, please try a few minute later.";
+                ServerUnavailableMessage = "Server is not available, please try a few minute later. Or that manga already exist.";
                 return Page();
             }
-
+            manga.Creator = appUser.UserName;
             await _context.Manga.AddAsync(manga);
 
             await _context.SaveChangesAsync();

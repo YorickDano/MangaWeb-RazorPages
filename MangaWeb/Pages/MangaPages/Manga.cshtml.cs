@@ -65,11 +65,11 @@ namespace MangaWeb.Pages.MangaPages
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-            var result = await _authorizationService.AuthorizeAsync(User, Manga, "CanManageManga");
-            if (!result.Succeeded)
+
+            if ((await _userManager.GetUserAsync(User)).UserName != Manga.Creator)
             {
                 return RedirectToPage("/Account/AccessDenied",
-                    new { area= "Identity", message = "You didn't create this manga, so you cannot delete it", statusCode = 403 });
+                    new { area = "Identity", message = "You didn't create this manga, so you cannot delete it", statusCode = 403 });
             }
 
             var charactersOfMaga = _context.MangaCharacter.Where(x => x.Manga.Id == id);
@@ -135,19 +135,34 @@ namespace MangaWeb.Pages.MangaPages
             {
                 return NotFound();
             }
-            if(Manga.Language == Language.en)
-            {
-                Manga.CloneFrom(await _researchMangaClient.UpdateMangaAsync(Manga));
-            }
-            else
-            {
-                Manga.CloneFrom(await new ResearchRuMangaClient().UpdateMangaAsync(Manga));
-            }
+
+            Manga.CloneFrom(Manga.Language == Language.en
+                ? await _researchMangaClient.UpdateMangaAsync(Manga, Enumerable.Empty<string>())
+                : await new ResearchRuMangaClient().UpdateMangaAsync(Manga, Enumerable.Empty<string>()));
+
             _context.Manga.Update(Manga);
             await _context.SaveChangesAsync();
 
             return Redirect($"/MangaPages/Manga?id={id}");
         }
+        public static int[] SearchRange(int[] nums, int target)
+        {
+            if (!nums.Contains(target))
+            {
+                return new int[] { -1, -1 };
+            }
+            var res = new int[2];
+            res[0] = Array.IndexOf(nums,target);
+            nums[res[0]] = target == 0 ? 1 : 0;
+            if (!nums.Contains(target))
+            {
+                res[1] = res[0];
+                return res;
+            }
+            res[1] = Array.LastIndexOf(nums, target);
+            return res;
+        }
+       
         public async Task<IActionResult> OnGetEditMangaAsync(int id)
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
@@ -160,7 +175,7 @@ namespace MangaWeb.Pages.MangaPages
             return Redirect($"/MangaPages/Edit?id={id}");
         }
 
-        public async Task<IActionResult> OnPostCreateCommentAsync(int? id,string body)
+        public async Task<IActionResult> OnPostCreateCommentAsync(int? id, string body)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -168,7 +183,7 @@ namespace MangaWeb.Pages.MangaPages
             }
             var mangaUser = await _userManager.GetUserAsync(User);
             var manga = await _context.Manga.FirstAsync(x => x.Id == id);
-      
+
             await _context.Comments.AddAsync(new Comment()
             {
                 Body = body,
@@ -179,7 +194,7 @@ namespace MangaWeb.Pages.MangaPages
             });
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("Manga",new {id = id});
+            return RedirectToPage("Manga", new { id });
         }
     }
 }

@@ -34,13 +34,15 @@ builder.Services.AddControllersWithViews()
                .AddControllersAsServices()
                .AddViewLocalization();
 
-builder.AddServices();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
 builder.Services.AddRazorPages();
+
+builder.AddServices();
 builder.Services.AddMvc();
 builder.Services.AddRouteAnalyzer();
+
 var connectionString = TestConnectionManager.GetLocalDataBaseConnectionString();
 builder.Services.AddDbContext<MangaWebContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString) ?? throw new InvalidOperationException("Connection string 'MangaWebContext' not found.")));
@@ -52,6 +54,7 @@ builder.Services.AddDefaultIdentity<MangaWebUser>(options =>
     options.Password.RequireUppercase = false;
 }
     ).AddEntityFrameworkStores<MangaWebContext>();
+
 builder.Services.Configure<MailSenderOptions>(builder.Configuration.GetSection(nameof(MailSenderOptions)));
 builder.Services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
@@ -61,6 +64,7 @@ builder.Services.AddAuthorization(options =>
                     policyBuilder => policyBuilder
                         .AddRequirements(new IsMangaOwnerRequirement()));
 });
+
 var app = builder.Build();
 var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
@@ -72,17 +76,13 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
+app.UseCookiePolicy();
 app.MapRazorPages();
-
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-
 }
-
 
 app.Run();
 

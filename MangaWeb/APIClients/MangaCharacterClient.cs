@@ -4,98 +4,109 @@ using MangaWeb.Managers;
 using MangaWeb.Models;
 using NuGet.Packaging;
 using RestSharp;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web;
 
 namespace MangaWeb.APIClients
 {
-    public class MangaCharacterClient 
+    public class MangaCharacterClient
     {
         private const string MyAnimeListUrl = "https://myanimelist.net";
-        private RestClient RestClient;
-        private RequestBuilder RequestBuilder;
-        private RequestExecutor RequestExecutor;
+        private readonly RestClient _restClient;
+        private readonly RequestBuilder _requestBuilder;
+        private readonly RequestExecutor _requestExecutor;
 
-        public MangaCharacterClient() 
+        public MangaCharacterClient()
         {
-            RestClient = new RestClient(MyAnimeListUrl);
-            RequestBuilder = new RequestBuilder();
-            RequestExecutor = new RequestExecutor(MyAnimeListUrl);
+            _restClient = new RestClient(MyAnimeListUrl);
+            _requestBuilder = new RequestBuilder();
+            _requestExecutor = new RequestExecutor(MyAnimeListUrl);
         }
 
         public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
         {
             var charactersLinks = await GetCharacterLinks(id, title);
-            var charactersDetails = await GetCharacterDetails(charactersLinks);
-            var imagesUrlsForCharacters = await GetImagesUrlsForCharacters(charactersLinks.Select(x => x + "/pics"));
-            manga.Characters.AddRange(charactersDetails);
-            
-            for (var i = 0; i < manga.Characters.Count; ++i)
-            {
-                imagesUrlsForCharacters[i].Remove(manga.Characters[i].ImageUrl);
-                manga.Characters[i].ImagesUrls = imagesUrlsForCharacters[i];
-            }
+            var characterDetailsTasks = charactersLinks.Select(GetCharacterDetailsAsync).ToList();
+            var imagesUrlsTasks = charactersLinks.Select(link => GetImagesUrlsForCharacterAsync(link + "/pics")).ToList();
 
-            RestClient.Dispose();
+            var characterDetails = await Task.WhenAll(characterDetailsTasks);
+            var imagesUrls = await Task.WhenAll(imagesUrlsTasks);
+            manga.Characters = new List<MangaCharacter>();
+            for (var i = 0; i < characterDetails.Length; i++)
+            {
+                var character = characterDetails[i];
+                character.ImagesUrls = imagesUrls[i];
+                manga.Characters.Add(character);
+            }
 
             return manga;
         }
 
         private async Task<List<string>> GetCharacterLinks(int id, string title)
         {
+            var request = _requestBuilder.CreateRequest()
+                .SetRequestResource($"manga/{id}/{title}/characters").GetRequest();
+            var response = await _restClient.ExecuteAsync(request);
+
             var htmlDocument = new HtmlDocument();
-            var requestCharactersList = RequestBuilder.CreateRequest().SetRequestResource($"manga/{id}/{title}/characters").GetRequest();
-            var responseCharactersList = await RestClient.ExecuteAsync(requestCharactersList);
+            htmlDocument.LoadHtml(response.Content);
 
-            htmlDocument.LoadHtml(responseCharactersList.Content);
+            var characterLinks = htmlDocument.DocumentNode
+                .SelectNodes("//div[contains(@class,'picSurround')]/a")?
+                .Select(node => node.Attributes["href"].Value)
+                .ToList() ?? new List<string>();
 
-            var charactersNodes = htmlDocument.DocumentNode.SelectNodes("//div[contains(@class,'picSurround')]/a");
-        
-            return charactersNodes == null ? new List<string>() : charactersNodes.Select(x => x.Attributes["href"].Value).ToList();
+            return characterLinks;
         }
 
-        private async Task<IEnumerable<MangaCharacter>> GetCharacterDetails(List<string> characterLinks)
+        private async Task<MangaCharacter> GetCharacterDetailsAsync(string characterLink)
         {
-            var requests = characterLinks.Select(x => RequestBuilder.CreateRequest()
-                .SetRequestResource(x.Replace(MyAnimeListUrl, String.Empty)).GetRequest());
+            var request = _requestBuilder.CreateRequest()
+                .SetRequestResource(characterLink.Replace(MyAnimeListUrl, string.Empty)).GetRequest();
+            var response = await _restClient.ExecuteAsync(request);
 
-            var htmlCharactersDocuments = await Task.WhenAll(requests.Select(x => RequestExecutor.SendRequestAsync(x)));
-            return await Task.WhenAll(htmlCharactersDocuments.Select(x => GetMangaCharacter(x)));
-        }
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(response.Content);
 
-        private async Task<MangaCharacter> GetMangaCharacter(HtmlDocument htmlDocument)
-        {
-            var name = HttpUtility.HtmlDecode(htmlDocument.DocumentNode.SelectSingleNode("//h2[contains(@class,'normal_header')]").InnerText);
+            var name = HttpUtility.HtmlDecode(htmlDocument.DocumentNode
+                .SelectSingleNode("//h2[contains(@class,'normal_header')]").InnerText);
+
             var imageElement = htmlDocument.DocumentNode.SelectSingleNode("//div[not(@class)]/a/img");
-            var imageUrl = imageElement == null ? DefaultValuesManager.DefaultNoImageImageUrl : imageElement.Attributes["data-src"].Value;
-            var isMain = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(text(),'Mangaography')]/following::small[1]").InnerText == "Main";  
-            var description = HttpUtility.HtmlDecode(htmlDocument.DocumentNode.SelectSingleNode("//td[@valign='top' and not(@class)]")
+            var imageUrl = imageElement?.Attributes["data-src"].Value ?? DefaultValuesManager.DefaultNoImageImageUrl;
+
+            var isMain = htmlDocument.DocumentNode.SelectSingleNode("//div[contains(text(),'Mangaography')]/following::small[1]").InnerText == "Main";
+
+            var description = HttpUtility.HtmlDecode(htmlDocument.DocumentNode
+                .SelectSingleNode("//td[@valign='top' and not(@class)]")
                 .GetDirectInnerText().Replace("\n", "").Replace("\t", ""));
 
             return new MangaCharacter(name, imageUrl, isMain, description);
         }
 
-        private async Task<List<List<string>>> GetImagesUrlsForCharacters(IEnumerable<string> characterImagesLinks)
+        private async Task<List<string>> GetImagesUrlsForCharacterAsync(string characterImagesLink)
         {
-            var allImages = new List<List<string>>();
+            var htmlDocument = await GetHtmlDocumentAsync(characterImagesLink);
+            var imagesForCharacter = new List<string>();
 
-            var imagesRequests = characterImagesLinks.Select(x => RequestBuilder.CreateRequest()
-                    .SetRequestResource(x.Replace(MyAnimeListUrl, string.Empty)).GetRequest());
-            var htmlCharactersDocuments = await Task.WhenAll(imagesRequests.Select(x => RequestExecutor.SendRequestAsync(x)));
-
-            foreach (var characterDocument in htmlCharactersDocuments)
+            var imageElement = htmlDocument.DocumentNode.SelectSingleNode("//img[contains(@class,'portrait')]");
+            if (imageElement != null)
             {
-                var imagesForCharacter = new List<string>();
-                var imageElement = characterDocument.DocumentNode.SelectNodes("//img[contains(@class,'portrait')]");
-                if (imageElement != null)
-                    imagesForCharacter.AddRange(imageElement.Select(x => x.Attributes["data-src"].Value));
-                if (imagesForCharacter.Count > 0)
-                    imagesForCharacter.RemoveAt(0);
-                allImages.Add(imagesForCharacter);
+                imagesForCharacter.Add(imageElement.Attributes["data-src"].Value);
             }
 
-            return allImages;
+            return imagesForCharacter;
+        }
+
+        private async Task<HtmlDocument> GetHtmlDocumentAsync(string url)
+        {
+            var request = _requestBuilder.CreateRequest().SetRequestResource(url.Replace(MyAnimeListUrl, string.Empty)).GetRequest();
+            var response = await _restClient.ExecuteAsync(request);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(response.Content);
+
+            return htmlDocument;
         }
     }
 }

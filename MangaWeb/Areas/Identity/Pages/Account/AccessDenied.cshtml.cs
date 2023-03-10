@@ -3,6 +3,7 @@
 #nullable disable
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
 {
@@ -12,6 +13,13 @@ namespace MangaWeb.Areas.Identity.Pages.Account
     /// </summary>
     public class AccessDeniedModel : PageModel
     {
+        public readonly IStringLocalizer<SharedResource> Localizer;
+
+        public AccessDeniedModel(IStringLocalizer<SharedResource> localizer)
+        {
+            Localizer = localizer;
+        }
+
         public string Message { get; set; }
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

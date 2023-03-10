@@ -4,6 +4,7 @@ using MangaWeb.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    partial class MangaWebContextModelSnapshot : ModelSnapshot
+    [Migration("20230224145158_Update MangaModel add creator field")]
+    partial class UpdateMangaModeladdcreatorfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,9 +384,6 @@ namespace MangaWeb.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsViewed")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UserNameFrom")
                         .HasColumnType("nvarchar(max)");

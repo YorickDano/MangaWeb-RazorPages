@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using System.Security.Policy;
 
-namespace MangaWeb.APIClients.Services
+namespace MangaWeb.Extensions
 {
     public static class RestClientExtention
     {

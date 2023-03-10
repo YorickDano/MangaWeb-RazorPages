@@ -1,14 +1,15 @@
 using MangaWeb.Areas.Identity.Data;
+using MangaWeb.Filters;
 using MangaWeb.Models.ForumModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages
 {
+    [IsAuthenticatedFilter(PageToReturn = "~/Forum/Topics")]
     public class ForumModel : PageModel
     {
         private readonly MangaWebContext _context;
@@ -55,6 +56,5 @@ namespace MangaWeb.Pages
 
             return RedirectToPage("Topics");
         }
-    
     }
 }

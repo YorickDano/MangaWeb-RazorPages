@@ -13,177 +13,80 @@ namespace MangaWeb.APIClients
 {
     public class ResearchMangaClient
     {
-        private protected const string MyAnimeListUrl = "https://myanimelist.net";
-        private protected const string MyAnimeListApiUrl = "https://api.myanimelist.net";
-        private protected RestClient RestClient;
-        private protected RequestBuilder RequestBuilder;
+        private const string MyAnimeListApiUrl = "https://api.myanimelist.net";
+        private RestClient _restClient;
+        private RequestBuilder _requestBuilder;
         private readonly MangaCharacterClient _mangaCharacterClient;
-
-        private Manga Manga;
 
         public ResearchMangaClient(MangaCharacterClient mangaCharacterClient)
         {
-            RestClient = new RestClient(MyAnimeListApiUrl);
-            RequestBuilder = new RequestBuilder();
+            _restClient = new RestClient(MyAnimeListApiUrl);
+            _requestBuilder = new RequestBuilder();
             _mangaCharacterClient = mangaCharacterClient;
         }
 
-        public async Task<Manga> GetFullManga(string title)
+        public async Task<Manga> GetManga(string title, IEnumerable<string> nameTitlesExists)
         {
-            Manga = Manga.CreateNew();
-            var mangaUrlInfoRequest = RequestBuilder.CreateRequest().SetRequestResource("/v2/manga")
-                .AddRequestParameter("q", title).GetRequest();
-            var response = (await RestClient.ExecuteAsync(mangaUrlInfoRequest));
-            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            var mangaUrlInfoRequest = _requestBuilder.CreateRequest()
+                .SetRequestResource("/v2/manga")
+                .AddRequestParameter("q", title)
+                .GetRequest();
+            var response = await _restClient.ExecuteAsync(mangaUrlInfoRequest);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 return null;
             }
-            var desiralizeUrlResponse = JsonConvert.DeserializeObject<Root>(response.Content);
-            var mangaId = desiralizeUrlResponse.data[0].node.id;
-            var mangaInfoRequest = RequestBuilder.CreateRequest().SetRequestResource($"/v2/manga/{mangaId}")
-                .AddRequestParameter("fields", "title main_picture start_date end_date synopsis mean" +
-                " rank popularity genres created_at media_type status num_volumes num_chapters authors").GetRequest();
-            var desiralizeInfoResponse = JsonConvert.DeserializeObject<MangaInfoModel.Root>((await RestClient.ExecuteAsync(mangaInfoRequest)).Content);
-            var mangaInfoTask = SetMangaInfoFromApiAsync(desiralizeInfoResponse);
-            var charactersTask = SetMangaCharacters(Manga, desiralizeInfoResponse.id);
-            var mangaAutorsTask = SetMangaAutorsAsync(desiralizeInfoResponse.id);
-            var mangaLinksTask = new MangaReadLinksClient().FindLinksForAsync(title);
-            Task.WaitAll(mangaInfoTask, charactersTask, mangaAutorsTask, mangaLinksTask);
 
-            Manga.ReadLinks = mangaLinksTask.Result;
-
-            RestClient.Dispose();
-            return Manga;
-        }
-
-        public async Task SetMangaInfoFromApiAsync(MangaInfoModel.Root info)
-        {
-            Manga.OriginTitle = info.title;
-            Manga.MangaImageUrl = info.main_picture.large;
-            Manga.Description = info.synopsis;
-            switch (info.status)
+            var deserializeUrlResponse = JsonConvert.DeserializeObject<Root>(response.Content);
+            var manga = deserializeUrlResponse.data.FirstOrDefault();
+            if (manga == null || nameTitlesExists.Contains(manga.node.title))
             {
-                case "finished":
-                    {
-                        Manga.Status = MangaStatus.Finished;
-                        break;
-                    }
-                default:
-                    {
-                        Manga.Status = MangaStatus.Publishing;
-                        break;
-                    }
+                return null;
             }
-            Manga.Score = (float)info.mean;
-            Manga.Language = Language.en;
-            Manga.CountOfChapters = info.num_chapters == 0 ? -1 : info.num_chapters;
-            Manga.CountOfVolume = info.num_volumes == 0 ? -1 : info.num_volumes;
-            Manga.Popularity = info.popularity;
-            Manga.Ranked = info.rank;
-            Manga.Published = (Convert.ToDateTime(info.start_date)).ToShortDateString() + $" - {(info.end_date.Year < 1900 ? "Unknown" : info.end_date.ToShortDateString())}";
-            Manga.Genres = info.genres.Select(x => x.name);
-            Manga.YearOfIssue = Convert.ToInt32(info.start_date.Remove(4));
-            Manga.Type = char.ToUpper(info.media_type[0]) + info.media_type.Substring(1).Replace('_',' ');
 
-        }
-        public async Task SetMangaAutorsAsync(int mangaId)
-        {
-            var RestClient = new RestClient(MyAnimeListUrl);
+            var mangaInfoRequest = _requestBuilder.CreateRequest()
+                .SetRequestResource($"/v2/manga/{manga.node.id}")
+                .AddRequestParameter("fields", "title main_picture start_date end_date synopsis mean rank popularity genres created_at media_type status num_volumes num_chapters authors{first_name,last_name}")
+                .GetRequest();
+            var deserializeInfoResponse = JsonConvert.DeserializeObject<MangaInfoModel.Root>((await _restClient.ExecuteAsync(mangaInfoRequest)).Content);
+            var mangaLinksTask = new MangaReadLinksClient().FindLinksForAsync(title);
+            DateTime startDate, endDate;
+            var isStart = DateTime.TryParse(deserializeInfoResponse.start_date, out startDate);
+            var isEnd = DateTime.TryParse(deserializeInfoResponse.end_date, out endDate);
+            startDate = isStart ? startDate : new DateTime(1900,1,1);
+            endDate = isEnd ? endDate : new DateTime(1901,1,1);
 
-            var request = RequestBuilder.CreateRequest().SetRequestResource($"/manga/{mangaId}").GetRequest();
+            var mangaObj = new Manga
+            {
+                OriginTitle = deserializeInfoResponse.title,
+                MangaImageUrl = deserializeInfoResponse.main_picture.large,
+                Description = deserializeInfoResponse.synopsis,
+                Status = deserializeInfoResponse.status == "finished" ? MangaStatus.Finished : MangaStatus.Publishing,
+                Score = (float)deserializeInfoResponse.mean,
+                Language = Language.en,
+                CountOfChapters = deserializeInfoResponse.num_chapters == 0 ? -1 : deserializeInfoResponse.num_chapters,
+                CountOfVolume = deserializeInfoResponse.num_volumes == 0 ? -1 : deserializeInfoResponse.num_volumes,
+                Popularity = deserializeInfoResponse.popularity,
+                Ranked = deserializeInfoResponse.rank,
+                Published = $"{startDate.ToShortDateString()} - {(endDate.Year < 1900 ? "Unknown" : endDate.ToShortDateString())}",
+                Genres = deserializeInfoResponse.genres.Select(x => x.name),
+                YearOfIssue = Convert.ToInt32(deserializeInfoResponse.start_date.Remove(4)),
+                Type = char.ToUpper(deserializeInfoResponse.media_type[0]) + deserializeInfoResponse.media_type.Substring(1).Replace('_', ' '),
+                Authors = deserializeInfoResponse.authors.Select(x => string.Concat(x.node.first_name, " ", x.node.last_name))
+            };
 
-            var response = await RestClient.ExecuteAsync(request);
-            var htmlDocument = new HtmlDocument();
+            var charactersTask = _mangaCharacterClient.GetAllCharacters(deserializeInfoResponse.title, mangaObj, deserializeInfoResponse.id);
 
-            htmlDocument.LoadHtml(response.Content);
-            Manga.Authors = new List<string>(htmlDocument.DocumentNode
-                .SelectNodes("//span[contains(text(),'Authors')]/../a")
-                .Select(x => x.GetDirectInnerText().Replace(",", string.Empty)));
-            RestClient.Dispose();
-        }
-        public async Task<Manga> UpdateMangaAsync(Manga currentManga)
-        {
-            return await GetFullManga(currentManga.OriginTitle);
-        }
+            await Task.WhenAll(charactersTask, mangaLinksTask);
 
-        protected async Task<string> GetManagaUrl(string title)
-        {
-            var htmlDocument = await GetHtmlOfMangaSearchFromMyAnimeListAsync(title);
-            var mangaLink = htmlDocument.DocumentNode.SelectSingleNode("//a[@class='hoverinfo_trigger']")
-                .GetAttributeValue("href", DefaultValuesManager.DefaultMangaLink);
+            mangaObj.ReadLinks = await mangaLinksTask;
 
-            return mangaLink.Replace(MyAnimeListUrl, "");
-        }
-
-        protected async Task<HtmlDocument> GetHtmlOfMangaSearchFromMyAnimeListAsync(string title)
-        {
-            var htmlDocument = new HtmlDocument();
-            var request = RequestBuilder.CreateRequest()
-              .SetRequestResource("/manga.php")
-              .AddRequestParameter("q", title)
-              .AddRequestParameter("cat", "manga")
-              .GetRequest();
-            RestClient = new RestClient(MyAnimeListUrl);
-            var mangaSearchSiteResponse = RestClient.Execute(request);
-            htmlDocument.LoadHtml(mangaSearchSiteResponse.Content);
-            return htmlDocument;
+            return mangaObj;
         }
 
-        private async Task<Manga> SetTitles(HtmlDocument htmlDocument)
+        public async Task<Manga> UpdateMangaAsync(Manga currentManga, IEnumerable<string> mangaTitlesExists)
         {
-            var titlesElement = htmlDocument.DocumentNode.SelectSingleNode("//h1//span[@itemprop='name']");
-            Manga.OriginTitle = titlesElement.GetDirectInnerText();
-            return Manga;
-        }
-
-        private async Task<Manga> SetMangaImage(HtmlDocument htmlDocument)
-        {
-            Manga.MangaImageUrl = htmlDocument.DocumentNode
-                .SelectSingleNode("//img[@itemprop='image']")
-                .GetAttributeValue("data-src", DefaultValuesManager.DefaultMangaImageUrl);
-
-            return Manga;
-        }
-
-        private async Task<Manga> SetDescription(HtmlDocument htmlDocument)
-        {
-            var fullDescription = htmlDocument.DocumentNode
-                .SelectSingleNode("//span[@itemprop='description']").GetDirectInnerText().Replace("&#039;s", "");
-            Manga.Description = fullDescription.Remove(fullDescription.LastIndexOf('.') + 1);
-            return Manga;
-        }
-        private async Task<Manga> SetMangaInfo(HtmlDocument htmlDocument)
-        {
-            var documentNode = htmlDocument.DocumentNode;
-            Manga.CountOfVolume = int.TryParse
-                (documentNode.SelectSingleNode("//span[contains(text(),'Volume')]/..")
-                .GetDirectInnerText().Trim(), out DefaultNumber) ? DefaultNumber : -1;
-            Manga.CountOfChapters = int.TryParse
-                (documentNode.SelectSingleNode("//span[contains(text(),'Chapters')]/..")
-                .GetDirectInnerText().Trim(), out DefaultNumber) ? DefaultNumber : -1;
-            Manga.Status = (MangaStatus)Enum.Parse(typeof(MangaStatus), documentNode.SelectSingleNode("//span[contains(text(),'Status')]/..").GetDirectInnerText().Trim());
-            Manga.Published = documentNode.SelectSingleNode("//span[contains(text(),'Published')]/..").GetDirectInnerText().Trim();
-            var yearStr = Manga.Published.Split(' ')[3];
-            var yearTry = 0;
-            Manga.YearOfIssue = int.TryParse(yearStr, out yearTry) ? yearTry : 0;
-            Manga.Genres = new List<string>(documentNode.SelectNodes("//span[@itemprop='genre']").Select(x => x.GetDirectInnerText()));
-            Manga.Authors = new List<string>(documentNode.SelectNodes("//span[contains(text(),'Authors')]/../a").Select(x => x.GetDirectInnerText().Replace(",", string.Empty)));
-            Manga.Popularity = int.Parse(documentNode.SelectSingleNode("//span[contains(text(),'Popularity')]/..").GetDirectInnerText().Trim().TrimStart('#'));
-            var rankedTry = 0;
-            Manga.Ranked = int.TryParse(documentNode.SelectSingleNode("//span[contains(text(),'Ranked')]/..").GetDirectInnerText().Trim().TrimStart('#'), out rankedTry) ? rankedTry : -1;
-            var scoreTry = 0.0f;
-            Manga.Score = float.TryParse(documentNode.SelectSingleNode("//span[contains(text(),'Score')]/../span/span").GetDirectInnerText(),
-                NumberStyles.Number, new NumberFormatInfo { NumberDecimalSeparator = "." }, out scoreTry) ? scoreTry : -1;
-
-            return Manga;
-        }
-
-        private int DefaultNumber = -1;
-
-        private async Task<Manga> SetMangaCharacters(Manga manga, int id)
-        {
-         
-            return await _mangaCharacterClient.GetAllCharacters(manga.OriginTitle, manga, id); ;
+            return await GetManga(currentManga.OriginTitle, mangaTitlesExists);
         }
     }
 }

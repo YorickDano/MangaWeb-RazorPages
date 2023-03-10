@@ -22,11 +22,14 @@ namespace MangaWeb.APIClients
             
         }
 
-        public async Task<Manga> GetManga(string title)
+        public async Task<Manga> GetManga(string title, IEnumerable<string> mangaTitelsExists)
         {
             var manga = new Manga();
             var mangaMainInfo = await GetMangaMainInfo(title);
-
+            if (mangaTitelsExists.Contains(mangaMainInfo.russian))
+            {
+                return null;
+            }
             var htmlDocument = new HtmlDocument();
             manga = await SetMangaInfo(manga, mangaMainInfo, mangaMainInfo.url);
             var mangaCharctersPageResponse = await Client.ExecuteAsync(
@@ -127,9 +130,9 @@ namespace MangaWeb.APIClients
             return responseObj;
         }
 
-        public async Task<Manga> UpdateMangaAsync(Manga currentManga)
+        public async Task<Manga> UpdateMangaAsync(Manga currentManga, IEnumerable<string> mangaTitelsExists)
         {
-            return await GetManga(currentManga.OriginTitle);
+            return await GetManga(currentManga.OriginTitle, mangaTitelsExists);
         }
     }
 }

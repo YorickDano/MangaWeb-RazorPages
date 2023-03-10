@@ -9,6 +9,7 @@ namespace MangaWeb.Models
         public string UserNameTo { get; set; }
         public string Body { get; set; }
         public DateTime DateTime { get; set; }
+        public bool IsViewed { get; set; }    
 
         [JsonIgnore]
         public Conversation Conversation { get; set; }

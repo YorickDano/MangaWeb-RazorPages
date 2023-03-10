@@ -1,10 +1,12 @@
-﻿@using MangaWeb.Managers;
+﻿@using MangaWeb.Extensions;
+@using MangaWeb.Managers;
 @using Microsoft.AspNetCore.Identity
 @using MangaWeb.Areas.Identity.Data
 @using Microsoft.AspNetCore.Mvc.Localization;
 
 @inject SignInManager<MangaWebUser> SignInManager
 @inject UserManager<MangaWebUser> UserManager
+@inject MangaWebContext Context
 
 <ul class="navbar-nav" style="align-items: center;">
     @if (SignInManager.IsSignedIn(User))
@@ -20,7 +22,17 @@
             </form>
         </li>
         <li class="nav-item">
-            <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index"><img class="headerImage" src="@user.ProfileImage" /></a>
+            <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index"><img class="headerImage" src="@user?.ProfileImage" /></a>
+            @if (user.IsGotNewMessages(Context))
+            {
+                <span style="
+  height: 15px;
+  width: 15px;
+  background-color: rgb(180,0,0);
+  border-radius: 50%;
+  display: inline-block;
+"></span>
+            }
         </li>
     }
     else
