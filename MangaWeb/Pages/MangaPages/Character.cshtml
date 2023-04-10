@@ -45,9 +45,9 @@
 <form method="post">
 
     <input type="hidden" name="id" value="@Model.MangaCharacter.Id" />
-    <textarea class="comment" oninput="auto_grow(this)" placeholder="Write your comment" name="body"></textarea>
+    <textarea class="comment" oninput="auto_grow(this)" placeholder="@Model.Localizer["WriteYourCom"]" name="body"></textarea>
     <br>
-    <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
+    <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Send"]" />
 </form>
 <br />
 @foreach (var comment in Model.Comments)

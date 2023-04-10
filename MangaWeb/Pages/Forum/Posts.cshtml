@@ -3,14 +3,22 @@
 @{
 }
 
-<a asp-page="./Topics">Back to Topics</a>
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <partial name="../Areas/Identity/Pages/Account/_StatusMessage" model="Model.StatusMessage" />
+}
+
+<a asp-page="./Topics">@Model.Localizer["Back"]</a>
+
+
 <br />
  <form method="post">
         
         <input type="hidden" name="id" value="@Model.Topic.Id" />
-        <textarea oninput="auto_grow(this)" placeholder="Write your post" name="body"></textarea>
+        <textarea oninput="auto_grow(this)" placeholder="@Model.Localizer["WritePost"]" name="body"></textarea>
         <br>
-    <input asp-page-handler="CreatePost" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
+    <input asp-page-handler="CreatePost" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Create"]" />
     </form>
     <br />
     @foreach(var post in Model.Posts)

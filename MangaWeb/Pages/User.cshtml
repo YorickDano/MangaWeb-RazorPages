@@ -13,7 +13,8 @@
     <input hidden name="userName" value="@Model.MangaWebUser.UserName" />
 <input asp-page-handler="WriteToUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Write"]" />
 </form>
-<h4>User's favorite manga</h4>
+<br />
+<h4>@Model.Localizer["UserFavManga"]</h4>
 <br />
 @if (Model.FavoriteManga != null && Model.FavoriteManga.Count != 0)
 {
@@ -29,5 +30,5 @@
 }
 else
 {
-    <h6>This user has not favorite manga yet</h6>
+    <h6>@Model.Localizer["NoFavManga"]</h6>
 }

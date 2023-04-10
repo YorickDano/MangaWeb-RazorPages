@@ -31,6 +31,8 @@ namespace MangaWeb.Pages
 
         public List<Topic> Topics { get; set; }
 
+        public string StatusMessage { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             Topics = await _context.Topics.ToListAsync();
@@ -49,6 +51,13 @@ namespace MangaWeb.Pages
             {
                 return Page();
             }
+            if(string.IsNullOrEmpty(Topic.Title) || string.IsNullOrEmpty(Topic.Description))
+            {
+                StatusMessage = Localizer["TopicCreationFail"];
+                Topics = await _context.Topics.ToListAsync();
+                return Page();
+            }
+
             Topic.AuthorName = User.Identity.Name;
             Topic.AuthorImgSrc = user.ProfileImage;
             _context.Topics.Add(Topic);

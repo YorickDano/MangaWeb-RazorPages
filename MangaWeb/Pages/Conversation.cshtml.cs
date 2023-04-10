@@ -42,18 +42,19 @@ namespace MangaWeb.Pages
             var userWriteTo = await _userManager.FindByNameAsync(userNameWriteTo);
             UserWriteToName = userWriteTo.UserName;
             UserWriteToImageSrc = userWriteTo.ProfileImage;
-            var conversation = _context.Conversations.Include(x => x.Messages).FirstOrDefault(x =>
-                (x.FirstUserName == currentUser.UserName &&
-                x.SecondUserName == userNameWriteTo) || (x.FirstUserName == userNameWriteTo &&
-                x.SecondUserName == currentUser.UserName));
+            var conversation = _context.Conversations.Include(x => x.Messages).Include(x => x.FirstUser)
+                .Include(x => x.SecondUser).FirstOrDefault(x =>
+               (x.FirstUser.UserName == currentUser.UserName &&
+               x.SecondUser.UserName == userNameWriteTo) || (x.FirstUser.UserName == userNameWriteTo &&
+               x.SecondUser.UserName == currentUser.UserName));
             if (conversation == null)
             {
                 Conversation = new Conversation()
                 {
-                    FirstUserName = currentUser.UserName,
-                    FirstUserImageSrc = currentUser.ProfileImage,
-                    SecondUserName = userNameWriteTo,
-                    SecondUserImageSrc = userWriteTo.ProfileImage,
+                    FirstUser = currentUser,
+                    FirstUserId = currentUser.Id,
+                    SecondUser = userWriteTo,
+                    SecondUserId = userWriteTo.Id,
                     Created = DateTime.Now,
                     Messages = new List<Message>()
                 };
@@ -74,10 +75,11 @@ namespace MangaWeb.Pages
                 return RedirectToPage("Conversation", new { userNameWriteTo });
             }
             var currentUser = await _userManager.GetUserAsync(User);
-            Conversation = _context.Conversations.Include(x => x.Messages).FirstOrDefault(x =>
-               (x.FirstUserName == currentUser.UserName &&
-               x.SecondUserName == userNameWriteTo) || (x.FirstUserName == userNameWriteTo &&
-               x.SecondUserName == currentUser.UserName));
+            Conversation = _context.Conversations.Include(x => x.Messages).Include(x => x.FirstUser)
+                .Include(x => x.SecondUser).FirstOrDefault(x =>
+               (x.FirstUser.UserName == currentUser.UserName &&
+               x.SecondUser.UserName == userNameWriteTo) || (x.FirstUser.UserName == userNameWriteTo &&
+               x.SecondUser.UserName == currentUser.UserName));
 
             var message = new Message()
             {
@@ -95,24 +97,23 @@ namespace MangaWeb.Pages
             return RedirectToPage("Conversation", new { userNameWriteTo });
         }
 
-        public async void OnGetMarkMessageAsViewedAsync(int messageId, string userNameWriteTo)
+        public async Task<IActionResult> OnGetMarkMessageAsViewedAsync(int messageId, string userNameWriteTo)
         {
-            if (IsFirtLoad)
-            {
-                using (IServiceScope scope =
-                _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetService<MangaWebContext>();
-                    var currentUser = await _userManager.GetUserAsync(User);
-                    var message = await context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
+            using IServiceScope scope =
+                _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var currentUser = await _userManager.GetUserAsync(User);
+            var context = scope.ServiceProvider.GetService<MangaWebContext>();
 
-                    message.IsViewed = message.UserNameFrom != currentUser.UserName;
-                    context.Messages.Update(message);
+            var message = await context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
 
-                    await context.SaveChangesAsync();
-                    IsFirtLoad = false;
-                }
-            }
+            message.IsViewed = message.UserNameFrom != currentUser.UserName;
+            context.Messages.Update(message);
+
+            await context.SaveChangesAsync();
+
+
+            return new JsonResult(new { success = true });
+
         }
     }
 }

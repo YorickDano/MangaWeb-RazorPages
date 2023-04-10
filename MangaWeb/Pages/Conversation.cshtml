@@ -134,21 +134,21 @@
 
     <form method="post">
         <div class="input-container">
-            <input id="userNameWriteTo" name="userNameWriteTo" hidden value="@(Model.Conversation.FirstUserName == Model.CurrentUserName ? Model.Conversation.SecondUserName : Model.Conversation.FirstUserName)" />
-            <input class="messageInput" type="text" id="message-input" name="messageInput" placeholder="Write a message..." />
-            <input asp-page-handler="SendMessage" type="submit" class="w-15 btn btn-lg btn-primary" value="Send">
+            <input id="userNameWriteTo" name="userNameWriteTo" hidden value="@(Model.Conversation.FirstUser.UserName == Model.CurrentUserName ? Model.Conversation.SecondUser.UserName : Model.Conversation.FirstUser.UserName)" />
+            <input class="messageInput" type="text" id="message-input" name="messageInput" placeholder="@Model.Localizer["WriteMessage"]" />
+            <input asp-page-handler="SendMessage" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Send"]">
         </div>
     </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var lastMessage = document.getElementById("last-message");
         lastMessage.scrollIntoView();
         var chatBox = document.querySelector(".chat-box");
         var messageBubbles = document.querySelectorAll(".message-bubble");
 
-        // set message as viewed when user scrolls to it
-        chatBox.addEventListener("scroll", function () {
+        function markNewMessages() {
             messageBubbles.forEach(function (bubble) {
-                if (isScrolledIntoView(bubble) && bubble.getAttribute("data-viewed") === "False") {
+                if (bubble.getAttribute("data-viewed") === "False") {
                     bubble.setAttribute("data-viewed", "True");
                     var messageId = bubble.getAttribute("data-message-id");
                     var userNameWriteTo = document.getElementById("userNameWriteTo").value;
@@ -163,9 +163,16 @@
                     });
                 }
             });
+        }
+
+        // set message as viewed when user scrolls to it
+        chatBox.addEventListener("scroll", function () {
+            markNewMessages();
         });
 
-
+        // call markNewMessages after loading new messages
+        // example: if new messages are loaded using AJAX, call this function in the AJAX success callback
+        markNewMessages();
         // helper function to check if an element is in view
         function isScrolledIntoView(element) {
             var rect = element.getBoundingClientRect();

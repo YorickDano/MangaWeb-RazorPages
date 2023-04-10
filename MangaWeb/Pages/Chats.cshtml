@@ -62,12 +62,12 @@
 <div class="chats">
     @foreach (var conversation in Model.Conversations)
     {
-        var otherUsername = conversation.FirstUserImageSrc == Model.CurrentUserImageSrc
-        ? conversation.SecondUserName : conversation.FirstUserName;
+        var otherUsername = conversation.FirstUser.ProfileImage == Model.CurrentUserImageSrc
+        ? conversation.SecondUser.UserName : conversation.FirstUser.UserName;
         <a asp-page="Conversation" asp-route-userNameWriteTo="@otherUsername">
             <div class="chat">
-                <img class="avatar" src="@(Model.CurrentUserImageSrc == conversation.FirstUserImageSrc
-                    ? conversation.SecondUserImageSrc : conversation.FirstUserImageSrc)" />
+                <img class="avatar" src="@(Model.CurrentUserImageSrc == conversation.FirstUser.ProfileImage
+                    ? conversation.SecondUser.ProfileImage : conversation.FirstUser.ProfileImage)" />
                 <div class="info">
                     <div class="name">
                         @otherUsername

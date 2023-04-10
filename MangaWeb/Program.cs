@@ -38,6 +38,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 builder.AddServices();
 builder.Services.AddMvc();
@@ -78,6 +79,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCookiePolicy();
 app.MapRazorPages();
+app.UseSession();
 
 if (app.Environment.IsDevelopment())
 {

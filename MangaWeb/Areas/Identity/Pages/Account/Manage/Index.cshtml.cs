@@ -67,26 +67,22 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "New Username")]
+            public string Username { get; set; }
         }
 
         private async Task LoadAsync(MangaWebUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+           
             Image = _userManager.Users.FirstOrDefault(x => x.Id == user.Id).ProfileImage;
             MangaWebUser = user;
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Username = userName
             };
         }
 
@@ -104,7 +100,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostUpdateUsernameAsync()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -112,25 +108,25 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!ModelState.IsValid)
+            if (string.IsNullOrEmpty(Input.Username))
             {
                 await LoadAsync(user);
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var username = await _userManager.GetUserNameAsync(user);
+            if (Input.Username != username)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await _userManager.SetUserNameAsync(user, Input.Username);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = Localizer["UsernameChangeFail"];
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = Localizer["UsernameChangePass"];
             return RedirectToPage();
         }
 

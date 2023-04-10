@@ -19,7 +19,7 @@ namespace MangaWeb.APIClients
         {
             RequestBuilder = new RequestBuilder();
             Client = new RestClient(BaseUrl);
-            
+
         }
 
         public async Task<Manga> GetManga(string title, IEnumerable<string> mangaTitelsExists)
@@ -38,10 +38,11 @@ namespace MangaWeb.APIClients
             htmlDocument.LoadHtml(mangaCharctersPageResponse.Content);
             var mainCharactersBlock = htmlDocument.DocumentNode
                 .SelectSingleNode("//div[contains(@class,'cc-characters')]");
-            var mainCharactersNames = mainCharactersBlock.InnerText;
-                
-            manga = await SetMangaCharacters(manga, htmlDocument, mainCharactersNames);
-
+            var mainCharactersNames = mainCharactersBlock?.InnerText;
+            if (mainCharactersNames is not null)
+            {
+                manga = await SetMangaCharacters(manga, htmlDocument, mainCharactersNames);
+            }
             var mangaLinks = await new MangaReadLinksClient().FindLinksForAsync(title);
             manga.ReadLinks = mangaLinks;
 
@@ -77,16 +78,16 @@ namespace MangaWeb.APIClients
             var characters = new List<MangaCharacter>();
             foreach (var document in documents)
             {
-                string characterName = document.DocumentNode.SelectSingleNode("//div[@class='value']").InnerText;
+                string characterName = document.DocumentNode.SelectSingleNode("//div[@class='value']")?.InnerText;
                 characters.Add(new MangaCharacter()
                 {
                     Name = characterName,
-                    ImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']//img").Attributes["src"].Value,
-                    Description = document.DocumentNode.SelectSingleNode("//div[@class='text' and @itemprop='description']").InnerText,
+                    ImageUrl = document.DocumentNode.SelectSingleNode("//div[@class='c-poster']//img")?.Attributes["src"].Value,
+                    Description = document.DocumentNode.SelectSingleNode("//div[@class='text' and @itemprop='description']")?.InnerText,
                     IsMain = mainCharactersNames.Contains(characterName)
-                 });
+                });
             }
-      
+
             return characters;
         }
 
@@ -123,7 +124,8 @@ namespace MangaWeb.APIClients
         private async Task<RuMangaUrlInfo.Root> GetMangaMainInfo(string title)
         {
             var response = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
-                .SetRequestResource("/api/mangas").AddRequestParameter("search", title).GetRequest());
+                .SetRequestResource("/api/mangas").AddHeadersForShikimori()
+                .AddRequestParameter("search", title).GetRequest());
 
             var responseObj = JsonConvert.DeserializeObject<List<RuMangaUrlInfo.Root>>(response.Content)[0];
 

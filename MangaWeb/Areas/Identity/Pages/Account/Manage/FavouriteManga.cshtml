@@ -1,0 +1,20 @@
+﻿@page
+@model MangaWeb.Areas.Identity.Pages.Account.Manage.FavouriteMangaModel
+@{
+}
+@if (Model.FavouriteManga != null && Model.FavouriteManga.Count() != 0)
+{
+    @foreach (var manga in Model.FavouriteManga)
+    {
+        <div class="manga-card">
+            <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+                <img class="imgMangaCart" src="@manga.MangaImageUrl">
+                <div class="manga-card-text">@Html.DisplayFor(modelItem => manga.OriginTitle)</div>
+            </a>
+        </div>
+    }
+}
+else
+{
+    <h6>You do not have favorite manga.</h6>
+}

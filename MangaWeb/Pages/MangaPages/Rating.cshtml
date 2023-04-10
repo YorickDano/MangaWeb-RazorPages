@@ -1,7 +1,7 @@
 ﻿@page "{handler?}"
 @model MangaWeb.Pages.MangaPages.RatingModel
 
-<h2>Top manga by score</h2>
+<h2>@Model.Localizer["TopMangaScore"]</h2>
 <div class="mangaTop">
     @foreach (var manga in Model.TopScoreManga)
     {
@@ -13,8 +13,8 @@
         </div>
     }
 </div>
-<h2>Top manga by Genres</h2>
-<h4>Choose genres</h4>
+<h2>@Model.Localizer["TopMangaGenres"]</h2>
+<h4>@Model.Localizer["ChooseGenres"]</h4>
 <form method="get">
     <div class="inlineContainer">
         <div id="genresInput" hidden></div>
@@ -24,7 +24,7 @@
         }
     </div>
     <br />
-    <input style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" asp-page-handler="TopMangaByGenres" value="See" />
+    <input style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" asp-page-handler="TopMangaByGenres" value="@Model.Localizer["See"]" />
     <br />
 </form>
 

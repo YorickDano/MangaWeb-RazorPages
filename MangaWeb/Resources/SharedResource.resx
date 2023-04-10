@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AddImage" xml:space="preserve">
     <value>Add image</value>
   </data>
   <data name="AddToFavorite" xml:space="preserve">
     <value>Add to favorite</value>
   </data>
+  <data name="AppDesc" xml:space="preserve">
+    <value>Our platform offers a rich and interactive experience that allows you to discover, create, and share your favorite stories with the world.
+&amp;#13;
+With our powerful search and filtering tools, you can easily find the manga that matches your interests, and browse through detailed information about the story, characters, and ratings. You can also contribute to our growing library by adding your own manga, and customize your profile with a unique avatar and background.
+&amp;#13;
+But that's not all! "Japanese Artistic Literature" also lets you connect with other users through our forums and chat rooms, where you can discuss your favorite topics, share your art and fanfics, and make new friends from all over the world.
+&amp;#13;
+And if you need to take a break from reading, you can always check out our collection of anime trailers and clips, and discover new series to watch and enjoy.
+&amp;#13;
+"Japanese Artistic Literature" is designed with you in mind, and we are constantly working to improve and enhance our features based on your feedback. Join us today and become part of the most vibrant and creative community of manga lovers on the web!</value>
+  </data>
   <data name="Authors" xml:space="preserve">
     <value>Authors</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
   </data>
   <data name="ChangeEmail" xml:space="preserve">
     <value>Change email</value>
@@ -141,8 +161,17 @@
   <data name="Characters" xml:space="preserve">
     <value>Characters</value>
   </data>
+  <data name="Chats" xml:space="preserve">
+    <value>Chats</value>
+  </data>
+  <data name="ChooseGenres" xml:space="preserve">
+    <value>Choose genres</value>
+  </data>
   <data name="ChooseLanguage" xml:space="preserve">
     <value>Choose Language</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
   </data>
   <data name="ConfNewPassword" xml:space="preserve">
     <value>Confirm new password</value>
@@ -155,6 +184,9 @@
   </data>
   <data name="CreateManually" xml:space="preserve">
     <value>Create manga manually</value>
+  </data>
+  <data name="CreateTopic" xml:space="preserve">
+    <value>Create topic</value>
   </data>
   <data name="CurrentPassword" xml:space="preserve">
     <value>Current password</value>
@@ -179,6 +211,15 @@
   </data>
   <data name="EnterMangaTitle" xml:space="preserve">
     <value>Enter title of manga</value>
+  </data>
+  <data name="FavouriteManga" xml:space="preserve">
+    <value>Favourite manga</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
   </data>
   <data name="Forum" xml:space="preserve">
     <value>Forum</value>
@@ -207,6 +248,9 @@
   <data name="LinksToRead" xml:space="preserve">
     <value>Links to read</value>
   </data>
+  <data name="LoadMore" xml:space="preserve">
+    <value>Load more</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
@@ -231,8 +275,17 @@
   <data name="NewPassword" xml:space="preserve">
     <value>New password</value>
   </data>
+  <data name="NewUsername" xml:space="preserve">
+    <value>New username</value>
+  </data>
+  <data name="NoFavManga" xml:space="preserve">
+    <value>This user has not favorite manga yet</value>
+  </data>
   <data name="NoOptions" xml:space="preserve">
     <value>No options</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Old password</value>
   </data>
   <data name="Ongoing" xml:space="preserve">
     <value>Ongoing</value>
@@ -255,11 +308,17 @@
   <data name="Popularity" xml:space="preserve">
     <value>Popularity</value>
   </data>
+  <data name="PostCreationFail" xml:space="preserve">
+    <value>Error! Post content is empty</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
   <data name="Published" xml:space="preserve">
     <value>Published</value>
+  </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>Publishing</value>
   </data>
   <data name="Ranked" xml:space="preserve">
     <value>Ranked</value>
@@ -276,6 +335,9 @@
   <data name="Released" xml:space="preserve">
     <value>Released</value>
   </data>
+  <data name="RemoveLast" xml:space="preserve">
+    <value>Remove last</value>
+  </data>
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
   </data>
@@ -285,8 +347,14 @@
   <data name="Score" xml:space="preserve">
     <value>Score</value>
   </data>
+  <data name="See" xml:space="preserve">
+    <value>See</value>
+  </data>
   <data name="SeeAll" xml:space="preserve">
     <value>See All</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
   </data>
   <data name="SetRandAnimImg" xml:space="preserve">
     <value>Set random anime profile image</value>
@@ -303,6 +371,18 @@
   <data name="To" xml:space="preserve">
     <value>To</value>
   </data>
+  <data name="TopicCreationFail" xml:space="preserve">
+    <value>Error! Topic title or description is empty</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>Topics</value>
+  </data>
+  <data name="TopMangaGenres" xml:space="preserve">
+    <value>Top manga by genres</value>
+  </data>
+  <data name="TopMangaScore" xml:space="preserve">
+    <value>Top manga by score</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
@@ -312,8 +392,17 @@
   <data name="UpdateInfo" xml:space="preserve">
     <value>Update info</value>
   </data>
+  <data name="UserFavManga" xml:space="preserve">
+    <value>User's favorite manga</value>
+  </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
+  </data>
+  <data name="UsernameChangeFail" xml:space="preserve">
+    <value>Unexpected error when trying to set username</value>
+  </data>
+  <data name="UsernameChangePass" xml:space="preserve">
+    <value>Your profile has been updated</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Users</value>
@@ -321,11 +410,26 @@
   <data name="Volumes" xml:space="preserve">
     <value>Volumes</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome to "Japanese Artistic Literature"&amp;#13;The ultimate web application for manga fans!</value>
+  </data>
   <data name="Write" xml:space="preserve">
     <value>Write</value>
   </data>
+  <data name="WriteMessage..." xml:space="preserve">
+    <value>Write a message...</value>
+  </data>
+  <data name="WritePost" xml:space="preserve">
+    <value>Write your post</value>
+  </data>
+  <data name="WriteYourCom" xml:space="preserve">
+    <value>Write your comment</value>
+  </data>
   <data name="Year" xml:space="preserve">
     <value>Year</value>
+  </data>
+  <data name="YearOfIssue" xml:space="preserve">
+    <value>Year of issue</value>
   </data>
   <data name="YouWantRuManga" xml:space="preserve">
     <value>You want manga on russian?</value>

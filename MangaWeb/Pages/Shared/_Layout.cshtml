@@ -9,8 +9,7 @@
     <title>@ViewData["Title"] - MangaWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-
+  
 </head>
 <body>
     <header>
@@ -39,7 +38,7 @@
                             <a class="nav-link text-light" asp-area="" asp-page="/Forum/Topics">@Model.Localizer["Forum"].Value</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Chats">Chats</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Chats">@Model.Localizer["Chats"]</a>
                         </li>
                     </ul>
                 </div>

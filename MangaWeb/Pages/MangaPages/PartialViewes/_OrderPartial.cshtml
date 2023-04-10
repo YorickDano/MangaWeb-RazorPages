@@ -3,9 +3,9 @@
 
 <aside class="rightOptions">
 
-    <form class="whiteText20" method="get">
+    <div class="whiteText20">
         @Model.Localizer["OrderBy"].Value:
-        <select name="Option" asp-items="Model.OrderOptions">
+        <select id="options" name="Option" asp-items="Model.OrderOptions">
             <option>@Model.Localizer["NoOptions"].Value</option>
         </select>
         <br />
@@ -15,28 +15,28 @@
             @for (var i = 0; i < Model.Genres.Count; ++i)
             {
                 <div class="generToSelect">
-                    <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" />
+                    <input id="@Model.Genres[i]" class="generCheckBox" name="Geners" value="@Model.Genres[i]" type="checkbox" checked="@Model.Input?.Geners?.Contains(Model.Genres[i])" />
                     <label for="@Model.Genres[i]">@Model.Genres[i]</label>
                 </div>
             }
         </div>
         <div id="scoresSelector" class="scoresSelector">
             @Model.Localizer["Chapters"].Value<br />
-            <input type="text" name="CountOfChaptersFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <input type="text" id="CountOfChaptersFrom" name="CountOfChaptersFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
             <span>—</span>
-            <input type="text" name="CountOfChaptersTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+            <input type="text" id="CountOfChaptersTo" name="CountOfChaptersTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
         </div>
         <div id="scoresSelector" class="scoresSelector">
             @Model.Localizer["Score"].Value<br />
-            <input type="text" name="ScoreFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <input type="text" id="ScoreFrom" name="ScoreFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
             <span>—</span>
-            <input type="text" name="ScoreTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+            <input type="text" id="ScoreTo" name="ScoreTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
         </div>
         <div id="genersSelector" class="yearsSelector">
             @Model.Localizer["Year"].Value<br />
-            <input type="text" name="YearFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
+            <input type="text" id="YearFrom" name="YearFrom" placeholder="@Model.Localizer["From"].Value" class="orderInput" />
             <span>—</span>
-            <input type="text" name="YearTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
+            <input type="text" id="YearTo" name="YearTo" placeholder="@Model.Localizer["To"].Value" class="orderInput" />
             <br />
             <div class="generToSelect">
                 <input id="@Model.Localizer["Ongoing"]" name="Status" value="@Model.Localizer["Ongoing"]"
@@ -55,8 +55,8 @@
                 <label for="@Model.Russian">@Model.Localizer["Russian"]</label>
             </div>
         </div>
-        <input asp-page-handler="Order" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Submit"].Value" />
-    </form>
+        <input onclick="order()" style="width:auto;" class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Submit"].Value" />
+    </div>
     <script>
         function MangaLanguageChecker(language) {
             var ongoEl = document.getElementById("English");
@@ -67,7 +67,7 @@
             if (language === 'eng') {
                 releEl.checked = false;
             }
-            else{
+            else {
                 ongoEl.checked = false;
             }
         }

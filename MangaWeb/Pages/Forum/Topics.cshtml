@@ -2,24 +2,30 @@
 @model MangaWeb.Pages.ForumModel
 @{
 }
-<h3>Create Topic</h3>
+<h3>@Model.Localizer["CreateTopic"]</h3>
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <partial name="../Areas/Identity/Pages/Account/_StatusMessage" model="Model.StatusMessage" />
+}
+
 <form method="post">
     <div asp-validation-summary="All"></div>
     <div class="form-group">
-        <label asp-for="Topic.Title"></label>
+        <label asp-for="Topic.Title">@Model.Localizer["Title"]</label>
         <input asp-for="Topic.Title" class="form-control" />
         <span asp-validation-for="Topic.Title"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Topic.Description"></label>
+        <label asp-for="Topic.Description">@Model.Localizer["Description"]</label>
         <input asp-for="Topic.Description" class="form-control" />
         <span asp-validation-for="Topic.Description"></span>
     </div>
     <br />
-    <input asp-page-handler="CreateTopic" class="w-15 btn btn-lg btn-primary" type="submit" value="Create">
+    <input asp-page-handler="CreateTopic" class="w-15 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Create"]">
 </form>
 <br />
-<h2>Topics</h2>
+<h2>@Model.Localizer["Topics"]</h2>
 @foreach (var topic in Model.Topics)
 {
     <div class="forumItem">

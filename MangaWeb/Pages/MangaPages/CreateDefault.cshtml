@@ -38,94 +38,89 @@
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.OriginTitle" class="control-label"></label>
+                <label asp-for="Input.OriginTitle" class="control-label">@Model.Localizer["Title"]</label>
                 <input asp-for="Input.OriginTitle" id="OriginTitle" class="form-control" />
                 <span asp-validation-for="Input.OriginTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.MangaImageUrl" class="control-label"></label>
+                <label asp-for="Input.MangaImageUrl" class="control-label">@Model.Localizer["Image"]</label>
                 <input asp-for="Input.ImageFile" accept=".jpg, .jpeg, .png" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Input.Description" class="control-label"></label>
+                <label asp-for="Input.Description" class="control-label">@Model.Localizer["Description"]</label>
                 <br />
                 <textarea class="descTextArea" oninput="auto_grow(this)" asp-for="Input.Description" id="Description" class="form-control"></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Genres" class="control-label"></label>
+                <label asp-for="Input.Genres" class="control-label">@Model.Localizer["Genres"]</label>
                 <div id="genres" style="display: inline-block;"> </div>
                 <input id="genreAsp" asp-for="Input.Genres" readonly class="form-control" />
                 <input id="genreInput" class="form-control" />
-                <input class="createButton btn btn-primary" onclick="AddToList()" type="button" value="Add" />
-                <input class="createButton btn btn-primary" onclick="RemoveLastFromList()" type="button" value="Remove last" />
+                <input class="createButton btn btn-primary" onclick="AddToList()" type="button" value="@Model.Localizer["Add"]" />
+                <input class="createButton btn btn-primary" onclick="RemoveLastFromList()" type="button" value="@Model.Localizer["RemoveLast"]" />
             </div>
             <div class="form-group">
-                <label asp-for="Input.Description" class="control-label"></label>
-                <input asp-for="Input.Description" id="Description" class="form-control" />
-                <span asp-validation-for="Input.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Published" class="control-label"></label>
+                <label asp-for="Input.Published" class="control-label">@Model.Localizer["Published"]</label>
                 <input asp-for="Input.Published" id="Published" class="form-control" />
                 <span asp-validation-for="Input.Published" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CountOfVolume" class="control-label"></label>
+                <label asp-for="Input.CountOfVolume" class="control-label">@Model.Localizer["CountOfVolume"]</label>
                 <input asp-for="Input.CountOfVolume" id="CountOfVolume" class="form-control" />
                 <span asp-validation-for="Input.CountOfVolume" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CountOfChapters" class="control-label"></label>
+                <label asp-for="Input.CountOfChapters" class="control-label">@Model.Localizer["CountOfChapters"]</label>
                 <input asp-for="Input.CountOfChapters" id="CountOfChapters" class="form-control" />
                 <span asp-validation-for="Input.CountOfChapters" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Score" class="control-label"></label>
+                <label asp-for="Input.Score" class="control-label">@Model.Localizer["Score"]</label>
                 <input asp-for="Input.Score" id="Score" class="form-control" />
                 <span asp-validation-for="Input.Score" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Ranked" class="control-label"></label>
+                <label asp-for="Input.Ranked" class="control-label">@Model.Localizer["Ranked"]</label>
                 <input asp-for="Input.Ranked" id="Ranked" class="form-control" />
                 <span asp-validation-for="Input.Ranked" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Popularity" class="control-label"></label>
+                <label asp-for="Input.Popularity" class="control-label">@Model.Localizer["Popularity"]</label>
                 <input asp-for="Input.Popularity" id="Popularity" class="form-control" />
                 <span asp-validation-for="Input.Popularity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Status" class="control-label"></label>
+                <label asp-for="Input.Status" class="control-label">@Model.Localizer["Status"]</label>
                 <br />
                 <input id="Status" value="" asp-for="Input.Status" hidden />
-                <input style="" class="status" onclick="StatusChecked('Publishing')" id="pub" value="Publishing" readonly />
-                <input style="" class="status" onclick="StatusChecked('Finished')" id="fin" value="Finished" readonly />
+                <input style="" class="status" onclick="StatusChecked('Publishing')" id="pub" value="@Model.Localizer["Publishing"]" readonly />
+                <input style="" class="status" onclick="StatusChecked('Finished')" id="fin" value="@Model.Localizer["Finished"]" readonly />
                 <span asp-validation-for="Input.Popularity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Autors" class="control-label"></label>
+                <label asp-for="Input.Autors" class="control-label">@Model.Localizer["Autors"]</label>
                 <div id="autors" style="display: inline-block;"> </div>
                 <input id="autorAsp" asp-for="Input.Autors" readonly class="form-control" />
                 <input id="autorInput" class="form-control" />
-                <input class="createButton btn btn-primary" onclick="AddToListAut()" type="button" value="Add" />
-                <input class="createButton btn btn-primary" onclick="RemoveLastFromListAut()" type="button" value="Remove last" />
+                <input class="createButton btn btn-primary" onclick="AddToListAut()" type="button" value="@Model.Localizer["Add"]" />
+                <input class="createButton btn btn-primary" onclick="RemoveLastFromListAut()" type="button" value="@Model.Localizer["RemoveLast"]" />
             </div>
             <div class="form-group">
-                <label asp-for="Input.YearOfIssue" class="control-label"></label>
+                <label asp-for="Input.YearOfIssue" class="control-label">@Model.Localizer["YearOfIssue"]</label>
                 <input asp-for="Input.YearOfIssue" id="YearOfIssue" class="form-control" />
                 <span asp-validation-for="Input.YearOfIssue" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Model.Localizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back</a>
+    <a asp-page="Index">@Model.Localizer["Back"]</a>
 </div>
 
 

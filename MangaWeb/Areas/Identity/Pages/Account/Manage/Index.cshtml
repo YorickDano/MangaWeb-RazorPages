@@ -4,7 +4,6 @@
 @model IndexModel
 
 @{
-  
     ViewData["Title"] = Model.Localizer["Profile"].Value;
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
@@ -24,14 +23,14 @@
             <br />
             <div class="form-floating">
                 <input asp-for="Username" class="form-control" disabled />
-                <label asp-for="Username" class="form-label"></label>
+                <label asp-for="Username" class="form-label">@Model.Localizer["Username"]</label>
             </div>
             <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <input asp-for="Input.Username" class="form-control" />
+                <label asp-for="Input.Username" class="form-label">@Model.Localizer["NewUsername"]</label>
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Model.Localizer["Save"].Value</button>
+            <input id="update-profile-button" asp-page-handler="UpdateUsername" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.Localizer["Change"].Value">
         </form>
         <br />
         <form asp-action="AddImage" method="post" enctype="multipart/form-data">

@@ -19,6 +19,7 @@ namespace MangaWeb.Pages.Forum
         public readonly IStringLocalizer<SharedResource> Localizer;
         public IList<Post> Posts { get; private set; }
         public Topic Topic { get; private set; }
+        public string StatusMessage { get; set; }
 
         public PostsModel(IStringLocalizer<SharedResource> localizer,
             MangaWebContext context,
@@ -52,6 +53,19 @@ namespace MangaWeb.Pages.Forum
                 return NotFound();
             }
             var mangaUser = await _userManager.GetUserAsync(User);
+
+            if (string.IsNullOrEmpty(body))
+            {
+                Topic = await _context.Topics.FindAsync(id);
+                if (Topic == null)
+                {
+                    return NotFound();
+                }
+                Posts = await _context.Posts.Where(x => x.TopicID == id).ToListAsync();
+                StatusMessage = Localizer["PostCreationFail"];
+                return Page();
+            }
+
             var post = new Post()
             {
                 AuthorImgSrc = mangaUser.ProfileImage,

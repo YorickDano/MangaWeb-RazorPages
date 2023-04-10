@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Security.Permissions;
 
@@ -35,8 +36,9 @@ namespace MangaWeb.Pages
            
             CurrentUserImageSrc = currentUser.ProfileImage;
             CurrentUserName = currentUser.UserName;
-            Conversations = _context.Conversations.Where(x => x.FirstUserName == currentUser.UserName
-            || x.SecondUserName == currentUser.UserName).ToList();
+            Conversations = _context.Conversations.Include(x=>x.FirstUser).Include(x=>x.SecondUser)
+                .Where(x => x.FirstUser.UserName == currentUser.UserName 
+                || x.SecondUser.UserName == currentUser.UserName).Distinct().ToList();
 
             return Page();
         }

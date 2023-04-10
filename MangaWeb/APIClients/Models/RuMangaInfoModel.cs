@@ -50,20 +50,20 @@
             public int volumes { get; set; }
             public int chapters { get; set; }
             public string aired_on { get; set; }
-            public string released_on { get; set; }
-            public List<string> english { get; set; }
+            public object released_on { get; set; }
+            public List<object> english { get; set; }
             public List<string> japanese { get; set; }
             public List<object> synonyms { get; set; }
             public object license_name_ru { get; set; }
             public string description { get; set; }
             public string description_html { get; set; }
-            public object description_source { get; set; }
+            public string description_source { get; set; }
             public object franchise { get; set; }
             public bool favoured { get; set; }
             public bool anons { get; set; }
             public bool ongoing { get; set; }
-            public int thread_id { get; set; }
-            public int topic_id { get; set; }
+            public object thread_id { get; set; }
+            public object topic_id { get; set; }
             public int myanimelist_id { get; set; }
             public List<RatesScoresStat> rates_scores_stats { get; set; }
             public List<RatesStatusesStat> rates_statuses_stats { get; set; }

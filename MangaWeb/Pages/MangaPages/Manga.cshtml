@@ -4,8 +4,8 @@
 @{
     var ranked = Model.Manga.Ranked == -1 ? Model.Localizer["Unknow"] : Model.Manga.Ranked.ToString();
     var score = Model.Manga.Score == -1 ? Model.Localizer["Unknow"] : Model.Manga.Score.ToString();
-    var ruLinksToRead = Model.Manga.ReadLinks.Where(x => x.Contains("mangalib"));
-    var engLinksToRead = Model.Manga.ReadLinks.Where(x => !x.Contains("mangalib"));
+    var ruLinksToRead = Model.Manga.ReadLinks?.Where(x => x.Contains("mangalib"));
+    var engLinksToRead = Model.Manga.ReadLinks?.Where(x => !x.Contains("mangalib"));
 }
 
 <div>
@@ -174,9 +174,9 @@
     <form method="post">
         
         <input type="hidden" name="id" value="@Model.Manga.Id" />
-        <textarea class="comment" oninput="auto_grow(this)" placeholder="Write your comment" name="body"></textarea>
+        <textarea class="comment" oninput="auto_grow(this)" placeholder="@Model.Localizer["WriteYourCom"]" name="body"></textarea>
         <br>
-        <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="Create" />
+        <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Send"]" />
     </form>
     <br />
     @foreach(var comment in Model.Comments)

@@ -1,0 +1,69 @@
+﻿@using MangaWeb.Models;
+@using Microsoft.Extensions.Localization;
+
+@inject IStringLocalizer<SharedResource> Localizer;
+
+@model List<Manga>;
+@{
+    string volumesUnknown, chaptersUnknown, statusFinished;
+    
+}
+@foreach (var manga in Model)
+{
+    
+    <div id="@manga.Id" onmouseover="onMangaHover(@manga.Id)" onmouseout="onMangaOut(@manga.Id)" class="manga-card">
+        <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+            <img class="imgMangaCart" src="@manga.MangaImageUrl">
+            <div class="manga-card-text">@manga.OriginTitle</div>
+        </a>
+    </div>
+    <div id="@manga.Id-mangaInfo" class="mangaInforOnHover">
+        <h3>@manga.OriginTitle</h3>
+        <p>
+            <img class="mangaInfoImg" src="@manga.MangaImageUrl">
+
+            <div class="mangaInfoCenter">
+                <div class="mangaInfoDesc">
+                    <b><big>@Localizer["Description"]:</big></b> @manga.Description
+                </div>
+                <b><big>@Localizer["Genres"]:</big></b> @string.Join(", ",manga.Genres)
+            </div>
+            <div class="mangaInfoRight">
+                <b><big>@Localizer["Type"]:</big></b> @manga.Type<br>
+                <b><big>@Localizer["Score"]:</big></b> @manga.Score<br>
+                @if (manga.Language != Models.Language.ru)
+                {
+                    <b><big>@Localizer["Popularity"]:</big></b> @manga.Popularity
+                    <b><big>@Localizer["Ranked"]:</big></b> @manga.Ranked
+                    <br>
+                }
+                @if (manga.CountOfVolume == -1)
+                {
+                    volumesUnknown = $"<b><big>{@Localizer["Volumes"]}:</big></b> Unknown";
+                    chaptersUnknown = $"<b><big>{@Localizer["Chapters"]}:</big></b> Unknown";
+                }
+                else
+                {
+                    volumesUnknown = $"<b><big>{@Localizer["Volumes"]}:</big></b> {manga.CountOfVolume}";
+                    chaptersUnknown = $"<b><big>{@Localizer["Chapters"]}:</big></b> {manga.CountOfChapters}";
+                }
+                @Html.Raw(volumesUnknown)
+                @Html.Raw(chaptersUnknown)
+                <br>
+
+                @if (manga.Status == Models.MangaStatus.Finished)
+                {
+                    statusFinished = $"<b><big>{@Localizer["Published"]}:</big></b> {manga.Published}";
+                }
+                else
+                {
+                    statusFinished = $"<b><big>{@Localizer["Status"]}:</big></b> {manga.Status}";
+                }
+                @Html.Raw(statusFinished)
+
+            </div>
+
+        </p>
+    </div>
+
+}

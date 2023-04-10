@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
   <data name="AddImage" xml:space="preserve">
     <value>Добавить изображение</value>
   </data>
   <data name="AddToFavorite" xml:space="preserve">
     <value>Добавить в любимые</value>
   </data>
+  <data name="AppDesc" xml:space="preserve">
+    <value>Здесь вы найдете подробную информацию о манге, включая описание сюжета, персонажей, авторов, рейтинги и отзывы от других пользователей. Вы можете создавать, редактировать и фильтровать свои собственные списки манги и аниме, добавлять их в избранное и делиться ими с другими пользователями.
+&amp;#13;
+Мы также предоставляем возможность общаться с другими фанатами, обсуждать любимые манги и аниме, задавать вопросы и получать ответы от других пользователей. Вы можете изменять свой профиль, загружать аватары и другую информацию о себе, а также переключаться между языками для удобства использования.
+&amp;#13;
+Наше приложение обеспечивает доступ к обширной библиотеке манги и аниме, а также предоставляет удобный и интуитивно понятный интерфейс для управления и просмотра контента. Мы постоянно работаем над улучшением нашего сервиса, чтобы обеспечить максимально удобный и приятный опыт использования.
+&amp;#13;
+Присоединяйтесь к нашему сообществу фанатов манги, и найдите новые любимые произведения и друзей!</value>
+  </data>
   <data name="Authors" xml:space="preserve">
     <value>Авторы</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Изменить</value>
   </data>
   <data name="ChangeEmail" xml:space="preserve">
     <value>Поменять почту</value>
@@ -141,8 +159,17 @@
   <data name="Characters" xml:space="preserve">
     <value>Персонажи</value>
   </data>
+  <data name="Chats" xml:space="preserve">
+    <value>Чаты</value>
+  </data>
+  <data name="ChooseGenres" xml:space="preserve">
+    <value>Выбирите жанры</value>
+  </data>
   <data name="ChooseLanguage" xml:space="preserve">
     <value>Выберите язык</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
   </data>
   <data name="ConfNewPassword" xml:space="preserve">
     <value>Подтвердите новый пароль</value>
@@ -155,6 +182,9 @@
   </data>
   <data name="CreateManually" xml:space="preserve">
     <value>Создать мангу вручную</value>
+  </data>
+  <data name="CreateTopic" xml:space="preserve">
+    <value>Создать топик</value>
   </data>
   <data name="CurrentPassword" xml:space="preserve">
     <value>Действующий пароль</value>
@@ -179,6 +209,15 @@
   </data>
   <data name="EnterMangaTitle" xml:space="preserve">
     <value>Введите название манги</value>
+  </data>
+  <data name="FavouriteManga" xml:space="preserve">
+    <value>Любимая манга</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Найти</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Издано</value>
   </data>
   <data name="Forum" xml:space="preserve">
     <value>Форум</value>
@@ -207,6 +246,9 @@
   <data name="LinksToRead" xml:space="preserve">
     <value>Ссылки для чтения</value>
   </data>
+  <data name="LoadMore" xml:space="preserve">
+    <value>Больше</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Вход</value>
   </data>
@@ -231,8 +273,17 @@
   <data name="NewPassword" xml:space="preserve">
     <value>Новый пароль</value>
   </data>
+  <data name="NewUsername" xml:space="preserve">
+    <value>Новое имя пользователя</value>
+  </data>
+  <data name="NoFavManga" xml:space="preserve">
+    <value>У этого пользователя пока нет любимой манги</value>
+  </data>
   <data name="NoOptions" xml:space="preserve">
     <value>Не выбрано</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Старый пароль</value>
   </data>
   <data name="Ongoing" xml:space="preserve">
     <value>Выходит</value>
@@ -255,11 +306,17 @@
   <data name="Popularity" xml:space="preserve">
     <value>Популярность</value>
   </data>
+  <data name="PostCreationFail" xml:space="preserve">
+    <value>Ошибка! Содержание поста пустое</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Профиль</value>
   </data>
   <data name="Published" xml:space="preserve">
     <value>Выпущено</value>
+  </data>
+  <data name="Publishing" xml:space="preserve">
+    <value>Выходит</value>
   </data>
   <data name="Ranked" xml:space="preserve">
     <value>Ранг</value>
@@ -276,6 +333,9 @@
   <data name="Released" xml:space="preserve">
     <value>Завершён</value>
   </data>
+  <data name="RemoveLast" xml:space="preserve">
+    <value>Убрать последний</value>
+  </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>
   </data>
@@ -285,8 +345,14 @@
   <data name="Score" xml:space="preserve">
     <value>Оценка</value>
   </data>
+  <data name="See" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
   <data name="SeeAll" xml:space="preserve">
     <value>Все</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Отправить</value>
   </data>
   <data name="SetRandAnimImg" xml:space="preserve">
     <value>Установить случайное аниме изображение</value>
@@ -303,6 +369,18 @@
   <data name="To" xml:space="preserve">
     <value>До</value>
   </data>
+  <data name="TopicCreationFail" xml:space="preserve">
+    <value>Ошибка! Название или описания топика пустые</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>Топики</value>
+  </data>
+  <data name="TopMangaGenres" xml:space="preserve">
+    <value>Лучшая манга по жанрам</value>
+  </data>
+  <data name="TopMangaScore" xml:space="preserve">
+    <value>Лучшая манга по рейтингу</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Тип</value>
   </data>
@@ -310,10 +388,19 @@
     <value>Не известно</value>
   </data>
   <data name="UpdateInfo" xml:space="preserve">
-    <value>Обновить информацию</value>
+    <value>Обновить</value>
+  </data>
+  <data name="UserFavManga" xml:space="preserve">
+    <value>Любимая манга пользователя</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Имя пользователя</value>
+  </data>
+  <data name="UsernameChangeFail" xml:space="preserve">
+    <value>Непредвиденная ошибка при попытке установить имя пользователя</value>
+  </data>
+  <data name="UsernameChangePass" xml:space="preserve">
+    <value>Ваш профиль был обновлен</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
@@ -321,11 +408,26 @@
   <data name="Volumes" xml:space="preserve">
     <value>Тома</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Добро пожаловать на веб-сайт "Японская художественная литература"&amp;#13;Ваш источник информации о манге!</value>
+  </data>
   <data name="Write" xml:space="preserve">
     <value>Написать</value>
   </data>
+  <data name="WriteMessage" xml:space="preserve">
+    <value>Напишите сообщение...</value>
+  </data>
+  <data name="WritePost" xml:space="preserve">
+    <value>Напишите свой пост</value>
+  </data>
+  <data name="WriteYourCom" xml:space="preserve">
+    <value>Напишите свой комментарий</value>
+  </data>
   <data name="Year" xml:space="preserve">
     <value>Год</value>
+  </data>
+  <data name="YearOfIssue" xml:space="preserve">
+    <value>Год выпуска</value>
   </data>
   <data name="YouWantRuManga" xml:space="preserve">
     <value>Хотите мангу на русском?</value>

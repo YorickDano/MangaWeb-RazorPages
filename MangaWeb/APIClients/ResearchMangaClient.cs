@@ -1,12 +1,10 @@
-﻿using HtmlAgilityPack;
-using MangaWeb.APIClients.Models;
+﻿using MangaWeb.APIClients.Models;
 using MangaWeb.APIClients.Services;
 using MangaWeb.Managers;
 using MangaWeb.Models;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using RestSharp;
-using System.Globalization;
 using static MangaWeb.APIClients.Models.MangaUrlInfoModel;
 
 namespace MangaWeb.APIClients
@@ -68,7 +66,7 @@ namespace MangaWeb.APIClients
                 CountOfVolume = deserializeInfoResponse.num_volumes == 0 ? -1 : deserializeInfoResponse.num_volumes,
                 Popularity = deserializeInfoResponse.popularity,
                 Ranked = deserializeInfoResponse.rank,
-                Published = $"{startDate.ToShortDateString()} - {(endDate.Year < 1900 ? "Unknown" : endDate.ToShortDateString())}",
+                Published = $"{startDate.ToShortDateString()} - {(endDate.Year < 1902 ? "Unknown" : endDate.ToShortDateString())}",
                 Genres = deserializeInfoResponse.genres.Select(x => x.name),
                 YearOfIssue = Convert.ToInt32(deserializeInfoResponse.start_date.Remove(4)),
                 Type = char.ToUpper(deserializeInfoResponse.media_type[0]) + deserializeInfoResponse.media_type.Substring(1).Replace('_', ' '),

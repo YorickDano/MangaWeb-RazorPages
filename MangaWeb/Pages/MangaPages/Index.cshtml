@@ -1,85 +1,128 @@
 ﻿@page "{handler?}"
 @model MangaWeb.Pages.MangaPages.IndexModel
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
     var statusFinished = string.Empty;
     var volumesUnknown = string.Empty;
     var chaptersUnknown = string.Empty;
 }
-
-<form method="post">
-
-    Title: <input asp-for="SearchString" />
-    <input type="submit" value="Filter" />
+<style>
 
 
+    .loadMore {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<form method="post" class="whiteText20">
+    @Model.Localizer["Title"]: <input class="descTextArea" style="width:250px" asp-for="SearchString" />
+    <input class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Find"]" />
 </form>
 <div class="background">
     <partial name="PartialViewes/_OrderPartial" />
     <div class="mangas">
-
         <h2 class="text-black">@Model.Localizer["Manga"].Value</h2>
+        <div id="mangaList">
+            <partial name="PartialViewes/_MangaListPartial" model="@Model.Manga" />
+        </div>
+        <div style="width:100%; display:flex; justify-content: center;
+  align-items: center;">
+            <button class="btn btn-primary loadMore" id="loadMoreButton" onclick="loadMore()">
+                @Model.Localizer["LoadMore"]
+            </button>
+        </div>
 
 
-        @foreach (var item in Model.Manga)
-        {
-
-            <div id="@item.Id" onmouseover="onMangaHover(@item.Id)" onmouseout="onMangaOut(@item.Id)" class="manga-card">
-                <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@item.Id">
-                    <img class="imgMangaCart" src="@item.MangaImageUrl">
-                    <div class="manga-card-text">@Html.DisplayFor(modelItem => item.OriginTitle)</div>
-                </a>
-            </div>
-            <div id="@item.Id-mangaInfo" class="mangaInforOnHover">
-                <h3>@item.OriginTitle</h3>
-                <p>
-                    <img class="mangaInfoImg" src="@item.MangaImageUrl">
-
-                    <div class="mangaInfoCenter">
-                        <div class="mangaInfoDesc">
-                            <b><big>@Model.Localizer["Description"].Value:</big></b> @item.Description
-                        </div>
-                        <b><big>@Model.Localizer["Genres"].Value:</big></b> @string.Join(", ",item.Genres)
-                    </div>
-                    <div class="mangaInfoRight">
-                        <b><big>@Model.Localizer["Type"].Value:</big></b> @item.Type<br>
-                        <b><big>@Model.Localizer["Score"].Value:</big></b> @item.Score<br>
-                        @if (item.Language != Models.Language.ru)
-                        {
-                            <b><big>@Model.Localizer["Popularity"].Value:</big></b> @item.Popularity
-                            <b><big>@Model.Localizer["Ranked"].Value:</big></b> @item.Ranked
-                            <br>
-                        }
-                        @if (item.CountOfVolume == -1)
-                        {
-                            volumesUnknown = $"<b><big>{@Model.Localizer["Volumes"].Value}:</big></b> Unknown";
-                            chaptersUnknown = $"<b><big>{@Model.Localizer["Chapters"].Value}:</big></b> Unknown";
-                        }
-                        else
-                        {
-                            volumesUnknown = $"<b><big>{@Model.Localizer["Volumes"].Value}:</big></b> {@item.CountOfVolume}";
-                            chaptersUnknown = $"<b><big>{@Model.Localizer["Chapters"].Value}:</big></b> {@item.CountOfChapters}";
-                        }
-                        @Html.Raw(volumesUnknown)
-                        @Html.Raw(chaptersUnknown)
-                        <br>
-
-                        @if (item.Status == Models.MangaStatus.Finished)
-                        {
-                            statusFinished = $"<b><big>{@Model.Localizer["Published"].Value}:</big></b> {item.Published}";
-                        }
-                        else
-                        {
-                            statusFinished = $"<b><big>{@Model.Localizer["Status"].Value}:</big></b> {item.Status}";
-                        }
-                        @Html.Raw(statusFinished)
-
-                    </div>
-
-                </p>
-            </div>
-        }
     </div>
 
+
 </div>
+<script>
+    var index = 28; // the index to start loading from
+    const parser = new DOMParser();
+    function loadMore() {
+        index += 28;
+        $.ajax({
+            type: 'GET',
+            data: { mangaCount: index },
+            url: '/MangaPages?handler=LoadMore',
+            success: function (data) {
+                $('#mangaList').html(data);
+                var mangaElementsCount = document.getElementsByClassName("mangaInforOnHover").length;
+                var but = document.getElementById('loadMoreButton');
+                $.ajax({
+                    type: "GET",
+                    url: '/MangaPages/MangaCount',
+                    success: function (response) {
+                        console.log(response);
+                        if (mangaElementsCount === response) {
+                            but.hidden = true;
+                        } else {
+                            but.hidden = false;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function order() {
+        var option = document.getElementById("options").value;
+
+        var elementCollection = document.getElementsByName("Geners");
+        var elementArray = Array.prototype.slice.call(elementCollection, 0);
+        var genres = elementArray.filter(x => x.checked).map(x => x.id.toString());
+
+        var chapterFrom = document.getElementById("CountOfChaptersFrom").value;
+        chapterFrom === "" ? null : chapterFrom;
+        var chapterTo = document.getElementById("CountOfChaptersTo").value;
+        chapterTo === "" ? null : chapterTo;
+
+        var scoreFrom = document.getElementById("ScoreFrom").value;
+        scoreFrom === "" ? null : scoreFrom;
+        var scoreTo = document.getElementById("ScoreTo").value;
+        scoreTo === "" ? null : scoreTo;
+
+        var yearFrom = document.getElementById("YearFrom").value;
+        yearFrom === "" ? null : yearFrom;
+        var yearTo = document.getElementById("YearTo").value;
+        yearFrom === "" ? null : yearFrom;
+
+        var statusColl = document.getElementsByName("Status");
+        var statusArray = Array.prototype.slice.call(statusColl, 0);
+        var status = statusArray.filter(x => x.checked)[0];
+        status = status === undefined ? "" : status.value;
+        var langColl = document.getElementsByName("Language");
+        var langArray = Array.prototype.slice.call(langColl, 0);
+        var lang = langArray.filter(x => x.checked)[0];
+        lang = lang === undefined ? "" : lang.value;
+        $.ajax({
+            type: 'GET',
+            data: {
+                Option: option, Geners: JSON.stringify(genres), CountOfChaptersFrom: chapterFrom, CountOfChaptersTo: chapterTo,
+                YearFrom: yearFrom, YearTo: yearTo, ScoreFrom: scoreFrom, ScoreTo: scoreTo, Status: status, Language: lang
+            },
+            url: '/MangaPages/Order',
+            success: function (data) {
+                $('#mangaList').html(data);
+                var mangaElementsCount = document.getElementsByClassName("mangaInforOnHover").length;
+                var but = document.getElementById('loadMoreButton');
+                $.ajax({
+                    type: "GET",
+                    url: '/MangaPages/MangaCount',
+                    success: function (response) {
+                        console.log(response);
+                        if (mangaElementsCount === response) {
+                            but.hidden = true;
+                        } else {
+                            but.hidden = false;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+
