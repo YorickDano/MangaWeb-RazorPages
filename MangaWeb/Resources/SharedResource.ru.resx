@@ -141,6 +141,9 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="Block" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
   <data name="Change" xml:space="preserve">
     <value>Изменить</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="CreateManually" xml:space="preserve">
     <value>Создать мангу вручную</value>
+  </data>
+  <data name="CreaterContacts" xml:space="preserve">
+    <value>Контакты создателя</value>
   </data>
   <data name="CreateTopic" xml:space="preserve">
     <value>Создать топик</value>
@@ -231,6 +237,9 @@
   <data name="Hello" xml:space="preserve">
     <value>Привет</value>
   </data>
+  <data name="Here" xml:space="preserve">
+    <value>Тут</value>
+  </data>
   <data name="Hide" xml:space="preserve">
     <value>Спрятать</value>
   </data>
@@ -248,6 +257,9 @@
   </data>
   <data name="LoadMore" xml:space="preserve">
     <value>Больше</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>Ваш аккаунт был заблокирован, попробуйте зайти позже.</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Вход</value>

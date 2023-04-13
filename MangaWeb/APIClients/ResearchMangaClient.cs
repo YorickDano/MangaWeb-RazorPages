@@ -1,6 +1,5 @@
 ﻿using MangaWeb.APIClients.Models;
 using MangaWeb.APIClients.Services;
-using MangaWeb.Managers;
 using MangaWeb.Models;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
@@ -23,6 +22,12 @@ namespace MangaWeb.APIClients
             _mangaCharacterClient = mangaCharacterClient;
         }
 
+        /// <summary>
+        /// Метод создающий мангу пусём вызова HTTP запросов
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="nameTitlesExists"></param>
+        /// <returns>Manga</returns>
         public async Task<Manga> GetManga(string title, IEnumerable<string> nameTitlesExists)
         {
             var mangaUrlInfoRequest = _requestBuilder.CreateRequest()

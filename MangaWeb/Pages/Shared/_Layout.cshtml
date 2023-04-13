@@ -1,6 +1,11 @@
-﻿    @using MangaWeb.Managers;
+﻿@using MangaWeb.Areas.Identity.Data;
+@using MangaWeb.Managers;
+@using Microsoft.AspNetCore.Identity;
 @using Microsoft.AspNetCore.Mvc.Localization;
-
+@inject UserManager<MangaWebUser> UserManager;
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,7 @@
     <title>@ViewData["Title"] - MangaWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-  
+
 </head>
 <body>
     <header>
@@ -28,9 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/UsersInfo">@Model.Localizer["Users"].Value</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">@Model.Localizer["Create"].Value</a>
-                        </li>
+                        @if (user?.Role == Role.Admin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Create">@Model.Localizer["Create"].Value</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/MangaPages/Rating">@Model.Localizer["Rating"].Value</a>
                         </li>

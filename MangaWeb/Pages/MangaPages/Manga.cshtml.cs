@@ -15,12 +15,14 @@ namespace MangaWeb.Pages.MangaPages
     public class MangaModel : PageModel
     {
         private readonly MangaWebContext _context;
-        private readonly UserManager<MangaWebUser> _userManager;
+        public readonly UserManager<MangaWebUser> _userManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly ResearchMangaClient _researchMangaClient;
 
         public IEnumerable<int> CurrentUserFavoritesManga;
         public readonly IStringLocalizer<SharedResource> Localizer;
+
+        public MangaWebUser CurrentUser;
 
         public bool IsSeeAll { get; set; } = false;
 
@@ -45,12 +47,12 @@ namespace MangaWeb.Pages.MangaPages
             {
                 return NotFound();
             }
-
-            CurrentUserFavoritesManga = (await _userManager.GetUserAsync(User))?.FavoriteManga ?? new List<int>();
+            CurrentUser = await _userManager.GetUserAsync(User);
+            CurrentUserFavoritesManga = CurrentUser?.FavoriteManga ?? new List<int>();
 
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-
+            
             if (Manga is null)
             {
                 return NotFound();
@@ -145,24 +147,6 @@ namespace MangaWeb.Pages.MangaPages
 
             return Redirect($"/MangaPages/Manga?id={id}");
         }
-        public static int[] SearchRange(int[] nums, int target)
-        {
-            if (!nums.Contains(target))
-            {
-                return new int[] { -1, -1 };
-            }
-            var res = new int[2];
-            res[0] = Array.IndexOf(nums,target);
-            nums[res[0]] = target == 0 ? 1 : 0;
-            if (!nums.Contains(target))
-            {
-                res[1] = res[0];
-                return res;
-            }
-            res[1] = Array.LastIndexOf(nums, target);
-            return res;
-        }
-       
         public async Task<IActionResult> OnGetEditMangaAsync(int id)
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
@@ -187,8 +171,7 @@ namespace MangaWeb.Pages.MangaPages
             await _context.Comments.AddAsync(new Comment()
             {
                 Body = body,
-                AuthorName = mangaUser.UserName,
-                AuthorImgSrc = mangaUser.ProfileImage,
+                AuthorId = mangaUser.Id,
                 Date = DateTime.Now,
                 Manga = manga
             });

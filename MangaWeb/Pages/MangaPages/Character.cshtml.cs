@@ -12,7 +12,7 @@ namespace MangaWeb.Pages.MangaPages
     public class CharacterModel : PageModel
     {
         private readonly MangaWebContext _context;
-        private readonly UserManager<MangaWebUser> _userManager;
+        public readonly UserManager<MangaWebUser> _userManager;
 
         public MangaCharacter MangaCharacter;
         public IStringLocalizer<SharedResource> Localizer;
@@ -44,8 +44,7 @@ namespace MangaWeb.Pages.MangaPages
             var comment = new Comment()
             {
                 Body = body,
-                AuthorName = mangaUser.UserName,
-                AuthorImgSrc = mangaUser.ProfileImage,
+                AuthorId = mangaUser.Id,
                 Date = DateTime.Now,
                 Character = character
             };

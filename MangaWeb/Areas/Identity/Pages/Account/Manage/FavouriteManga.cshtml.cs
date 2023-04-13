@@ -27,6 +27,10 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
+            if(user == null || user.FavoriteManga == null)
+            {
+                return Page();
+            }
             FavouriteManga = _context.Manga.Where(x => user.FavoriteManga.Contains(x.Id)).ToArray();
             
             return Page();

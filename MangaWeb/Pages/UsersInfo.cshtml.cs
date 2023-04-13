@@ -1,4 +1,5 @@
 using MangaWeb.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,9 +7,10 @@ using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages
 {
+    [Authorize]
     public class UsersInfoModel : PageModel
     {
-        private readonly UserManager<MangaWebUser> _userManager;
+        public readonly UserManager<MangaWebUser> _userManager;
 
         public MangaWebUser CurrentUser;
 
@@ -30,13 +32,22 @@ namespace MangaWeb.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnGetBanUser(string id)
+        public async Task<IActionResult> OnPostBanUserAsync(string id)
         {
             CurrentUser = await _userManager.GetUserAsync(User);
 
-            if(id != CurrentUser.Id)
+            if (id != CurrentUser.Id)
             {
-                await _userManager.SetLockoutEnabledAsync(await _userManager.FindByIdAsync(id), true);
+                var user = await _userManager.FindByIdAsync(id);
+                var result = await _userManager.SetLockoutEnabledAsync(user, true);
+                var resultdate = await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddMinutes(30));
+
+                if (resultdate.Succeeded)
+                {
+                    await _userManager.UpdateAsync(user);
+                }
+                
+
             }
 
             Users = _userManager.Users.ToList();
@@ -44,13 +55,18 @@ namespace MangaWeb.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnGetUnbanUser(string id)
+        public async Task<IActionResult> OnPostUnbanUserAsync(string id)
         {
             CurrentUser = await _userManager.GetUserAsync(User);
 
             if (id != CurrentUser.Id)
             {
-                await _userManager.SetLockoutEnabledAsync(await _userManager.FindByIdAsync(id), false);
+                var user = await _userManager.FindByIdAsync(id);
+                var result = await _userManager.SetLockoutEnabledAsync(user, false);
+                if (result.Succeeded)
+                {
+                    await _userManager.UpdateAsync(user);
+                }
             }
 
             Users = _userManager.Users.ToList();

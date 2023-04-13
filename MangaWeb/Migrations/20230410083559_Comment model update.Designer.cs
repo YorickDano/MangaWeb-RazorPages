@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    [Migration("20230330175121_Conversation user info change")]
-    partial class Conversationuserinfochange
+    [Migration("20230410083559_Comment model update")]
+    partial class Commentmodelupdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,10 +109,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Body")

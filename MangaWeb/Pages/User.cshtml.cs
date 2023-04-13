@@ -13,6 +13,7 @@ namespace MangaWeb.Pages
         private readonly MangaWebContext _context;
 
         public MangaWebUser MangaWebUser { get; set; }
+        public MangaWebUser CurrentUser;
         public List<Manga> FavoriteManga { get; set; }
         public IStringLocalizer<SharedResource> Localizer;
         public string YouWriteToYourselfMessage { get; set; }
@@ -27,8 +28,8 @@ namespace MangaWeb.Pages
         public async Task<IActionResult> OnGetAsync(string userName)
         {
             MangaWebUser = await _userManager.FindByNameAsync(userName);
-
-            if(MangaWebUser == null)
+            CurrentUser = await _userManager.GetUserAsync(User);
+            if (MangaWebUser == null)
             {
                 return NotFound();
             }
@@ -39,6 +40,19 @@ namespace MangaWeb.Pages
 
             return Page();
         }
+        public async Task<IActionResult> OnPostBlockUserAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            
+            if (user == null)
+            {
+                var result = await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.Now.AddMinutes(10)));
+            }
+
+
+            return RedirectToPage("../User", new {userName});
+        }
+
         public async Task<IActionResult> OnPostWriteToUserAsync(string userName)
         {
             MangaWebUser = await _userManager.GetUserAsync(User);

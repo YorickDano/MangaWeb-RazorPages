@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangaWeb.Migrations
 {
     [DbContext(typeof(MangaWebContext))]
-    [Migration("20230219134421_Create all tables")]
-    partial class CreateMessagetable
+    [Migration("20230410085216_Post and topic model update")]
+    partial class Postandtopicmodelupdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,10 +109,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Body")
@@ -147,19 +144,17 @@ namespace MangaWeb.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FirstUserImageSrc")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FirstUserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FirstUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondUserImageSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondUserName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("SecondUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FirstUserId");
+
+                    b.HasIndex("SecondUserId");
 
                     b.ToTable("Conversations");
                 });
@@ -172,10 +167,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
@@ -205,10 +197,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -241,6 +230,9 @@ namespace MangaWeb.Migrations
 
                     b.Property<int>("CountOfVolume")
                         .HasColumnType("int");
+
+                    b.Property<string>("Creator")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -381,6 +373,9 @@ namespace MangaWeb.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserNameFrom")
                         .HasColumnType("nvarchar(max)");
@@ -545,6 +540,21 @@ namespace MangaWeb.Migrations
                     b.Navigation("Character");
 
                     b.Navigation("Manga");
+                });
+
+            modelBuilder.Entity("MangaWeb.Models.Conversation", b =>
+                {
+                    b.HasOne("MangaWeb.Areas.Identity.Data.MangaWebUser", "FirstUser")
+                        .WithMany()
+                        .HasForeignKey("FirstUserId");
+
+                    b.HasOne("MangaWeb.Areas.Identity.Data.MangaWebUser", "SecondUser")
+                        .WithMany()
+                        .HasForeignKey("SecondUserId");
+
+                    b.Navigation("FirstUser");
+
+                    b.Navigation("SecondUser");
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Post", b =>

@@ -11,7 +11,12 @@
 <img class="usersInfoImage" src="@Model.MangaWebUser.ProfileImage" />
 <form method="post">
     <input hidden name="userName" value="@Model.MangaWebUser.UserName" />
-<input asp-page-handler="WriteToUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Write"]" />
+    <input asp-page-handler="WriteToUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Write"]" />
+    @if (Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin
+    && Model.CurrentUser.UserName != Model.MangaWebUser.UserName)
+    {
+        <input asp-page-handler="BlockUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Block"]" />
+    }
 </form>
 <br />
 <h4>@Model.Localizer["UserFavManga"]</h4>

@@ -15,7 +15,15 @@
 <div class="text-center">
     <h2>@Html.Raw(Model.Localizer["Welcome"].Value.Replace("&#13;","<br>"))</h2>
     <h4>@Html.Raw(Model.Localizer["AppDesc"].Value.Replace("&#13;","<br><br>"))</h4>
+     <br />
+    <br />
+    @Model.Localizer["CreaterContacts"]
+        <br />
+        Email: nikitalevdanskii@gmail.com
+        <br />
+        Telegram: <a href="https://t.me/lev_skii">@Model.Localizer["Here"]</a>
 </div>
+
 @*<component type="typeof(Counter)" param-Title="zxc" render-mode="ServerPrerendered" />
 <component type="typeof(CharactersPatial)" param-FullCharacters="manga.Characters" render-mode="ServerPrerendered" />
   *@

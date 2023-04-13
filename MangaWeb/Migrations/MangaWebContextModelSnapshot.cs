@@ -107,10 +107,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Body")
@@ -131,7 +128,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("MangaId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Conversation", b =>
@@ -157,7 +154,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("SecondUserId");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Post", b =>
@@ -168,10 +165,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
@@ -190,7 +184,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("TopicID");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.ForumModels.Topic", b =>
@@ -201,10 +195,7 @@ namespace MangaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorImgSrc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AuthorName")
+                    b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -218,7 +209,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topics", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Manga", b =>
@@ -282,7 +273,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manga");
+                    b.ToTable("Manga", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaCharacter", b =>
@@ -315,7 +306,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("MangaId");
 
-                    b.ToTable("MangaCharacter");
+                    b.ToTable("MangaCharacter", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaRead", b =>
@@ -337,7 +328,7 @@ namespace MangaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MangaRead");
+                    b.ToTable("MangaRead", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.MangaReadPage", b =>
@@ -361,7 +352,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("MangaReadId");
 
-                    b.ToTable("MangaReadPage");
+                    b.ToTable("MangaReadPage", (string)null);
                 });
 
             modelBuilder.Entity("MangaWeb.Models.Message", b =>
@@ -394,7 +385,7 @@ namespace MangaWeb.Migrations
 
                     b.HasIndex("ConversationId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

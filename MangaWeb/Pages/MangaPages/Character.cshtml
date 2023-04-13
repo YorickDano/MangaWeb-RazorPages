@@ -52,8 +52,9 @@
 <br />
 @foreach (var comment in Model.Comments)
 {
+    var user = await Model._userManager.FindByIdAsync(comment.AuthorId);
     <div>
-        <h4><a asp-page="../User" asp-route-userName="@comment.AuthorName"><img class="headerImage" src="@comment.AuthorImgSrc" /></a>  @comment.AuthorName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
+        <h4><a asp-page="../User" asp-route-userName="@user.UserName"><img class="headerImage" src="@user.ProfileImage" /></a>  @user.UserName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
     </div>
 }
 

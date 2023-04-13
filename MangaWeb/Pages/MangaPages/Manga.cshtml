@@ -57,7 +57,7 @@
             </dd>
         }
         @if (Model.Manga.Status == MangaStatus.Finished
-             || Model.Manga.Status == MangaStatus.Издано)
+        || Model.Manga.Status == MangaStatus.Издано)
         {
             <dt class="col-sm-2">
                 @Model.Localizer["Volumes"]
@@ -107,7 +107,7 @@
                     <big>@Model.Localizer["Russian"]</big>
 
                     <br />
-                    for(short i =0; i < ruLinksToRead.Count();++i)
+                    for (short i = 0; i < ruLinksToRead.Count(); ++i)
                     {
                         <a href="@ruLinksToRead.ElementAt(i)">Read - @(i + 1) source</a>
                     }
@@ -123,7 +123,7 @@
                         <a href="@engLinksToRead.ElementAt(i)">Read - @(i + 1) source</a>
                     }
                 }
-               
+
             </dd>
         }
         <dt class="col-sm-2">
@@ -164,25 +164,29 @@
                     </svg>
                 </div>
             </button>
-            <input asp-page-handler="EditManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Edit"]" />
-            <input asp-page-handler="MangaDeletion" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Delete"]" />
             <input asp-page-handler="DownloadData" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Download"]" />
-            <input asp-page-handler="UpdateManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["UpdateInfo"]" />
+            @if (Model.CurrentUser?.Role == Areas.Identity.Data.Role.Admin)
+            {
+                <input asp-page-handler="EditManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Edit"]" />
+                <input asp-page-handler="MangaDeletion" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["Delete"]" />
+                <input asp-page-handler="UpdateManga" type="submit" class="w-15 btn btn-lg btn-primary" value=" @Model.Localizer["UpdateInfo"]" />
+            }
         </div>
     </form>
     <br />
     <form method="post">
-        
+
         <input type="hidden" name="id" value="@Model.Manga.Id" />
         <textarea class="comment" oninput="auto_grow(this)" placeholder="@Model.Localizer["WriteYourCom"]" name="body"></textarea>
         <br>
         <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Send"]" />
     </form>
     <br />
-    @foreach(var comment in Model.Comments)
+    @foreach (var comment in Model.Comments)
     {
+        var user = await Model._userManager.FindByIdAsync(comment?.AuthorId);
         <div>
-            <h4><a asp-page="../User" asp-route-userName="@comment.AuthorName"><img class="headerImage" src="@comment.AuthorImgSrc" /></a>  @comment.AuthorName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
+            <h4><a asp-page="../User" asp-route-userName="@user .UserName"><img class="headerImage" src="@user.ProfileImage" /></a>  @user.UserName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
         </div>
     }
 </div>

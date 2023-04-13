@@ -143,6 +143,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
   <data name="Change" xml:space="preserve">
     <value>Change</value>
   </data>
@@ -184,6 +187,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="CreateManually" xml:space="preserve">
     <value>Create manga manually</value>
+  </data>
+  <data name="CreaterContacts" xml:space="preserve">
+    <value>Creater Contacts</value>
   </data>
   <data name="CreateTopic" xml:space="preserve">
     <value>Create topic</value>
@@ -233,6 +239,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Hello" xml:space="preserve">
     <value>Hello</value>
   </data>
+  <data name="Here" xml:space="preserve">
+    <value>Here</value>
+  </data>
   <data name="Hide" xml:space="preserve">
     <value>Hide</value>
   </data>
@@ -250,6 +259,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="LoadMore" xml:space="preserve">
     <value>Load more</value>
+  </data>
+  <data name="Locked" xml:space="preserve">
+    <value>This account has been locked out, please try again later.</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -416,7 +428,7 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Write" xml:space="preserve">
     <value>Write</value>
   </data>
-  <data name="WriteMessage..." xml:space="preserve">
+  <data name="WriteMessage" xml:space="preserve">
     <value>Write a message...</value>
   </data>
   <data name="WritePost" xml:space="preserve">

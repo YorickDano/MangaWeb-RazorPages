@@ -16,6 +16,7 @@ namespace MangaWeb.Pages
 
         public readonly IStringLocalizer<SharedResource> Localizer;
         public readonly UserManager<MangaWebUser> UserManager;
+        public MangaWebUser CurrentUser;
 
         public ForumModel(IStringLocalizer<SharedResource> localizer,
             MangaWebContext context, UserManager<MangaWebUser> userManager)
@@ -36,7 +37,7 @@ namespace MangaWeb.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             Topics = await _context.Topics.ToListAsync();
-
+            CurrentUser = await UserManager.GetUserAsync(User);
             return Page();
         }
 
@@ -58,9 +59,22 @@ namespace MangaWeb.Pages
                 return Page();
             }
 
-            Topic.AuthorName = User.Identity.Name;
-            Topic.AuthorImgSrc = user.ProfileImage;
+            Topic.AuthorId = user.Id;
             _context.Topics.Add(Topic);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("Topics");
+        }
+        public async Task<IActionResult> OnPostDeleteTopicAsync(int topicId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+            }
+            var topic = await _context.Topics.FirstOrDefaultAsync(x=>x.Id == topicId);
+            var posts = _context.Posts.Where(x => x.TopicID == topicId);
+            _context.Posts.RemoveRange(posts);
+            _context.Topics.Remove(topic);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("Topics");

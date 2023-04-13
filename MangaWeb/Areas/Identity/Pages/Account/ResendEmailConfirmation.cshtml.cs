@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -24,12 +25,15 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly MailManager _mailManager;
-
-        public ResendEmailConfirmationModel(UserManager<MangaWebUser> userManager, IEmailSender emailSender, IOptionsSnapshot<MailSenderOptions> configuration)
+        public IStringLocalizer<SharedResource> Localizer;
+        public ResendEmailConfirmationModel(UserManager<MangaWebUser> userManager, 
+            IEmailSender emailSender, IOptionsSnapshot<MailSenderOptions> configuration,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
             _mailManager = new MailManager(configuration);
+            Localizer = localizer;
         }
 
         /// <summary>

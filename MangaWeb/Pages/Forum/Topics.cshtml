@@ -28,11 +28,21 @@
 <h2>@Model.Localizer["Topics"]</h2>
 @foreach (var topic in Model.Topics)
 {
+    var user = await Model.UserManager.FindByIdAsync(topic.AuthorId);
     <div class="forumItem">
         <a asp-page="Posts" asp-route-id="@topic.Id">@topic.Title</a> 
         <h5>@topic.Description</h5>
-        
-        by  <img class="headerImage" src="@topic.AuthorImgSrc" />  @topic.AuthorName on @topic.CreatedAt.ToString("yyyy-MM-dd")
+
+        by  <img class="headerImage" src="@user.ProfileImage" />  @user.UserName on @topic.CreatedAt.ToString("yyyy-MM-dd")
+
+        @if (Model.CurrentUser?.Role == Areas.Identity.Data.Role.Admin)
+        {
+            <br />
+            <form method="post">
+                <input hidden="hidden" name="topicId" value="@topic.Id">
+                <input asp-page-handler="DeleteTopic" class="w-15 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Delete"]">
+            </form>
+        }
     </div>
 }
 

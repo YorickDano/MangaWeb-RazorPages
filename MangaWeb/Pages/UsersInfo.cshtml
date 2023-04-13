@@ -12,9 +12,11 @@
         </a>
         <br />
         @if (Model.CurrentUser != null && Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin)
-        {
-            <form method="get">
-                <input id="id" hidden value="@user.Id" />
+        {<br />
+            @((await Model._userManager.IsLockedOutAsync(user)) ? "Banned" : "Not banned");
+            <br />
+            <form method="post">
+                <input id="id" name="id" hidden value="@user.Id" />
                 <input asp-page-handler="BanUser" type="submit" class="w-25 btn btn-lg btn-primary" value="Ban" />
                 <input asp-page-handler="UnbanUser" type="submit" class="w-25 btn btn-lg btn-primary" value="Unban" />
             </form>

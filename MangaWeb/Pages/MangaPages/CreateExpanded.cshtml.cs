@@ -42,6 +42,10 @@ namespace MangaWeb.Pages.MangaPages
         public void OnGet()
         {
         }
+        /// <summary>
+        /// Метод для предачи данных клиенту для создания манги
+        /// </summary>
+        /// <returns>Страница созданной манги / Обнавлённая страница с сообщением о ошибке</returns>
         public async Task<IActionResult> OnPostAsync()
         {
             var appUser = await _userManager.GetUserAsync(User);

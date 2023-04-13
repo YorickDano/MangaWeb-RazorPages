@@ -23,7 +23,8 @@
     <br />
     @foreach(var post in Model.Posts)
     {
-        <div>
-            <h4><img class="headerImage" src="@post.AuthorImgSrc" />  @post.AuthorName</h4><h5>@post.Content</h5><h6>@post.Date.ToShortTimeString() @post.Date.ToShortDateString()</h6>
+        var user = await Model._userManager.FindByIdAsync(post.AuthorId);
+    <div>
+        <h4><img class="headerImage" src="@user.ProfileImage" />  @user.UserName</h4><h5>@post.Content</h5><h6>@post.Date.ToShortTimeString() @post.Date.ToShortDateString()</h6>
         </div>
     }

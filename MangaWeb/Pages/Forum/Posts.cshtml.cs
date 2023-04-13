@@ -14,7 +14,7 @@ namespace MangaWeb.Pages.Forum
     public class PostsModel : PageModel
     {
         private readonly MangaWebContext _context;
-        private readonly UserManager<MangaWebUser> _userManager;
+        public readonly UserManager<MangaWebUser> _userManager;
 
         public readonly IStringLocalizer<SharedResource> Localizer;
         public IList<Post> Posts { get; private set; }
@@ -68,8 +68,7 @@ namespace MangaWeb.Pages.Forum
 
             var post = new Post()
             {
-                AuthorImgSrc = mangaUser.ProfileImage,
-                AuthorName = mangaUser.UserName,
+                AuthorId = mangaUser.Id,
                 TopicID = (int)id,
                 Content = body,
                 Date = DateTime.Now
