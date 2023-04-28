@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using System.Text;
 
 namespace MangaWeb.Areas.Identity.Pages.Account
@@ -16,10 +17,13 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<MangaWebUser> userManager, SignInManager<MangaWebUser> signInManager)
+        public readonly IStringLocalizer<SharedResource> Localizer;
+        public ConfirmEmailChangeModel(UserManager<MangaWebUser> userManager, 
+            SignInManager<MangaWebUser> signInManager, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            Localizer = localizer;
         }
 
         /// <summary>

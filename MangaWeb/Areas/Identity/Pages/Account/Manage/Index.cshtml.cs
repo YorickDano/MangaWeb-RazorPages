@@ -20,18 +20,18 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<MangaWebUser> _userManager;
         private readonly SignInManager<MangaWebUser> _signInManager;
-        private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
+        private readonly AnimeImageClient _animeClient;
         public readonly IStringLocalizer<SharedResource> Localizer;
 
         public IndexModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            AnimeAndHentaiImageClient animeAndHentaiImageClient,
+            AnimeImageClient animeAndHentaiImageClient,
             IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _animeAndHentaiClient = animeAndHentaiImageClient;
+            _animeClient = _animeClient;
             Localizer = localizer;
         }
 
@@ -167,7 +167,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
 
-            user.ProfileImage = await _animeAndHentaiClient.GetRandomImageAsString();
+            user.ProfileImage = await _animeClient.GetRandomImageAsString();
 
             await _userManager.UpdateAsync(user);
             await LoadAsync(user);

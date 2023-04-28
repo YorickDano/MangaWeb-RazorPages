@@ -44,13 +44,6 @@
         <form asp-action="SetRandomAnimeProfileImage" method="post" enctype="multipart/form-data">
             <input id="update-profile-image-button" asp-page-handler="SetRandomAnimeProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="@Model.Localizer["SetRandAnimImg"].Value">
         </form>
-        @if (Model.MangaWebUser.Role != Role.User)
-        {
-            <br />
-            <form asp-action="SetRandomHentaiProfileImage" method="post" enctype="multipart/form-data">
-                <input id="update-profile-image-button" asp-page-handler="SetRandomHentaiProfileImage" type="submit" class="w-100 btn btn-lg btn-primary" value="Set random hentai profile image">
-            </form>
-        }
         <br />
         @Model.Localizer["ChooseLanguage"].Value
         <div style="display:inline-flex; width:200px;">

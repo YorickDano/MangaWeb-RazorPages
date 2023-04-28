@@ -441,6 +441,9 @@
   <data name="YearOfIssue" xml:space="preserve">
     <value>Год выпуска</value>
   </data>
+  <data name="YouDoNtHaveFavManga" xml:space="preserve">
+    <value>У вас нет любимых манг.</value>
+  </data>
   <data name="YouWantRuManga" xml:space="preserve">
     <value>Хотите мангу на русском?</value>
   </data>

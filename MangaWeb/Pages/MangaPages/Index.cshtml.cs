@@ -101,11 +101,17 @@ namespace MangaWeb.Pages.MangaPages
             {
                 Manga = await _context.Manga.Where(x => x.OriginTitle!.Contains(SearchString)).ToListAsync();
             }
+            _constManga = new List<Manga>(Manga);
+            HttpContext.Session.Remove("ConstManga");
+            HttpContext.Session.SetInt32("MangaCount", Manga.Count);
+            HttpContext.Session.SetString("ConstManga", JsonConvert.SerializeObject(_constManga));
+            MangaCount = Manga.Count;
+            Manga = Manga.Take(28).ToList();
 
             var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();
             Genres = new List<string>(allGenres);
             GenersSelectedList = new SelectList(allGenres);
-
+            MangaCount = Manga.Count; 
             return Page();
         }
 
@@ -202,9 +208,9 @@ namespace MangaWeb.Pages.MangaPages
 
         private void OrderByGenrse(string[]? geners)
         {
-            if (!(geners is null) && geners.Any())
+            if (geners is not null && geners.Any())
             {
-                Manga = Manga.Where(x => x.Genres.Where(y => geners.Contains(y)).Count() == geners.Length).ToList();
+                Manga = Manga.Where(x => x.Genres.Any(y => geners[0].Contains(y))).ToList();
             }
         }
 

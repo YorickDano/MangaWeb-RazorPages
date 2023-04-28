@@ -37,7 +37,7 @@
                     <b><big>@Localizer["Ranked"]:</big></b> @manga.Ranked
                     <br>
                 }
-                @if (manga.CountOfVolume == -1)
+                @if (manga.CountOfVolume == -1 || manga.CountOfChapters == -1)
                 {
                     volumesUnknown = $"<b><big>{@Localizer["Volumes"]}:</big></b> Unknown";
                     chaptersUnknown = $"<b><big>{@Localizer["Chapters"]}:</big></b> Unknown";

@@ -11,7 +11,7 @@ namespace MangaWeb.APIClients
     public class ResearchRuMangaClient
     {
         private RestClient Client { get; set; }
-        private readonly string BaseUrl = "https://shikimori.one";
+        private readonly string BaseUrl = "https://shikimori.me";
 
         private RequestBuilder RequestBuilder { get; set; }
 
@@ -26,7 +26,7 @@ namespace MangaWeb.APIClients
         {
             var manga = new Manga();
             var mangaMainInfo = await GetMangaMainInfo(title);
-            if (mangaTitelsExists.Contains(mangaMainInfo.russian))
+            if (mangaMainInfo == null || mangaTitelsExists.Contains(mangaMainInfo.russian) )
             {
                 return null;
             }
@@ -62,7 +62,6 @@ namespace MangaWeb.APIClients
             var htmlCharactersDocuments = new List<HtmlDocument>();
             foreach (var request in requests)
             {
-                Thread.Sleep(100);
                 htmlCharactersDocuments.Add(await requestExecutor.SendRequestAsync(request));
             }
 
@@ -94,7 +93,6 @@ namespace MangaWeb.APIClients
         public async Task<Manga> SetMangaInfo(Manga manga, RuMangaUrlInfo.Root mangaMainInfo, string url)
         {
             manga.Language = Language.ru;
-
             manga.OriginTitle = mangaMainInfo.russian;
             manga.MangaImageUrl = BaseUrl + mangaMainInfo.image.original;
             manga.Type = char.ToUpper(mangaMainInfo.kind[0]) + mangaMainInfo.kind.Substring(1).Replace('_', ' ');
@@ -115,7 +113,7 @@ namespace MangaWeb.APIClients
                 .SetRequestResource(url + "/resources").GetRequest());
             htmlDocument.LoadHtml(autorsPageResponse.Content);
             manga.Authors = htmlDocument.DocumentNode
-               .SelectNodes("//div[contains(@class,'c-authors')]//a/span[@class='name-ru']")
+               .SelectNodes("//div[contains(@class,'authors')]//div[contains(@class,'authors')]//div[@class='name']/a")
                .Select(x => x.InnerText);
 
             return manga;
@@ -126,10 +124,13 @@ namespace MangaWeb.APIClients
             var response = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource("/api/mangas").AddHeadersForShikimori()
                 .AddRequestParameter("search", title).GetRequest());
+            try
+            {
+                var responseObj = JsonConvert.DeserializeObject<List<RuMangaUrlInfo.Root>>(response.Content)[0];
 
-            var responseObj = JsonConvert.DeserializeObject<List<RuMangaUrlInfo.Root>>(response.Content)[0];
-
-            return responseObj;
+                return responseObj;
+            }
+            catch (Exception ex) { return null; }
         }
 
         public async Task<Manga> UpdateMangaAsync(Manga currentManga, IEnumerable<string> mangaTitelsExists)

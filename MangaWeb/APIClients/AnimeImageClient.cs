@@ -4,13 +4,8 @@ using System.Net;
 
 namespace MangaWeb.APIClients
 {
-    public class AnimeAndHentaiImageClient : RestClientApi
+    public class AnimeImageClient : RestClientApi
     {
-
-        private readonly string[] RandomHentaiTopicsForProfileImage = { "Hentai Trap", "Hentai Futanari",
-            "Hentai Guro", "Hentai Milf", "Hentai Pregnant", "Hentai Hairy Armpits", "Hentai Scat",
-            "Hentai Centaur", "Hentai Nipple Fuck", "Hentai BBW", "Hentai Dark Areola", "Hentai Smell",
-            "Hentai Vore" };
         private readonly string[] RandomAnimeCharactersForProfileImage = {"Lucoa", "Ilulu", "Tohru", "Kanna Kobayashi",
             "Elma Joui", "Albedo Overlord", "Aura Bella Fiora", "Entoma Vasilissa Zeta","Lupusregina Beta",
             "Shalltear Bloodfallen","Hitagi Senjougahara","Shinobu Oshino","Yotsugi Ononoki","Chika Fujiwara",
@@ -18,8 +13,7 @@ namespace MangaWeb.APIClients
 
         public async Task<string> GetRandomImageAsString(AnimeType animeType = AnimeType.Casual)
         {
-            var randomTopic = animeType == AnimeType.Casual
-                ? GetRandomAnimeCharacterTopic() : GetRandomHentaiTopic();
+            var randomTopic = GetRandomAnimeCharacterTopic();
             var imagesLinksList = await GetImagesUrlsByTitle(randomTopic);
             var imageBytes = await WebClient
                 .DownloadDataTaskAsync(GetRandomImageUrlFormList(imagesLinksList));
@@ -41,8 +35,6 @@ namespace MangaWeb.APIClients
             return links;
         }
 
-        private string GetRandomHentaiTopic() => RandomHentaiTopicsForProfileImage[new Random()
-             .Next(0, RandomHentaiTopicsForProfileImage.Length)];
         private string GetRandomAnimeCharacterTopic() => RandomAnimeCharactersForProfileImage[new Random()
           .Next(0, RandomAnimeCharactersForProfileImage.Length)];
         private string GetRandomImageUrlFormList(List<string> imagesLinks) =>

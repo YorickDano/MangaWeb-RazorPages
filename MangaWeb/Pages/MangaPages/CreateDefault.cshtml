@@ -66,12 +66,12 @@
                 <span asp-validation-for="Input.Published" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CountOfVolume" class="control-label">@Model.Localizer["CountOfVolume"]</label>
+                <label asp-for="Input.CountOfVolume" class="control-label">@Model.Localizer["Volumes"]</label>
                 <input asp-for="Input.CountOfVolume" id="CountOfVolume" class="form-control" />
                 <span asp-validation-for="Input.CountOfVolume" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CountOfChapters" class="control-label">@Model.Localizer["CountOfChapters"]</label>
+                <label asp-for="Input.CountOfChapters" class="control-label">@Model.Localizer["Chapters"]</label>
                 <input asp-for="Input.CountOfChapters" id="CountOfChapters" class="form-control" />
                 <span asp-validation-for="Input.CountOfChapters" class="text-danger"></span>
             </div>
@@ -94,8 +94,8 @@
                 <label asp-for="Input.Status" class="control-label">@Model.Localizer["Status"]</label>
                 <br />
                 <input id="Status" value="" asp-for="Input.Status" hidden />
-                <input style="" class="status" onclick="StatusChecked('Publishing')" id="pub" value="@Model.Localizer["Publishing"]" readonly />
-                <input style="" class="status" onclick="StatusChecked('Finished')" id="fin" value="@Model.Localizer["Finished"]" readonly />
+                <input style="" class="status" onclick="StatusChecked('@Model.Localizer["Publishing"]')" id="pub" value="@Model.Localizer["Publishing"]" readonly />
+                <input style="" class="status" onclick="StatusChecked('@Model.Localizer["Finished"]')" id="fin" value="@Model.Localizer["Finished"]" readonly />
                 <span asp-validation-for="Input.Popularity" class="text-danger"></span>
             </div>
             <div class="form-group">

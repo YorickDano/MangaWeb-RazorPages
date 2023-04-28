@@ -9,7 +9,7 @@ namespace MangaWeb.Managers
     {
         public static void AddServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddSingleton<AnimeAndHentaiImageClient>();
+            builder.Services.AddSingleton<AnimeImageClient>();
             builder.Services.AddScoped<IAuthorizationHandler, IsMangaOwnerHandler>();
             builder.Services.AddScoped<MangaCharacterClient>();
             builder.Services.AddScoped<ResearchMangaClient>();

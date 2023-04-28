@@ -95,6 +95,10 @@ namespace MangaWeb.Pages.MangaPages
 
         public async Task<IActionResult> OnGetAddToFavoriteAsync(int? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+            }
             if (id is null)
             {
                 return NotFound();

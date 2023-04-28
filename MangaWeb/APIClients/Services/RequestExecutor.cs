@@ -32,9 +32,11 @@ namespace MangaWeb.APIClients.Services
         {
             var response = await RestClient.ExecuteAsync(request);
             var htmlDocument = new HtmlDocument();
-
+            while (!response.IsSuccessful)
+            {
+                response = await RestClient.ExecuteAsync(request);           
+            }
             htmlDocument.LoadHtml(response.Content);
-
             return htmlDocument;
         }
     }

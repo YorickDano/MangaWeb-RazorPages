@@ -11,6 +11,7 @@
 <img class="usersInfoImage" src="@Model.MangaWebUser.ProfileImage" />
 <form method="post">
     <input hidden name="userName" value="@Model.MangaWebUser.UserName" />
+    <br/>
     <input asp-page-handler="WriteToUser" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Write"]" />
     @if (Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin
     && Model.CurrentUser.UserName != Model.MangaWebUser.UserName)

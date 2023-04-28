@@ -30,7 +30,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IOptionsSnapshot<MailSenderOptions> configuration;
         private readonly MailManager _mailManager;
-        private readonly AnimeAndHentaiImageClient _animeAndHentaiClient;
+        private readonly AnimeImageClient _animeAndHentaiClient;
 
         public readonly IStringLocalizer<SharedResource> Localizer;
 
@@ -52,7 +52,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             this.configuration = configuration;
             _mailManager = new MailManager(configuration);
-            _animeAndHentaiClient = new AnimeAndHentaiImageClient();
+            _animeAndHentaiClient = new AnimeImageClient();
             Localizer = localizer;
         }
 

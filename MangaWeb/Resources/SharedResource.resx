@@ -443,6 +443,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="YearOfIssue" xml:space="preserve">
     <value>Year of issue</value>
   </data>
+  <data name="YouDoNtHaveFavManga" xml:space="preserve">
+    <value>You do not have favorite manga.</value>
+  </data>
   <data name="YouWantRuManga" xml:space="preserve">
     <value>You want manga on russian?</value>
   </data>

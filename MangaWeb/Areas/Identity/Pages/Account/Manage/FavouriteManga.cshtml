@@ -7,7 +7,7 @@
     @foreach (var manga in Model.FavouriteManga)
     {
         <div class="manga-card">
-            <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+            <a class="text-decoration-none" asp-page="/MangaPages/Manga" asp-route-id="@manga.Id">
                 <img class="imgMangaCart" src="@manga.MangaImageUrl">
                 <div class="manga-card-text">@Html.DisplayFor(modelItem => manga.OriginTitle)</div>
             </a>
@@ -16,5 +16,5 @@
 }
 else
 {
-    <h6>You do not have favorite manga.</h6>
+    <h6>@Model.Localizer["YouDoNtHaveFavManga"]</h6>
 }
