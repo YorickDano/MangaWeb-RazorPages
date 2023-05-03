@@ -187,23 +187,25 @@ namespace MangaWeb.Pages.MangaPages
 
         private async Task OrderByOption(string? option)
         {
+            var mangaQuery = _context.Manga.AsQueryable();
+
             switch (option)
             {
                 case "Title":
-                    {
-                        Manga = await _context.Manga.Select(x => x).OrderBy(x => x.OriginTitle).ToListAsync();
-                        break;
-                    }
+                case "Название":
+                    mangaQuery = mangaQuery.OrderBy(x => x.OriginTitle);
+                    break;
+
                 case "Score":
-                    {
-                        Manga = await _context.Manga.Select(x => x).OrderBy(x => x.Score).Reverse().ToListAsync();
-                        break;
-                    }
+                case "Оценка":
+                    mangaQuery = mangaQuery.OrderByDescending(x => x.Score);
+                    break;
+
                 default:
-                    {
-                        break;
-                    }
+                    return;
             }
+
+            Manga = await mangaQuery.ToListAsync();
         }
 
         private void OrderByGenrse(string[]? geners)

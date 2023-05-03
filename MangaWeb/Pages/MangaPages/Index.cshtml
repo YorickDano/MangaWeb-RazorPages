@@ -17,7 +17,7 @@
 </style>
 <form method="post" class="whiteText20">
     @Model.Localizer["Title"]: <input class="descTextArea" style="width:250px" asp-for="SearchString" />
-    <input class="width100 btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Find"]" />
+    <input class="btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Find"]" />
 </form>
 <div class="background">
     <partial name="PartialViewes/_OrderPartial" />

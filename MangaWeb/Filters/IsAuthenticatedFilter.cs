@@ -18,12 +18,10 @@ namespace MangaWeb.Filters
             {
                 await next();
             }
-
         }
 
         public async Task OnPageHandlerSelectionAsync(PageHandlerSelectedContext context)
         {
-
             await Task.CompletedTask;
         }
     }
