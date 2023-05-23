@@ -49,15 +49,14 @@ namespace MangaWeb.Pages
                 var result = await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.Now.AddMinutes(10)));
             }
 
-
             return RedirectToPage("../User", new {userName});
         }
 
         public async Task<IActionResult> OnPostWriteToUserAsync(string userName)
         {
-            MangaWebUser = await _userManager.GetUserAsync(User);
-
-            if(MangaWebUser.UserName == userName)
+            MangaWebUser = await _userManager.FindByNameAsync(userName);
+            CurrentUser = await _userManager.GetUserAsync(User);
+            if(CurrentUser.UserName == userName)
             {
                 YouWriteToYourselfMessage = "You can't write to yourself.";
                 if (MangaWebUser.FavoriteManga != null)

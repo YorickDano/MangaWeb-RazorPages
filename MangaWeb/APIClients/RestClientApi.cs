@@ -16,7 +16,6 @@ namespace MangaWeb.APIClients
         protected RequestBuilder RequestBuilder = new();
         protected WebClient WebClient;
 
-
         public RestClientApi()
         {
             RestClient = new RestClient(MyAnimeListUrl);

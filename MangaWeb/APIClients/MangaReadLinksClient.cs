@@ -1,8 +1,6 @@
 ﻿using HtmlAgilityPack;
 using MangaWeb.APIClients.Services;
-using MangaWeb.Models;
 using RestSharp;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -64,6 +62,5 @@ namespace MangaWeb.APIClients
             RestClientRuManga.Dispose();
             RestClientEngManga.Dispose();
         }
-
     }
 }

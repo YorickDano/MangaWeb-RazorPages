@@ -16,7 +16,7 @@
  <form method="post">
         
         <input type="hidden" name="id" value="@Model.Topic.Id" />
-        <textarea oninput="auto_grow(this)" placeholder="@Model.Localizer["WritePost"]" name="body"></textarea>
+    <textarea class="descTextArea" oninput="auto_grow(this)" placeholder="@Model.Localizer["WritePost"]" name="body"></textarea>
         <br>
     <input asp-page-handler="CreatePost" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Create"]" />
     </form>

@@ -2,7 +2,6 @@ using MangaWeb.APIClients;
 using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Managers;
 using MangaWeb.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +15,6 @@ namespace MangaWeb.Pages.MangaPages
     {
         private readonly MangaWebContext _context;
         public readonly UserManager<MangaWebUser> _userManager;
-        private readonly IAuthorizationService _authorizationService;
         private readonly ResearchMangaClient _researchMangaClient;
 
         public IEnumerable<int> CurrentUserFavoritesManga;
@@ -27,19 +25,17 @@ namespace MangaWeb.Pages.MangaPages
         public bool IsSeeAll { get; set; } = false;
 
         public MangaModel(MangaWebContext context,
-            UserManager<MangaWebUser> userManager, IAuthorizationService authorizationService,
-            ResearchMangaClient researchMangaClient, IStringLocalizer<SharedResource> localizer)
+            UserManager<MangaWebUser> userManager, ResearchMangaClient researchMangaClient,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _userManager = userManager;
-            _authorizationService = authorizationService;
             Localizer = localizer;
             _researchMangaClient = researchMangaClient;
         }
 
         public Manga? Manga { get; set; }
         public IList<Comment> Comments { get; private set; }
-
 
         public async Task<IActionResult> OnGet(int? id)
         {
@@ -97,7 +93,7 @@ namespace MangaWeb.Pages.MangaPages
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages/Create" });
             }
             if (id is null)
             {
@@ -167,7 +163,7 @@ namespace MangaWeb.Pages.MangaPages
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages" });
             }
             var mangaUser = await _userManager.GetUserAsync(User);
             var manga = await _context.Manga.FirstAsync(x => x.Id == id);

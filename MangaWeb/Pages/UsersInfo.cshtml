@@ -4,6 +4,7 @@
 
 
 @{
+    ViewData["Title"] = "User info";
     foreach (var user in Model.Users)
     {
         <a asp-page="./User" asp-route-userName="@user.UserName">
@@ -12,7 +13,9 @@
         </a>
         <br />
         @if (Model.CurrentUser != null && Model.CurrentUser.Role == Areas.Identity.Data.Role.Admin)
-        {<br />
+        {
+            @($"Email: {user.Email}");
+            <br />
             @((await Model._userManager.IsLockedOutAsync(user)) ? "Banned" : "Not banned");
             <br />
             <form method="post">

@@ -6,6 +6,7 @@
     var score = Model.Manga.Score == -1 ? Model.Localizer["Unknow"] : Model.Manga.Score.ToString();
     var ruLinksToRead = Model.Manga.ReadLinks?.Where(x => x.Contains("mangalib"));
     var engLinksToRead = Model.Manga.ReadLinks?.Where(x => !x.Contains("mangalib"));
+    ViewData["Title"] = Model.Manga.OriginTitle;
 }
 
 <div>

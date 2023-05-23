@@ -1,6 +1,8 @@
 ﻿@page "{id?}"
 @model MangaWeb.Pages.MangaPages.CharacterModel
-
+@{
+    ViewData["Title"] = "Character - " + @Model.MangaCharacter.Name;
+}
 
 <dl class="row">
     <dt class="col-sm-2">

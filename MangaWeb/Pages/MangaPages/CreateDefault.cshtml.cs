@@ -21,7 +21,7 @@ namespace MangaWeb.Pages.MangaPages
         public readonly IStringLocalizer<SharedResource> Localizer;
 
 
-        public CreateDefaultModel(MangaWebContext context, 
+        public CreateDefaultModel(MangaWebContext context,
             IStringLocalizer<SharedResource> localizer,
             UserManager<MangaWebUser> userManager)
         {
@@ -44,47 +44,52 @@ namespace MangaWeb.Pages.MangaPages
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+
             var manga = new Manga();
             try
             {
-                manga.OriginTitle = Input.OriginTitle;
-                manga.Popularity = Input.Popularity;
-                manga.Authors = Input.Autors.Split(',',StringSplitOptions.RemoveEmptyEntries).ToList();
-                manga.Status = Input.Status;
-                manga.CountOfChapters = Input.CountOfChapters;
-                manga.CountOfVolume = Input.CountOfVolume;
-                manga.Published = Input.Published;
-                manga.Ranked = Input.Ranked;
-                manga.Score = Input.Score;
-                manga.Description = Input.Description;
-                manga.YearOfIssue = Input.YearOfIssue;
-                manga.Genres = Input.Genres.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
-                using (var ms = new MemoryStream())
+                if (ModelState.IsValid)
                 {
-                    Input.ImageFile.CopyTo(ms);
-                    var imgSrc = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(ms.ToArray()));
-                    manga.MangaImageUrl = imgSrc; 
+                    manga.OriginTitle = Input.OriginTitle;
+                    manga.Popularity = Input.Popularity;
+                    manga.Authors = Input.Authors.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+                    manga.Status = Input.Status;
+                    manga.CountOfChapters = Input.CountOfChapters;
+                    manga.CountOfVolume = Input.CountOfVolume;
+                    manga.Published = Input.Published;
+                    manga.Ranked = Input.Ranked;
+                    manga.Score = Input.Score;
+                    manga.Description = Input.Description;
+                    manga.YearOfIssue = Input.YearOfIssue;
+                    manga.Genres = Input.Genres.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+                    using (var ms = new MemoryStream())
+                    {
+                        Input.ImageFile.CopyTo(ms);
+                        var imgSrc = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(ms.ToArray()));
+                        manga.MangaImageUrl = imgSrc;
+                    }
+                    manga.Creator = (await _userManager.GetUserAsync(User)).UserName;
+                    await _context.Manga.AddAsync(manga);
+                    await _context.SaveChangesAsync();
                 }
-                manga.Creator = (await _userManager.GetUserAsync(User)).UserName;
-                await _context.Manga.AddAsync(manga);
-                await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 return RedirectToPage("./Error");
             }
-            return RedirectToPage("./Manga",new {id = manga.Id});
+
+            return RedirectToPage("./Manga", new { id = manga.Id });
         }
 
         public void ApiSetting()
         {
             RestClientApi restClientApi = new RestClientApi();
 
-          //  Manga.MainImageUrl = await restClientApi.GetMangaProfieImageUrlByTitle(Manga.Title, Enums.SearchType.MangaImage);
-          //  Manga.ReadSiteUrl = await restClientApi.GetUrlOfMangaByTitle(Manga.Title);
+            //  Manga.MainImageUrl = await restClientApi.GetMangaProfieImageUrlByTitle(Manga.Title, Enums.SearchType.MangaImage);
+            //  Manga.ReadSiteUrl = await restClientApi.GetUrlOfMangaByTitle(Manga.Title);
         }
 
-       
+
         public class InputModel
         {
             public string OriginTitle { get; set; } = "Title";
@@ -101,7 +106,7 @@ namespace MangaWeb.Pages.MangaPages
             public int Popularity { get; set; }
             public string Genres { get; set; }
             public MangaStatus Status { get; set; }
-            public string Autors { get; set; }
+            public string Authors { get; set; }
             public List<MangaCharacter> Characters { get; set; } = new List<MangaCharacter>();
             [Display(Name = "Year of issue")]
             public int YearOfIssue { get; set; }

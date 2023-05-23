@@ -186,6 +186,9 @@
   <data name="CreateManually" xml:space="preserve">
     <value>Создать мангу вручную</value>
   </data>
+  <data name="CreateNewAcc" xml:space="preserve">
+    <value>Создайте новый аккаунт</value>
+  </data>
   <data name="CreaterContacts" xml:space="preserve">
     <value>Контакты создателя</value>
   </data>
@@ -224,6 +227,9 @@
   </data>
   <data name="Finished" xml:space="preserve">
     <value>Издано</value>
+  </data>
+  <data name="ForgotPass" xml:space="preserve">
+    <value>Забыли пароль?</value>
   </data>
   <data name="Forum" xml:space="preserve">
     <value>Форум</value>
@@ -288,6 +294,9 @@
   <data name="NewUsername" xml:space="preserve">
     <value>Новое имя пользователя</value>
   </data>
+  <data name="NoAccess" xml:space="preserve">
+    <value>У вас нет доступа, вам необходимо авторизоваться.</value>
+  </data>
   <data name="NoFavManga" xml:space="preserve">
     <value>У этого пользователя пока нет любимой манги</value>
   </data>
@@ -342,11 +351,20 @@
   <data name="Register" xml:space="preserve">
     <value>Регистрация</value>
   </data>
+  <data name="RegisterAsNewUser" xml:space="preserve">
+    <value>Зарегистрируйтесь как новый пользователь</value>
+  </data>
   <data name="Released" xml:space="preserve">
     <value>Завершён</value>
   </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Запомните меня</value>
+  </data>
   <data name="RemoveLast" xml:space="preserve">
     <value>Убрать последний</value>
+  </data>
+  <data name="ResendEmailConf" xml:space="preserve">
+    <value>Повторно отправить подтверждение на почту</value>
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Русский</value>
@@ -401,6 +419,9 @@
   </data>
   <data name="UpdateInfo" xml:space="preserve">
     <value>Обновить</value>
+  </data>
+  <data name="UseLocAcc" xml:space="preserve">
+    <value>Используйте локальную учетную запись для входа.</value>
   </data>
   <data name="UserFavManga" xml:space="preserve">
     <value>Любимая манга пользователя</value>

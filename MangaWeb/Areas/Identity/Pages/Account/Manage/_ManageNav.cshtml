@@ -8,6 +8,7 @@
 <ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">@Model.Localizer["Profile"].Value</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.FavouriteMangaNavClass(ViewContext)" id="favManga" asp-page="./FavouriteManga">@Model.Localizer["FavouriteManga"]</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChatsNavClass(ViewContext)" id="chats" asp-page="/Chats">@Model.Localizer["Chats"]</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">@Model.Localizer["Email"].Value</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">@Model.Localizer["Password"].Value</a></li>
     @if (hasExternalLogins)

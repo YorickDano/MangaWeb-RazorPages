@@ -93,7 +93,7 @@ namespace MangaWeb.Pages.MangaPages
             return Page();
         }
    
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnGetSearchAsync()
         {
             Manga = await _context.Manga.ToListAsync();
 
@@ -147,11 +147,15 @@ namespace MangaWeb.Pages.MangaPages
             return Partial("PartialViewes/_MangaListPartial", Manga);
         }
 
-        public async Task<IActionResult> OnGetOrderAsync(string? Option, string[]? Geners, int? CountOfChaptersFrom,
+        public async Task<IActionResult> OnGetOrderAsync(string? SearchString, string? Option, string[]? Geners, int? CountOfChaptersFrom,
         int? CountOfChaptersTo, int? YearFrom, int? YearTo, double? ScoreFrom, double? ScoreTo,
         string Status, string Language)
         {
-            Manga = _context.Manga.Select(x => x).ToList();     
+            Manga = _context.Manga.Select(x => x).ToList();
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                Manga = await _context.Manga.Where(x => x.OriginTitle!.Contains(SearchString)).ToListAsync();
+            }
             await OrderMangaAsync(Option, Geners, CountOfChaptersFrom, CountOfChaptersTo, 
                 YearFrom, YearTo, ScoreFrom, ScoreTo, Status, Language);
             var allGenres = string.Join(",", _context.Manga.Select(x => string.Join(",", x.Genres))).Split(',').Distinct();

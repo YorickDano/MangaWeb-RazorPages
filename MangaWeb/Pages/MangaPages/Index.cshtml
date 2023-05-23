@@ -6,6 +6,7 @@
     var statusFinished = string.Empty;
     var volumesUnknown = string.Empty;
     var chaptersUnknown = string.Empty;
+    ViewData["Title"] = "Manga";
 }
 <style>
 
@@ -15,17 +16,20 @@
         margin-right: auto;
     }
 </style>
-<form method="post" class="whiteText20">
-    @Model.Localizer["Title"]: <input class="descTextArea" style="width:250px" asp-for="SearchString" />
-    <input class="btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Find"]" />
-</form>
 <div class="background">
-    <partial name="PartialViewes/_OrderPartial" />
+    <form method="get" class="whiteText20">
+        @Model.Localizer["Title"]: <input id="SearchString" name="SearchString" class="descTextArea" style="width:250px" asp-for="SearchString" />
+        <input asp-page-handler="Search" class="btn btn-lg btn-primary" type="submit" value="@Model.Localizer["Find"]" />
+    </form>
+
+        <partial name="PartialViewes/_OrderPartial" />
+    
     <div class="mangas">
         <h2 class="text-black">@Model.Localizer["Manga"].Value</h2>
         <div id="mangaList">
             <partial name="PartialViewes/_MangaListPartial" model="@Model.Manga" />
         </div>
+
         <div style="width:100%; display:flex; justify-content: center;
   align-items: center;">
             @if (Model.MangaCount > 28)
@@ -41,6 +45,7 @@
 
 
 </div>
+
 <script>
     var index = 28; // the index to start loading from
     const parser = new DOMParser();
@@ -71,6 +76,8 @@
     }
 
     function order() {
+        var searchString = document.getElementById("SearchString").value;
+
         var option = document.getElementById("options").value;
 
         var elementCollection = document.getElementsByName("Geners");
@@ -103,7 +110,7 @@
         $.ajax({
             type: 'GET',
             data: {
-                Option: option, Geners: JSON.stringify(genres), CountOfChaptersFrom: chapterFrom, CountOfChaptersTo: chapterTo,
+                SearchString: searchString, Option: option, Geners: JSON.stringify(genres), CountOfChaptersFrom: chapterFrom, CountOfChaptersTo: chapterTo,
                 YearFrom: yearFrom, YearTo: yearTo, ScoreFrom: scoreFrom, ScoreTo: scoreTo, Status: status, Language: lang
             },
             url: '/MangaPages/Order',

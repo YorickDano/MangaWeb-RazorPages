@@ -188,6 +188,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="CreateManually" xml:space="preserve">
     <value>Create manga manually</value>
   </data>
+  <data name="CreateNewAcc" xml:space="preserve">
+    <value>Create a new account</value>
+  </data>
   <data name="CreaterContacts" xml:space="preserve">
     <value>Creater Contacts</value>
   </data>
@@ -226,6 +229,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="Finished" xml:space="preserve">
     <value>Finished</value>
+  </data>
+  <data name="ForgotPass" xml:space="preserve">
+    <value>Forgot your password?</value>
   </data>
   <data name="Forum" xml:space="preserve">
     <value>Forum</value>
@@ -290,6 +296,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="NewUsername" xml:space="preserve">
     <value>New username</value>
   </data>
+  <data name="NoAccess" xml:space="preserve">
+    <value>You have no access, you need to log in.</value>
+  </data>
   <data name="NoFavManga" xml:space="preserve">
     <value>This user has not favorite manga yet</value>
   </data>
@@ -344,11 +353,20 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="RegisterAsNewUser" xml:space="preserve">
+    <value>Register as a new user</value>
+  </data>
   <data name="Released" xml:space="preserve">
     <value>Released</value>
   </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
   <data name="RemoveLast" xml:space="preserve">
     <value>Remove last</value>
+  </data>
+  <data name="ResendEmailConf" xml:space="preserve">
+    <value>Resend email confirmation</value>
   </data>
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
@@ -403,6 +421,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="UpdateInfo" xml:space="preserve">
     <value>Update info</value>
+  </data>
+  <data name="UseLocAcc" xml:space="preserve">
+    <value>Use a local account to log in.</value>
   </data>
   <data name="UserFavManga" xml:space="preserve">
     <value>User's favorite manga</value>

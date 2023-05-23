@@ -2,7 +2,7 @@
 @model MangaWeb.Pages.MangaPages.CreateDefaultModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create default";
 }
 <style>
     .status {
@@ -99,9 +99,9 @@
                 <span asp-validation-for="Input.Popularity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Autors" class="control-label">@Model.Localizer["Autors"]</label>
+                <label asp-for="Input.Authors" class="control-label">@Model.Localizer["Authors"]</label>
                 <div id="autors" style="display: inline-block;"> </div>
-                <input id="autorAsp" asp-for="Input.Autors" readonly class="form-control" />
+                <input id="autorAsp" asp-for="Input.Authors" readonly class="form-control" />
                 <input id="autorInput" class="form-control" />
                 <input class="createButton btn btn-primary" onclick="AddToListAut()" type="button" value="@Model.Localizer["Add"]" />
                 <input class="createButton btn btn-primary" onclick="RemoveLastFromListAut()" type="button" value="@Model.Localizer["RemoveLast"]" />

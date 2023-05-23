@@ -1,5 +1,5 @@
 using MangaWeb.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
+using MangaWeb.Filters;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 
 namespace MangaWeb.Pages
 {
-    [Authorize]
+    [IsAuthenticatedFilter]
     public class UsersInfoModel : PageModel
     {
         public readonly UserManager<MangaWebUser> _userManager;
@@ -46,8 +46,6 @@ namespace MangaWeb.Pages
                 {
                     await _userManager.UpdateAsync(user);
                 }
-                
-
             }
 
             Users = _userManager.Users.ToList();

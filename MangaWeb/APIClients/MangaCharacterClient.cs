@@ -2,11 +2,7 @@
 using MangaWeb.APIClients.Services;
 using MangaWeb.Managers;
 using MangaWeb.Models;
-using NuGet.Packaging;
 using RestSharp;
-using System;
-using System.Linq;
-using System.Net;
 using System.Web;
 
 namespace MangaWeb.APIClients
@@ -16,13 +12,11 @@ namespace MangaWeb.APIClients
         private const string MyAnimeListUrl = "https://myanimelist.net";
         private readonly RestClient _restClient;
         private readonly RequestBuilder _requestBuilder;
-        private readonly RequestExecutor _requestExecutor;
 
         public MangaCharacterClient()
         {
             _restClient = new RestClient(MyAnimeListUrl);
             _requestBuilder = new RequestBuilder();
-            _requestExecutor = new RequestExecutor(MyAnimeListUrl);
         }
 
         public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
@@ -89,12 +83,9 @@ namespace MangaWeb.APIClients
         {
             var htmlDocument = await GetHtmlDocumentAsync(characterImagesLink);
             var imagesForCharacter = new List<string>();
+            var imageElements = htmlDocument.DocumentNode.SelectNodes("//img[contains(@class,'portrait')]");
 
-            var imageElement = htmlDocument.DocumentNode.SelectSingleNode("//img[contains(@class,'portrait')]");
-            if (imageElement != null)
-            {
-                imagesForCharacter.Add(imageElement.Attributes["data-src"].Value);
-            }
+            imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
 
             return imagesForCharacter;
         }

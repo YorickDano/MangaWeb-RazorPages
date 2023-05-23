@@ -45,9 +45,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/Forum/Topics">@Model.Localizer["Forum"].Value</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/Chats">@Model.Localizer["Chats"]</a>
-                        </li>
                     </ul>
                 </div>
                 <partial name="_LoginPartial" />
@@ -62,7 +59,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - MangaWeb
+            &copy; @DateTime.Now.Year - MangaWeb
         </div>
     </footer>
 

@@ -45,7 +45,7 @@ namespace MangaWeb.Pages
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages/Create" });
             }
             var user = await UserManager.GetUserAsync(User);
             if (!ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace MangaWeb.Pages
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages/Create" });
             }
             var topic = await _context.Topics.FirstOrDefaultAsync(x=>x.Id == topicId);
             var posts = _context.Posts.Where(x => x.TopicID == topicId);

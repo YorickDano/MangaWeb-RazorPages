@@ -45,7 +45,7 @@ namespace MangaWeb.Pages.Forum
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = "You have no access, you need to log in.", returnUrl = "~/MangaPages/Create" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages/Create" });
             }
             Topic = await _context.Topics.FindAsync(id);
             if (Topic == null)
