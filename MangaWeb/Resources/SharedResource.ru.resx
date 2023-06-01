@@ -282,6 +282,9 @@
   <data name="Manga" xml:space="preserve">
     <value>Манга</value>
   </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Меню</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
   </data>

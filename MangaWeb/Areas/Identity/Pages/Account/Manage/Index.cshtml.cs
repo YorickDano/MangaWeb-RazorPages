@@ -26,12 +26,11 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            AnimeImageClient animeAndHentaiImageClient,
             IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _animeClient = _animeClient;
+            _animeClient = new AnimeImageClient();
             Localizer = localizer;
         }
 

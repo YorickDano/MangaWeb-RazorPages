@@ -284,6 +284,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Manga" xml:space="preserve">
     <value>Manga</value>
   </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
