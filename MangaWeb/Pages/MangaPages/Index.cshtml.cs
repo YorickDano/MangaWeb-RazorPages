@@ -1,6 +1,5 @@
 ﻿using MangaWeb.Areas.Identity.Data;
 using MangaWeb.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -259,7 +258,6 @@ namespace MangaWeb.Pages.MangaPages
 
         private void OrderByCountOfChapters(double? countOfChaptersFrom, double? countOfChaptersTo)
         {
-
             if (countOfChaptersFrom.HasValue)
             {
                 if (countOfChaptersTo.HasValue)

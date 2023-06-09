@@ -52,7 +52,7 @@
     <input asp-page-handler="CreateComment" type="submit" class="w-15 btn btn-lg btn-primary" value="@Model.Localizer["Send"]" />
 </form>
 <br />
-@foreach (var comment in Model.Comments)
+@foreach (var comment in Model.Comments.Reverse())
 {
     var user = await Model._userManager.FindByIdAsync(comment.AuthorId);
     <div>
