@@ -8,7 +8,7 @@ namespace MangaWeb.Models
         public int Id { get; set; }
         [Display(Name = "Title")]
         public string OriginTitle { get; set; }
-        [Display(Name = "Image")]
+        [Display(Name = "ImageStr")]
         public string MangaImageUrl { get; set; } = "https://t7.nhentai.net/galleries/1510625/cover.png";
         [Display(Name = "Description")]
         public string Description { get; set; }

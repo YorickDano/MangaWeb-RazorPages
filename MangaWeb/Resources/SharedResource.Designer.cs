@@ -286,11 +286,11 @@ namespace MangaWeb.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image.
+        ///   Looks up a localized string similar to ImageStr.
         /// </summary>
         public static string Image {
             get {
-                return ResourceManager.GetString("Image", resourceCulture);
+                return ResourceManager.GetString("ImageStr", resourceCulture);
             }
         }
         
