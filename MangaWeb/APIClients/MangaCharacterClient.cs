@@ -84,8 +84,11 @@ namespace MangaWeb.APIClients
             var htmlDocument = await GetHtmlDocumentAsync(characterImagesLink);
             var imagesForCharacter = new List<string>();
             var imageElements = htmlDocument.DocumentNode.SelectNodes("//img[contains(@class,'portrait')]");
+            if (imageElements != null && imageElements.Count > 0)
+            {
+                imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
+            }
 
-            imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
 
             return imagesForCharacter;
         }

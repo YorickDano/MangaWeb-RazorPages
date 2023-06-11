@@ -63,8 +63,7 @@ namespace MangaWeb.Pages.MangaPages
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-
-            if ((await _userManager.GetUserAsync(User)).UserName != Manga.Creator)
+            if ((await _userManager.GetUserAsync(User)).Role == Role.User)
             {
                 return RedirectToPage("/Account/AccessDenied",
                     new { area = "Identity", message = "You didn't create this manga, so you cannot delete it", statusCode = 403 });
