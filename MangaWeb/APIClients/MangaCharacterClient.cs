@@ -89,7 +89,6 @@ namespace MangaWeb.APIClients
                 imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
             }
 
-
             return imagesForCharacter;
         }
 
