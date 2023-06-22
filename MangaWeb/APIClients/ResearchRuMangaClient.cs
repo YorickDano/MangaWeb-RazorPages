@@ -111,10 +111,18 @@ namespace MangaWeb.APIClients
             var htmlDocument = new HtmlDocument();
             var autorsPageResponse = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource(url + "/resources").GetRequest());
-            htmlDocument.LoadHtml(autorsPageResponse.Content);
-            manga.Authors = htmlDocument.DocumentNode
-               .SelectNodes("//div[contains(@class,'authors')]//div[contains(@class,'authors')]//div[@class='name']/a")
-               .Select(x => x.InnerText);
+            if (autorsPageResponse.Content!= "age_restricted")
+            {
+                htmlDocument.LoadHtml(autorsPageResponse.Content);
+
+                manga.Authors = htmlDocument.DocumentNode
+                   .SelectNodes("//div[contains(@class,'authors')]//div[contains(@class,'authors')]//div[@class='name']/a")
+                   .Select(x => x.InnerText);
+            }
+            else
+            {
+                manga.Authors = new List<string>(); 
+            }
 
             return manga;
         }
