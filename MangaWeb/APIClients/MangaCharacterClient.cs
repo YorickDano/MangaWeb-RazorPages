@@ -22,6 +22,10 @@ namespace MangaWeb.APIClients
         public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
         {
             var charactersLinks = await GetCharacterLinks(id, title);
+            if(charactersLinks == null)
+            {
+                return manga;
+            }
             var characterDetailsTasks = charactersLinks.Select(GetCharacterDetailsAsync).ToList();
             var imagesUrlsTasks = charactersLinks.Select(link => GetImagesUrlsForCharacterAsync(link + "/pics")).ToList();
 
