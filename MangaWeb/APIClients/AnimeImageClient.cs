@@ -26,8 +26,7 @@ namespace MangaWeb.APIClients
         public async Task<List<string>> GetImagesUrlsByTitle(string title, AnimeType animeType = AnimeType.Casual)
         {
             var links = new List<string>();
-            var responseContent = animeType == AnimeType.Hentai
-                ? await GetImageSearchRespounseContent(title + " hentai") : await GetImageSearchRespounseContent(title + " manga");
+            var responseContent = await GetImageSearchRespounseContent(title + " manga");
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(responseContent);
             links.AddRange(htmlDocument.DocumentNode.SelectNodes("//img[contains(@src,'https://encrypted')]").Select(x => x.GetAttributeValue("src", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ583o5BdMGzJadrs2jYP8GLQvssf37P1gJuJ4v8YShA6addxV8Y0uwcr-0ao&amp;s")));
@@ -43,7 +42,6 @@ namespace MangaWeb.APIClients
 
     public enum AnimeType
     {
-        Casual,
-        Hentai
+        Casual
     }
 }
