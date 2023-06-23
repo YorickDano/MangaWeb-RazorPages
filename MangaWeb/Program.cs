@@ -24,7 +24,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CultureInfo("en"),
         new CultureInfo("ru"),
     };
-    options.DefaultRequestCulture = new RequestCulture("en");
+    var cultureInfoName = Thread.CurrentThread.CurrentCulture.Name;
+    options.DefaultRequestCulture = new RequestCulture(cultureInfoName.Contains("ru") ? "ru": "en");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 });
