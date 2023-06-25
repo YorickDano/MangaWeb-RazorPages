@@ -84,7 +84,7 @@ app.UseSession();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+   // app.UseDeveloperExceptionPage();
 }
 
 app.Run();

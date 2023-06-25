@@ -60,18 +60,24 @@
         @if (Model.Manga.Status == MangaStatus.Finished
         || Model.Manga.Status == MangaStatus.Издано)
         {
-            <dt class="col-sm-2">
-                @Model.Localizer["Volumes"]
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Manga.CountOfVolume)
-            </dd>
-            <dt class="col-sm-2">
-                @Model.Localizer["Chapters"]
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model =>  model.Manga.CountOfChapters)
-            </dd>
+            @if (Model.Manga.CountOfVolume != -1)
+            {
+                <dt class="col-sm-2">
+                    @Model.Localizer["Volumes"]
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Manga.CountOfVolume)
+                </dd>
+            }
+            @if (Model.Manga.CountOfChapters != -1)
+            {
+                <dt class="col-sm-2">
+                    @Model.Localizer["Chapters"]
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model =>  model.Manga.CountOfChapters)
+                </dd>
+            }
         }
         <dt class="col-sm-2">
             @Model.Localizer["Published"]

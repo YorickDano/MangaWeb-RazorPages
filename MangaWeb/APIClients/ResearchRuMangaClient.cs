@@ -96,7 +96,11 @@ namespace MangaWeb.APIClients
             manga.OriginTitle = mangaMainInfo.russian;
             manga.MangaImageUrl = BaseUrl + mangaMainInfo.image.original;
             manga.Type = char.ToUpper(mangaMainInfo.kind[0]) + mangaMainInfo.kind.Substring(1).Replace('_', ' ');
-            manga.Score = Convert.ToSingle(mangaMainInfo.score);
+            try
+            {
+                manga.Score = Convert.ToSingle(mangaMainInfo.score);
+            }
+            catch (Exception ex) { manga.Score = Convert.ToSingle(mangaMainInfo.score.Replace(".", ",")); }
             manga.CountOfVolume = mangaMainInfo.volumes == 0 && mangaMainInfo.kind != "manga" ? 1 : mangaMainInfo.volumes;
             manga.CountOfChapters = mangaMainInfo.chapters == 0 ? -1 : mangaMainInfo.chapters;
             manga.Published = mangaMainInfo.aired_on + " - " + mangaMainInfo.released_on;
