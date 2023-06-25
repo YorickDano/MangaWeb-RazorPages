@@ -82,6 +82,7 @@ namespace MangaWeb.Models
             this.Status = otherManga.Status;
             this.Authors = new List<string>(otherManga.Authors);
             this.Characters = new List<MangaCharacter>(otherManga.Characters);
+            this.Comments = new List<Comment>(otherManga.Comments);
             this.YearOfIssue = otherManga.YearOfIssue;
             this.Type = otherManga.Type;
             this.ReadLinks = otherManga.ReadLinks;
