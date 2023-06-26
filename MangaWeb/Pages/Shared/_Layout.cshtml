@@ -8,6 +8,12 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+<script rel="javascript" type="text/javascript" href="lib/jquery/dist/jquery.js"></script>
+<script rel="javascript" type="text/javascript" href="lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/site.js"></script>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,9 +72,6 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

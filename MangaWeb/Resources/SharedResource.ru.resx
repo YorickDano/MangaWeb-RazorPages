@@ -171,6 +171,9 @@
   <data name="ChooseLanguage" xml:space="preserve">
     <value>Выберите язык</value>
   </data>
+  <data name="ClickHere" xml:space="preserve">
+    <value>нажмите здесь</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Подтвердите пароль</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>Почта</value>
+  </data>
+  <data name="EmailConf" xml:space="preserve">
+    <value>Подтверждение электонной почты</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>Английский</value>
@@ -327,6 +333,12 @@
   <data name="PersDataDesc" xml:space="preserve">
     <value>Ваша учетная запись содержит персональные данные, которые вы нам предоставили. Эта страница позволяет вам загружать или удалять эти данные.</value>
   </data>
+  <data name="PlsCheck" xml:space="preserve">
+    <value>Пожалуйста, проверьте свою электронную почту, чтобы подтвердить свою учетную запись.</value>
+  </data>
+  <data name="PlsConf" xml:space="preserve">
+    <value>Пожалуйста, подтвердите свой аккаунт</value>
+  </data>
   <data name="Popularity" xml:space="preserve">
     <value>Популярность</value>
   </data>
@@ -350,6 +362,9 @@
   </data>
   <data name="Read" xml:space="preserve">
     <value>Читать</value>
+  </data>
+  <data name="RegConf" xml:space="preserve">
+    <value>Подтверждение регистрации</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Регистрация</value>
@@ -413,6 +428,9 @@
   </data>
   <data name="TopMangaScore" xml:space="preserve">
     <value>Лучшая манга по рейтингу</value>
+  </data>
+  <data name="TyForCon" xml:space="preserve">
+    <value>Спасибо за подтверждение вашего адреса электронной почты.</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Тип</value>

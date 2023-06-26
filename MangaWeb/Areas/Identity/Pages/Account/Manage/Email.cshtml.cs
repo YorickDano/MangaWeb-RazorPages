@@ -133,10 +133,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _mailManager.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _mailManager.SendEmailAsync(Input.NewEmail, Localizer["EmailConf"],
+                        Localizer["PlsConf"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{Localizer["ClickHere"]}</a>.");
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
@@ -169,10 +167,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _mailManager.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            await _mailManager.SendEmailAsync(email, Localizer["EmailConf"],
+                        Localizer["PlsConf"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{Localizer["ClickHere"]}</a>.");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
