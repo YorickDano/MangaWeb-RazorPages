@@ -19,7 +19,7 @@
     <Content Include="Resources\SharedResource.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator></Generator>
-    </Content>
+    </Content>  
     <Content Include="Resources\SharedResource.ru.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator></Generator>
@@ -39,6 +39,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
     <PackageReference Include="RestSharp" Version="108.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
@@ -62,6 +63,9 @@
     </Compile>
     <Compile Update="Pages\MangaPages\Index.cshtml.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="SharedResource.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
 
