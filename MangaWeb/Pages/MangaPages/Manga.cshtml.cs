@@ -21,6 +21,7 @@ namespace MangaWeb.Pages.MangaPages
         public readonly IStringLocalizer<SharedResource> Localizer;
 
         public MangaWebUser CurrentUser;
+        public List<Manga> SimularManga;
 
         public bool IsSeeAll { get; set; } = false;
 
@@ -47,7 +48,10 @@ namespace MangaWeb.Pages.MangaPages
             CurrentUserFavoritesManga = CurrentUser?.FavoriteManga ?? new List<int>();
 
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
-
+            SimularManga = _context.Manga.Include(x => x.Characters).AsEnumerable()
+            .Where(manga => manga.Genres.Intersect(Manga.Genres).Count() != 0 && manga.OriginTitle != Manga.OriginTitle)
+            .OrderByDescending(movie => movie.Genres.Count(genre => Manga.Genres.Contains(genre)))
+            .Take(5).ToList();
 
             if (Manga is null)
             {

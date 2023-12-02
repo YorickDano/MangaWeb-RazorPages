@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "MangaWeb": {
+    "MangaWebNot": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

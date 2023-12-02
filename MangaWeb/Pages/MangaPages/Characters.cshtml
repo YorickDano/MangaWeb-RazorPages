@@ -1,0 +1,32 @@
+﻿@page
+@model MangaWebNot.Pages.MangaPages.CharactersModel
+@{
+}
+@foreach (var character in Model.Characters)
+{
+
+    <div id="@character.Id" onmouseover="onMangaHover(@character.Id)" onmouseout="onMangaOut(@character.Id)" class="manga-card">
+        <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@character.Id">
+            <img class="imgMangaCart" src="@character.ImageUrl">
+            <div class="manga-card-text">@character.Name</div>
+        </a>
+    </div>
+    <div id="@character.Id-mangaInfo" class="mangaInforOnHover">
+        <h3>@character.Name</h3>
+        <p>
+            <img class="mangaInfoImg" src="@character.ImageUrl">
+
+            <div class="mangaInfoCenter">
+                <div class="mangaInfoDesc">
+                    <b><big>@Model.Localizer["Description"]:</big></b> @character.Description
+                </div>
+            </div>
+            <div class="mangaInfoRight">
+                @Html.Raw($" <input id='@Model.MangaCharacter.Id' onclick='return false;' class='generCheckBox' type='checkbox' {(character.IsMain ? "checked" : "unchecked")} />")
+                <label for="@character.Id"></label>
+            </div>
+
+        </p>
+    </div>
+
+}

@@ -178,6 +178,17 @@
                 <input asp-page-handler="MangaDeletion" type="submit" class="btn btn-lg btn-primary" value=" @Model.Localizer["Delete"]" />
                 <input asp-page-handler="UpdateManga" type="submit" class="btn btn-lg btn-primary" value=" @Model.Localizer["UpdateInfo"]" />
             }
+            <br />
+            @foreach (var manga in Model.SimularManga)
+            {
+
+                <div id="@manga.Id" class="manga-card">
+                    <a class="text-decoration-none" asp-page="./Manga" asp-route-id="@manga.Id">
+                        <img class="imgMangaCart" src="@manga.MangaImageUrl">
+                        <div class="manga-card-text">@manga.OriginTitle</div>
+                    </a>
+                </div>
+            }
         </div>
     </form>
     <br />
