@@ -77,10 +77,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _mailManager.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _mailManager.SendEmailAsync(Input.Email, Localizer["EmailConf"],
+                         Localizer["PlsConf"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{Localizer["ClickHere"]}</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

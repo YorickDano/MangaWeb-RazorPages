@@ -22,6 +22,10 @@ namespace MangaWeb.APIClients
         public async Task<Manga> GetAllCharacters(string title, Manga manga, int id)
         {
             var charactersLinks = await GetCharacterLinks(id, title);
+            if(charactersLinks == null)
+            {
+                return manga;
+            }
             var characterDetailsTasks = charactersLinks.Select(GetCharacterDetailsAsync).ToList();
             var imagesUrlsTasks = charactersLinks.Select(link => GetImagesUrlsForCharacterAsync(link + "/pics")).ToList();
 
@@ -84,8 +88,10 @@ namespace MangaWeb.APIClients
             var htmlDocument = await GetHtmlDocumentAsync(characterImagesLink);
             var imagesForCharacter = new List<string>();
             var imageElements = htmlDocument.DocumentNode.SelectNodes("//img[contains(@class,'portrait')]");
-
-            imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
+            if (imageElements != null && imageElements.Count > 0)
+            {
+                imagesForCharacter?.AddRange(imageElements.Select(x => x.Attributes["data-src"].Value));
+            }
 
             return imagesForCharacter;
         }

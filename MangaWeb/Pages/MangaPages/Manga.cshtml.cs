@@ -67,8 +67,7 @@ namespace MangaWeb.Pages.MangaPages
         {
             Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
 
-
-            if ((await _userManager.GetUserAsync(User)).UserName != Manga.Creator)
+            if ((await _userManager.GetUserAsync(User)).Role == Role.User)
             {
                 return RedirectToPage("/Account/AccessDenied",
                     new { area = "Identity", message = "You didn't create this manga, so you cannot delete it", statusCode = 403 });
@@ -135,18 +134,19 @@ namespace MangaWeb.Pages.MangaPages
         {
             CurrentUserFavoritesManga = (await _userManager.GetUserAsync(User))?.FavoriteManga ?? new List<int>();
 
-            Manga = await _context.Manga.Include(x => x.Characters).FirstOrDefaultAsync(y => y.Id == id);
+            Manga = await _context.Manga.Include(x => x.Characters).ThenInclude(x => x.Comments).Include(x => x.Comments).FirstOrDefaultAsync(y => y.Id == id);
 
             if (Manga is null)
             {
                 return NotFound();
             }
-
-            Manga.CloneFrom(Manga.Language == Language.en
+            var newManga = Manga.Language == Language.en
                 ? await _researchMangaClient.UpdateMangaAsync(Manga, Enumerable.Empty<string>())
-                : await new ResearchRuMangaClient().UpdateMangaAsync(Manga, Enumerable.Empty<string>()));
-
+                : await new ResearchRuMangaClient().UpdateMangaAsync(Manga, Enumerable.Empty<string>());
+            newManga.Comments = new List<Comment>(Manga.Comments);
+            Manga.CloneFrom(newManga);
             _context.Manga.Update(Manga);
+            _context.Comments.UpdateRange(Manga.Comments);
             await _context.SaveChangesAsync();
 
             return Redirect($"/MangaPages/Manga?id={id}");
@@ -168,6 +168,10 @@ namespace MangaWeb.Pages.MangaPages
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages" });
+            }
+            if(string.IsNullOrEmpty(body))
+            {
+                return Redirect($"/MangaPages/Manga?id={id}");
             }
             var mangaUser = await _userManager.GetUserAsync(User);
             var manga = await _context.Manga.FirstAsync(x => x.Id == id);

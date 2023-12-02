@@ -125,7 +125,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            if((await _userManager.FindByEmailAsync(Input.Email)) != null)
+            if ((await _userManager.FindByEmailAsync(Input.Email)) != null)
             {
                 ErrorMessage = "Error! There are all ready exist user with this email.";
                 return Page();
@@ -154,8 +154,8 @@ namespace MangaWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _mailManager.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _mailManager.SendEmailAsync(Input.Email, Localizer["EmailConf"],
+                        Localizer["PlsConf"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{Localizer["ClickHere"]}</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

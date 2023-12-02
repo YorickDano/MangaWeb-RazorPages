@@ -173,6 +173,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="ChooseLanguage" xml:space="preserve">
     <value>Choose Language</value>
   </data>
+  <data name="ClickHere" xml:space="preserve">
+    <value>clicking here</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm password</value>
   </data>
@@ -214,6 +217,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="EmailConf" xml:space="preserve">
+    <value>Email confirmation</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
@@ -284,6 +290,9 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="Manga" xml:space="preserve">
     <value>Manga</value>
   </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -326,6 +335,12 @@ And if you need to take a break from reading, you can always check out our colle
   <data name="PersDataDesc" xml:space="preserve">
     <value>Your account contains personal data that you have given us. This page allows you to download or delete that data.</value>
   </data>
+  <data name="PlsCheck" xml:space="preserve">
+    <value>Please check your email to confirm your account.</value>
+  </data>
+  <data name="PlsConf" xml:space="preserve">
+    <value>Please confirm your account by</value>
+  </data>
   <data name="Popularity" xml:space="preserve">
     <value>Popularity</value>
   </data>
@@ -349,6 +364,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="Read" xml:space="preserve">
     <value>Read</value>
+  </data>
+  <data name="RegConf" xml:space="preserve">
+    <value>Register confirmation</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
@@ -412,6 +430,9 @@ And if you need to take a break from reading, you can always check out our colle
   </data>
   <data name="TopMangaScore" xml:space="preserve">
     <value>Top manga by score</value>
+  </data>
+  <data name="TyForCon" xml:space="preserve">
+    <value>Thank you for confirming your email.</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>

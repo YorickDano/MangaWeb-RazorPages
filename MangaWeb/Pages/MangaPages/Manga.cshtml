@@ -60,18 +60,24 @@
         @if (Model.Manga.Status == MangaStatus.Finished
         || Model.Manga.Status == MangaStatus.Издано)
         {
-            <dt class="col-sm-2">
-                @Model.Localizer["Volumes"]
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Manga.CountOfVolume)
-            </dd>
-            <dt class="col-sm-2">
-                @Model.Localizer["Chapters"]
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model =>  model.Manga.CountOfChapters)
-            </dd>
+            @if (Model.Manga.CountOfVolume != -1)
+            {
+                <dt class="col-sm-2">
+                    @Model.Localizer["Volumes"]
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Manga.CountOfVolume)
+                </dd>
+            }
+            @if (Model.Manga.CountOfChapters != -1)
+            {
+                <dt class="col-sm-2">
+                    @Model.Localizer["Chapters"]
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model =>  model.Manga.CountOfChapters)
+                </dd>
+            }
         }
         <dt class="col-sm-2">
             @Model.Localizer["Published"]
@@ -194,11 +200,11 @@
         <input asp-page-handler="CreateComment" type="submit" class="btn btn-lg btn-primary" value="@Model.Localizer["Send"]" />
     </form>
     <br />
-    @foreach (var comment in Model.Comments)
+    @foreach (var comment in Model.Comments.Reverse())
     {
         var user = await Model._userManager.FindByIdAsync(comment?.AuthorId);
         <div>
-            <h4><a asp-page="../User" asp-route-userName="@user .UserName"><img class="headerImage" src="@user.ProfileImage" /></a>  @user.UserName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
+            <h4><a asp-page="../User" asp-route-userName="@user.UserName"><img class="headerImage" src="@user.ProfileImage" /></a>  @user.UserName</h4><h5>@comment.Body</h5><h6>@comment.Date.ToShortTimeString() @comment.Date.ToShortDateString()</h6>
         </div>
     }
 </div>

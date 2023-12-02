@@ -39,6 +39,10 @@ namespace MangaWeb.Pages.MangaPages
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity", accessDeniedMessage = Localizer["NoAccess"], returnUrl = "~/MangaPages/Create" });
             }
+            if (string.IsNullOrEmpty(body))
+            {
+                return Redirect($"/MangaPages/Manga?id={id}");
+            }
             var mangaUser = await _userManager.GetUserAsync(User);
             var character = await _context.MangaCharacter.FirstAsync(x => x.Id == id);
             var comment = new Comment()

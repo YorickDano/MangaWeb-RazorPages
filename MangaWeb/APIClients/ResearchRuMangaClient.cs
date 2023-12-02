@@ -96,7 +96,11 @@ namespace MangaWeb.APIClients
             manga.OriginTitle = mangaMainInfo.russian;
             manga.MangaImageUrl = BaseUrl + mangaMainInfo.image.original;
             manga.Type = char.ToUpper(mangaMainInfo.kind[0]) + mangaMainInfo.kind.Substring(1).Replace('_', ' ');
-            manga.Score = float.Parse(mangaMainInfo.score.Replace('.',','));
+            try
+            {
+                manga.Score = Convert.ToSingle(mangaMainInfo.score);
+            }
+            catch (Exception ex) { manga.Score = Convert.ToSingle(mangaMainInfo.score.Replace(".", ",")); }
             manga.CountOfVolume = mangaMainInfo.volumes == 0 && mangaMainInfo.kind != "manga" ? 1 : mangaMainInfo.volumes;
             manga.CountOfChapters = mangaMainInfo.chapters == 0 ? -1 : mangaMainInfo.chapters;
             manga.Published = mangaMainInfo.aired_on + " - " + mangaMainInfo.released_on;
@@ -111,10 +115,18 @@ namespace MangaWeb.APIClients
             var htmlDocument = new HtmlDocument();
             var autorsPageResponse = await Client.ExecuteAsync(RequestBuilder.CreateRequest()
                 .SetRequestResource(url + "/resources").GetRequest());
-            htmlDocument.LoadHtml(autorsPageResponse.Content);
-            manga.Authors = htmlDocument.DocumentNode
-               .SelectNodes("//div[contains(@class,'authors')]//div[contains(@class,'authors')]//div[@class='name']/a")
-               .Select(x => x.InnerText);
+            if (autorsPageResponse.Content!= "age_restricted")
+            {
+                htmlDocument.LoadHtml(autorsPageResponse.Content);
+
+                manga.Authors = htmlDocument.DocumentNode
+                   .SelectNodes("//div[contains(@class,'authors')]//div[contains(@class,'authors')]//div[@class='name']/a")
+                   .Select(x => x.InnerText);
+            }
+            else
+            {
+                manga.Authors = new List<string>(); 
+            }
 
             return manga;
         }

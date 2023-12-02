@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿    // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Net;
 using System.Text.RegularExpressions;
 
@@ -26,12 +28,11 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<MangaWebUser> userManager,
             SignInManager<MangaWebUser> signInManager,
-            AnimeImageClient animeAndHentaiImageClient,
             IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _animeClient = _animeClient;
+            _animeClient = new AnimeImageClient();
             Localizer = localizer;
         }
 
@@ -40,7 +41,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
-        public string Image { get; set; }
+        public string ImageStr { get; set; }
         public MangaWebUser MangaWebUser { get; set; }
 
         [Required]
@@ -76,7 +77,7 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
            
-            Image = _userManager.Users.FirstOrDefault(x => x.Id == user.Id).ProfileImage;
+            ImageStr = _userManager.Users.FirstOrDefault(x => x.Id == user.Id).ProfileImage;
             MangaWebUser = user;
             Username = userName;
 
@@ -142,9 +143,15 @@ namespace MangaWeb.Areas.Identity.Pages.Account.Manage
             using (var ms = new MemoryStream())
             {
                 FormFile.CopyTo(ms);
-                var base64 = Convert.ToBase64String(ms.ToArray());
-                var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                user.ProfileImage = imgSrc;
+                var image = Image.FromStream(ms);
+                var newImage = new Bitmap(image, new Size(150, 150));
+                using(var imageMs = new MemoryStream())
+                {
+                    image.Save(imageMs, ImageFormat.Jpeg);
+                    var base64 = Convert.ToBase64String(imageMs.ToArray());
+                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                    user.ProfileImage = imgSrc;
+                }
             }
 
             await _userManager.UpdateAsync(user);

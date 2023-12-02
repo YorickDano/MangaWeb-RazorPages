@@ -8,7 +8,7 @@ namespace MangaWeb.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [Display(Name = "Image")]
+        [Display(Name = "ImageStr")]
         public string ImageUrl { get; set; }
         [Display(Name = "Is main?")]
         public bool IsMain { get; set; }
